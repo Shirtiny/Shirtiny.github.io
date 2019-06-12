@@ -1222,17 +1222,24 @@ pre .javascript .function {
   font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .post-body p a {
-  color: #00f;
+  color: #6cc;
   border-bottom: none;
 }
 .post-body p a:hover {
   color: #f00;
 }
 .post-body ul a {
-  color: #00f;
+  color: #6cc;
   border-bottom: none;
 }
 .post-body ul a:hover {
+  color: #f00;
+}
+.post-body ol a {
+  color: #6cc;
+  border-bottom: none;
+}
+.post-body ol a:hover {
   color: #f00;
 }
 .post-body span.exturl .fa {
@@ -1784,7 +1791,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #c2e22b;
+  background: #e7b6a2;
 }
 .feed-link,
 .chat {
