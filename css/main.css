@@ -1791,7 +1791,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #fffbff;
+  background: #737977;
 }
 .feed-link,
 .chat {
@@ -1974,6 +1974,13 @@ pre .javascript .function {
 }
 .footer img {
   border: none;
+}
+.footer a {
+  color: #6cc;
+  border-bottom: none;
+}
+.footer a:hover {
+  color: #f00;
 }
 .footer-inner {
   text-align: center;
