@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[Yahoo~!]]></title>
+    <url>%2F2019%2F06%2F11%2FYahoo%2F</url>
+    <content type="text"><![CDATA[域名现在域名为 Shirtiny.cn ,30r/年，腾讯云买的，没算上优惠劵，倒是阿里云更便宜。费点劲总算弄好了，跟着教程就行了，b站真是个神奇的地方。 域名购买： 腾讯云 域名解析： DNSPOD 搭建Hexo：哔哩哔哩教程 域名绑定：CN博客教程 解决部署使：CName消失的问题]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>开局第一篇 - 测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[说 明]]></title>
+    <url>%2F2019%2F06%2F11%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Hello HexoQuick Start Create a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+</search>
