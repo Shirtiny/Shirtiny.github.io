@@ -63,39 +63,39 @@ initTips();
     if(document.referrer !== ''){
         var referrer = document.createElement('a');
         referrer.href = document.referrer;
-        text = '嗨！来自 <span style="color:#0099cc;">' + referrer.hostname + '</span> 的朋友！';
+        text = '嗨！你从 <span style="color:#0099cc;">' + referrer.hostname + '</span> 的吗？';
         var domain = referrer.hostname.split('.')[1];
-        if (domain == 'baidu') {
-            text = '嗨！ 来自 百度搜索 的朋友！<br>欢迎访问<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+        if (domain == 'baidu) {
+            text = '嗨！<br>欢迎来<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
         }else if (domain == 'so') {
-            text = '嗨！ 来自 360搜索 的朋友！<br>欢迎访问<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+            text = '嗨！<br>欢迎来<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
         }else if (domain == 'google') {
-            text = '嗨！ 来自 谷歌搜索 的朋友！<br>欢迎访问<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+            text = '嗨！<br>欢迎来<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
         }
     }else {
         if (window.location.href == `${home_Path}`) { //主页URL判断，需要斜杠结尾
             var now = (new Date()).getHours();
             if (now > 23 || now <= 5) {
-                text = '你是夜猫子呀？这么晚还不睡觉，明天起的来嘛？';
+                text = '拉威福特的《因斯茅斯上空的阴影》尝起来，就像是在啜饮生鱼血一样呢~';
             } else if (now > 5 && now <= 7) {
-                text = '早上好！一日之计在于晨，美好的一天就要开始了！';
+                text = '宫泽贤治的作品是非常质朴的，散发着大地、风和阳光一样的香味';
             } else if (now > 7 && now <= 11) {
-                text = '上午好！工作顺利嘛，不要久坐，多起来走动走动哦！';
+                text = '有些人只读了《人间失格》，就以为太宰治的作品充满阴暗忧郁的色彩';
             } else if (now > 11 && now <= 14) {
-                text = '中午了，工作了一个上午，现在是午餐时间！';
+                text = '一切都是奈莉的圈套，呼啸山庄所有事件都会显现出崭新的局面。';
             } else if (now > 14 && now <= 17) {
-                text = '午后很容易犯困呢，今天的运动目标完成了吗？';
+                text = '跟野岛的心情一起品味的话，就像淡淡的酸味和柚子清香';
             } else if (now > 17 && now <= 19) {
-                text = '傍晚了！窗外夕阳的景色很美丽呢，最美不过夕阳红~~';
+                text = '让歌剧魅影中途完结的话，幽灵就只是个丑恶的怪物';
             } else if (now > 19 && now <= 21) {
                 text = '晚上好，今天过得怎么样？';
             } else if (now > 21 && now <= 23) {
                 text = '已经这么晚了呀，早点休息吧，晚安~~';
             } else {
-                text = '嗨~ 快来逗我玩吧！';
+                text = '嗨~ 大爷来玩啊~！';
             }
         }else {
-            text = '欢迎阅读<span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
+            text = 'Welcome <span style="color:#0099cc;">「 ' + document.title.split(' - ')[0] + ' 」</span>';
         }
     }
     showMessage(text, 12000);
