@@ -430,7 +430,7 @@
               目前共计 2 个分类
             </div>
             <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/练习/">练习</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲谈/">闲谈</a><span class="category-list-count">1</span></li></ul>
+              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/练习/">练习</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/闲谈/">闲谈</a><span class="category-list-count">1</span></li></ul>
             </div>
           </div>
         
@@ -454,6 +454,9 @@
 
   
     <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
     </div>
 
   
@@ -730,8 +733,16 @@
 
 
   <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
 
   <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
 
 
 
@@ -765,36 +776,57 @@
   
 
   
+
+
   
+    <!-- LOCAL: You can save these files to your site and update links -->
 
-<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+  
+  <script src="https://www.wenjunjiang.win/js/gitment.js "></script>
 
-
-
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
 
 <script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
-  });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: 'RqWpUO6KbzVA4uTWMnMAO4Mu-gzGzoHsz',
-    appKey: 'Fgpf8mVUTbuIrMGEdtmYAFiu',
-    placeholder: '留言~',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '5' || 10,
-    visitor: false,
-    lang: '' || 'zh-cn'
-  });
-</script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        client_secret: '876f146cdc4755506645a587b49da79f376ad758',
+      
+        client_id: '9df7da558032db465008'
+      }
+    });
+    gitment.render('gitment-container');
+  }
 
-
+     
+     
+     
+     
+     <link rel="stylesheet" href="https://www.wenjunjiang.win/css/gitment.css">
+     <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
+     
+         <script type="text/javascript">
+             var gitment = new Gitment({
+                 id: document.location.href, 
+                 owner: '',
+                 repo: '',
+                 oauth: {
+                     client_id: '',
+                     client_secret: ''
+                 }});
+             gitment.render('gitment-container');
+         </script>
+     
+ 
 
 
   
