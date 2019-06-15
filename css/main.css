@@ -1791,7 +1791,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #deffc7;
+  background: #7093ff;
 }
 .feed-link,
 .chat {
@@ -2992,6 +2992,7 @@ ul.breadcrumb li+li:last-child {
 }
 body {
   background: url("/images/miku.png");
+  background: cover;
 }
 .site-meta {
   background: #3cf;
