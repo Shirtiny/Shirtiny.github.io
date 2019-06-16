@@ -3,8 +3,9 @@ layout: false
 
 
 ---
-{% raw %}
+
 <!doctype html>
+{% raw %}
 <html>
 <head>
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
@@ -363,7 +364,7 @@ input[type="text"]:focus{
 <td><input type="text" name="phoneNum" placeholder="从官网扒的 很简单 玩玩就好 勿传"></td></tr>
 </tbody></table>
 
-</form><p>&nbsp;</p>
+</form><p>&nbsp;</p>{% endraw %}
 </div>
 <video autoplay="" loop=""  crossorigin="anonymous" class="bgvid"id="bgvid" style="width: 1535px; object-fit: fill;">
 <source src="https://webstatic.mihoyo.com/dora/biz/mihoyo-hk4e-concept-animation/1.0.23/medias/video-bg.3e78e808.mp4">
@@ -372,4 +373,3 @@ input[type="text"]:focus{
 
 </body>
 </html>
-{% endraw %}
