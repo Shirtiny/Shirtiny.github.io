@@ -58,13 +58,86 @@ input[type="text"]:focus{
       filter:alpha(Opacity=70);-moz-opacity:0.7;opacity: 0.7;
     }
     #div1{
-    
-      background:rgba(250,250,250,0.5);
+    font-size: 15px;
+      background:rgba(230, 227, 227, 0.5);
     
     }
     #div2{
       background:rgba(47,79,79,0.5);
     }
+    #div5{
+      background:rgba(47,79,79,0.5);
+    }
+    #ysbt{
+      
+      margin: auto;
+      width: 1000px;
+    }
+
+    input[type=checkbox] {
+      margin-left: 10px;
+      margin-top: 3px;
+    margin-right: 10px;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    position: relative;
+}
+ 
+input[type=checkbox]:after {
+    position: absolute;
+    width: 10px;
+    height: 15px;
+    top: 0;
+    content: " ";
+    background-color: #fff;
+    color: #fff;
+    display: inline-block;
+    visibility: visible;
+    border: 1px solid grey;
+    padding: 0 3px;
+    border-radius: 3px;
+}
+ 
+input[type=checkbox]:checked:after {
+    background-color: #0f97e7;
+    content: "✓";
+    font-size: 12px;
+}
+ 
+input[type=checkbox]:disabled:after {
+    width: 10px;
+    height: 15px;
+    top: 0;
+    color: #fff;
+    display: inline-block;
+    visibility: visible;
+    border: 1px solid grey;
+    padding: 0 3px;
+    border-radius: 3px;
+    background-color: #E9E7E3;
+    content: "✓";
+    font-size: 12px;
+}
+#div6{
+  float: left;
+  background-color:white;
+  filter:alpha(Opacity=70);-moz-opacity:0.7;opacity: 0.7;
+  width: 100px;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  align: center;
+}
+#div7{
+  margin-left: 150px;
+  background-color:white;
+  filter:alpha(Opacity=70);-moz-opacity:0.7;opacity: 0.7;
+  width: 100px;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  align: center;
+}
+
 
 </style>
 
@@ -125,21 +198,45 @@ input[type="text"]:focus{
      <div class="header__subscribe"><div class="header__subscribe-title">去社区氵贴</div> <div class="header__subscribe-desc">
       米忽悠用户： <span class="header__subscribe-amount">99999</span>人(官网骗人)
     </div></div></div>
-<div  id='write'  class = 'is-node'><h1><a name='header-n2' class='md-header-anchor '></a><center>厡神首测补填信息问卷</center></h1><h4><a name='header-n3' class='md-header-anchor '></a><center><font style="color:red">（纯属虚构请勿当真）</font></center></h4><p><span>	</span> <div id="div1">你好,恭喜<del>获得</del>《厡神》首次测试资格，开始测试前请填写调查问卷，补填相关信息。问卷内容仅供本次测试以及调查研究使用。请<strong>千万不要</strong>按照<mark>真实情况</mark>填写。每人只有一个测试资格，<code>手机</code>、<code>QQ</code>、<code>Uid</code>有<strong>任何一项</strong>相同均视为<strong>同一</strong>用户，请勿将账号转交给他人，以免影响您的测试资格，感谢您的理解与配合。</p></div><hr /><p>&nbsp;</p> 
- <form method="post" action="#">
+
+
+<div  id='ysbt'  class = 'is-node'><h1><a name='header-n2' class='md-header-anchor '></a><center>厡神首测补填信息问卷</center></h1><h4><a name='header-n3' class='md-header-anchor '></a><center><font style="color:red">（纯属虚构请勿当真）</font></center></h4><p><span>	</span> 
+  <br><br><br>
+  <div id="div1"><p style="align:center">你好,
+    <br>
+    恭喜<del>获得</del>《厡神》首次测试资格，开始测试前请填写调查问卷，补填相关信息。问卷内容仅供本次测试以及调查研究使用。请<strong>千万不要</strong>按照<mark>真实情况</mark>填写。每人只有一个测试资格，<code>手机</code>、<code>QQ</code>、<code>Uid</code>有<strong>任何一项</strong>相同均视为<strong>同一</strong>用户，请勿将账号转交给他人，以免影响您的测试资格，感谢您的理解。</p></div><hr size="6px" noshade=true style="color:rgb(236, 227, 98);"/><p>&nbsp;</p> </p>
+    <br><br><br><br><br><br><br><br><br><br>
+    <form method="post" action="#">
 <br><br><br><br><br>
 <div id="div2"><font style="color: white">基本信息 (<font style="font-weight: bold">*</font>为<font style="font-weight: bold">必填</font>项)：</font></div>
 <br><table  style="background-color:white">
 <tbody><tr><td width="200px">Q1:填写您的手机号<font style="font-weight: bold">*</font></td>
-<td><input type="text" name="phoneNum" placeholder="反正不会让你提交的"></td></tr>
+<td><input type="text" name="phoneNum" placeholder="反正不会让你提交的"></td>
+</tr>
 <tr><td width="200px">Q2:填写您的QQ号<font style="font-weight: bold">*</font></td>
 <td><input type="text" name="phoneNum" placeholder="输入沒限制"></td></tr>
 <tr><td width="200px">Q3:填写米忽悠通行证<font style="font-weight: bold">*</font></td>
 <td><input type="text" name="phoneNum" placeholder="从官网扒的 很简单 玩玩就好 勿传"></td></tr>
 </tbody></table>
+<br><br>
+<div id="div5"><font style="color: white">选择客户端（多选）：</font></div>
 
 </form><p>&nbsp;</p>
+<div id="div6" class="check-item">
+  <input type="checkbox" class="check-item-in" id="checkbox3">ios客户端
+  <label for="checkbox3"></label>
 </div>
+<div id="div7" class="check-item">
+  <input type="checkbox" class="check-item-in" id="checkbox3">PC客户端
+  <label for="checkbox3"></label>
+</div>
+</div>
+
+
+
+
+   
+
 <video autoplay="" loop=""  crossorigin="anonymous" class="bgvid"id="bgvid" style="width: 1535px; object-fit: fill;">
 <source src="https://webstatic.mihoyo.com/dora/biz/mihoyo-hk4e-concept-animation/1.0.23/medias/video-bg.3e78e808.mp4">
 </video>
