@@ -1,7 +1,4 @@
----
-layout: false
----
-{% raw %}
+
 <!doctype html>
 <html>
 <head>
@@ -370,4 +367,3 @@ input[type="text"]:focus{
 
 </body>
 </html>
-{% endraw %}
