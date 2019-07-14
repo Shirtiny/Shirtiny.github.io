@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="使用mybatis分页插件1. jar包和依赖： jsqlparser-0.9.5.jar（sql 解析工具）  123456&amp;lt;!--sql 解析工具依赖,配合分页使用--&amp;gt;&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;com.github.jsqlparser&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;jsqlparser&amp;">
+<meta name="keywords" content="mybatis分页插件,数据分页">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSM+easyUI实现数据分页">
+<meta property="og:url" content="http://Shirtiny.cn/2019/07/06/数据分页/index.html">
+<meta property="og:site_name" content="Shirtiny Blog">
+<meta property="og:description" content="使用mybatis分页插件1. jar包和依赖： jsqlparser-0.9.5.jar（sql 解析工具）  123456&amp;lt;!--sql 解析工具依赖,配合分页使用--&amp;gt;&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;com.github.jsqlparser&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;jsqlparser&amp;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://file.moetu.org/images/2019/07/06/VG9W0WGK61_PMVIA1UU4d781bca91dd6e4f.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/07/06/SALBYLG8YUFPC4JIP005183518b733fce.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/07/06/d79bb3354e63da9c9fea6b5a5950f80b21f80119b9970cfb.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/07/06/4e96b223fd8cc352ffd396ee4344c5e0a730b9fa4593871b.png">
+<meta property="og:updated_time" content="2019-07-14T09:31:56.378Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSM+easyUI实现数据分页">
+<meta name="twitter:description" content="使用mybatis分页插件1. jar包和依赖： jsqlparser-0.9.5.jar（sql 解析工具）  123456&amp;lt;!--sql 解析工具依赖,配合分页使用--&amp;gt;&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;com.github.jsqlparser&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;jsqlparser&amp;">
+<meta name="twitter:image" content="https://file.moetu.org/images/2019/07/06/VG9W0WGK61_PMVIA1UU4d781bca91dd6e4f.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/07/06/数据分页/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>SSM+easyUI实现数据分页 | Shirtiny Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shirtiny Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/07/06/数据分页/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shirtiny Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SSM+easyUI实现数据分页
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-06 18:17:06" itemprop="dateCreated datePublished" datetime="2019-07-06T18:17:06+08:00">2019-07-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-14 17:31:56" itemprop="dateModified" datetime="2019-07-14T17:31:56+08:00">2019-07-14</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习经验/" itemprop="url" rel="index"><span itemprop="name">学习经验</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/06/数据分页/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/06/数据分页/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="使用mybatis分页插件"><a href="#使用mybatis分页插件" class="headerlink" title="使用mybatis分页插件"></a>使用mybatis分页插件</h2><h3 id="1-jar包和依赖："><a href="#1-jar包和依赖：" class="headerlink" title="1. jar包和依赖："></a>1. jar包和依赖：</h3><ul>
+<li><p>jsqlparser-0.9.5.jar（sql 解析工具）</p>
+<ul>
+<li><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--sql 解析工具依赖,配合分页使用--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.jsqlparser<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jsqlparser<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.9.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>pagehelper-5.1.2.jar</p>
+<ul>
+<li><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--myBatis分页插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-spring配置文件"><a href="#2-spring配置文件" class="headerlink" title="2. spring配置文件"></a>2. spring配置文件</h3><p>ApplicatonContext.xml的sqlSessionFactory里配置一个载入插件的属性，名为plugins，用array来配置多个插件。</p>
+<ul>
+<li><p>增加一个插件（拦截器），用<bean>标签</bean></p>
+</li>
+<li><p>用bean，class为pagehelper的jar包中的PageInterceptor类。</p>
+<ul>
+<li>此类中有个名为properties的属性，使用value对其赋值</li>
+</ul>
+</li>
+<li><p>value内填写：helperDialect=mysql（设置连接的是什么数据库,如mysql、Oracle）</p>
+<p> 如:</p>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"plugins"</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">array</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.github.pagehelper.PageInterceptor"</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"properties"</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">value</span>&gt;</span> </span><br><span class="line"> helperDialect=mysql </span><br><span class="line">  <span class="tag">&lt;/<span class="name">value</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">array</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="3-Controller"><a href="#3-Controller" class="headerlink" title="3. Controller"></a>3. Controller</h3><p>在你需要进行分页的 MyBatis 查询方法前调用 <code>PageHelper.startPage</code> 静态方法即可，该方法需要两个参数<code>pageNum</code>、<code>pageSize</code>，紧跟在这个方法后的第一个<strong>MyBatis 查询方法</strong>会被进行分页。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//request: url?pageNum=1&amp;pageSize=10</span></span><br><span class="line"><span class="comment">//支持 ServletRequest,Map,POJO 对象，需要配合 params 参数</span></span><br><span class="line">PageHelper.startPage(request);</span><br><span class="line"><span class="comment">//紧跟着的第一个select方法会被分页</span></span><br><span class="line">List&lt;Country&gt; list = countryMapper.selectIf(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//后面的不会被分页，除非再次调用PageHelper.startPage</span></span><br><span class="line">List&lt;Country&gt; list2 = countryMapper.selectIf(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/** 使用pagehelper+PageInfo进行分页查询 */</span></span><br><span class="line"><span class="comment">//private Map&lt;String,Object&gt; result= new HashMap&lt;String,Object&gt;();</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/selectBypage"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span><span class="comment">//将返回值转为json数据格式</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">selectBypage</span><span class="params">(Integer page,Integer rows,HashMap&lt;String,Object&gt; map)</span></span>&#123;</span><br><span class="line">        <span class="comment">//使紧跟其后的mybatis查询分页</span></span><br><span class="line">        PageHelper.startPage(page,rows);</span><br><span class="line">        List&lt;Vocaloid&gt; vocaloidsBypage=vocaloidService.selectAll();</span><br><span class="line">        <span class="comment">//将查询结果封装</span></span><br><span class="line">       PageInfo&lt;Vocaloid&gt; pageInfo=<span class="keyword">new</span> PageInfo&lt;&gt;(vocaloidsBypage);</span><br><span class="line">        <span class="keyword">long</span> total = pageInfo.getTotal();</span><br><span class="line">        List&lt;Vocaloid&gt; list = pageInfo.getList();</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        map=<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">"rows"</span>,list);</span><br><span class="line">        map.put(<span class="string">"total"</span>,total);</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-什么时候会导致不安全的分页？"><a href="#4-什么时候会导致不安全的分页？" class="headerlink" title="4. 什么时候会导致不安全的分页？"></a>4. 什么时候会导致不安全的分页？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取第1页，10条内容，默认查询总数count</span></span><br><span class="line">PageHelper.startPage(<span class="number">1</span>, <span class="number">10</span>);</span><br><span class="line">List&lt;Country&gt; list;</span><br><span class="line"><span class="keyword">if</span>(param1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">    list = countryMapper.selectIf(param1);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    list = <span class="keyword">new</span> ArrayList&lt;Country&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种情况下由于 param1 存在 null 的情况，就会导致 PageHelper 生产了一个分页参数，但是没有被消费，这个参数就会一直保留在这个线程上。当这个线程再次被使用时，就可能导致不该分页的方法去消费这个分页参数，这就产生了莫名其妙的分页。</p>
+<p>上面这个代码，应该写成下面这个样子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Country&gt; list;</span><br><span class="line"><span class="keyword">if</span>(param1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">  <span class="comment">//获取第1页，10条内容，默认查询总数count</span></span><br><span class="line">    PageHelper.startPage(<span class="number">1</span>, <span class="number">10</span>);</span><br><span class="line">    list = countryMapper.selectIf(param1);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    list = <span class="keyword">new</span> ArrayList&lt;Country&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种写法就能保证安全。</p>
+<h3 id="5-跳转页面过界"><a href="#5-跳转页面过界" class="headerlink" title="5. 跳转页面过界"></a>5. 跳转页面过界</h3><p>如果你分页插件使用于类似分页查看列表式的数据，如新闻列表，软件列表， 你希望用户输入的页数不在合法范围（第一页到最后一页之外）时能够正确的响应到正确的结果页面， 那么你可以配置 <code>reasonable</code> 为 <code>true</code>，这时如果 <code>pageNum&lt;=0</code> 会查询第一页，如果 <code>pageNum&gt;总页数</code> 会查询最后一页。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mapperLocations"</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath:mapper/*.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">array</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"typeAliasesPackage"</span> <span class="attr">value</span>=<span class="string">"com.isea533.mybatis.model"</span>/&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"plugins"</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">array</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.github.pagehelper.PageInterceptor"</span>&gt;</span> </span><br><span class="line"> <span class="comment">&lt;!-- 这里的几个配置主要演示如何使用，如果不理解，一定要去掉下面的配置 --&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"properties"</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">value</span>&gt;</span> </span><br><span class="line"> helperDialect=mysql </span><br><span class="line"> reasonable=true </span><br><span class="line"> supportMethodsArguments=true </span><br><span class="line"> params=count=countSql </span><br><span class="line"> autoRuntimeDialect=true </span><br><span class="line">  <span class="tag">&lt;/<span class="name">value</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">array</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://pagehelper.github.io/docs/" target="_blank" rel="noopener">了解更多…</a></p>
+<h2 id="使用easyUI"><a href="#使用easyUI" class="headerlink" title="使用easyUI"></a>使用easyUI</h2><h3 id="1-启用easyui-datagrid"><a href="#1-启用easyui-datagrid" class="headerlink" title="1. 启用easyui-datagrid"></a>1. 启用easyui-datagrid</h3><p>easyui-datagrid下设置：<code>pagination:true</code></p>
+<p>显示分页菜单：</p>
+<p><img src="https://file.moetu.org/images/2019/07/06/VG9W0WGK61_PMVIA1UU4d781bca91dd6e4f.png" alt></p>
+<p>整体代码如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--数据网络--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">id</span>=<span class="string">"vstable"</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> &gt;</span></span><br><span class="line">    $(function () &#123;</span><br><span class="line">        $("#vstable").datagrid(&#123;</span><br><span class="line">            fitcolumns:true,</span><br><span class="line">            url:"$&#123;pageContext.request.contextPath&#125;/vocaloidController/vSelectAll.action",</span><br><span class="line">            columns:[[</span><br><span class="line">        &#123;</span><br><span class="line">            field:"null",</span><br><span class="line">            checkbox:true</span><br><span class="line">        &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    field:"id",</span><br><span class="line">                    title:"ID",</span><br><span class="line">                    width:100</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    field:"name",</span><br><span class="line">                    title:"Name",</span><br><span class="line">                    width:100</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    field:"sex",</span><br><span class="line">                    title:"Sex",</span><br><span class="line">                    width:100</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    field:"color",</span><br><span class="line">                    title:"Color",</span><br><span class="line">                    width:100</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    field:"team_id",</span><br><span class="line">                    title:"Team_ID",</span><br><span class="line">                    width:100</span><br><span class="line">                &#125;</span><br><span class="line">            ]],</span><br><span class="line">            //显示分页栏</span><br><span class="line">            pagination:true,</span><br><span class="line">            //工具条</span><br><span class="line">            toolbar:"#tb"</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-参数解析"><a href="#2-参数解析" class="headerlink" title="2. 参数解析"></a>2. 参数解析</h3><p>easyUI会向后台发送两个参数,page和rows：</p>
+<p><img src="https://file.moetu.org/images/2019/07/06/SALBYLG8YUFPC4JIP005183518b733fce.png" alt></p>
+<p>传参形式为：</p>
+<p><img src="https://file.moetu.org/images/2019/07/06/d79bb3354e63da9c9fea6b5a5950f80b21f80119b9970cfb.png" alt></p>
+<p>而后台不仅需要给easyUI传递json格式的查询结果，而且还需要传递total和rows：</p>
+<p><img src="https://file.moetu.org/images/2019/07/06/4e96b223fd8cc352ffd396ee4344c5e0a730b9fa4593871b.png" alt></p>
+<h3 id="3-easyUI配合controller的增删改查"><a href="#3-easyUI配合controller的增删改查" class="headerlink" title="3. easyUI配合controller的增删改查"></a>3. easyUI配合controller的增删改查</h3><ol>
+<li>添加：</li>
+</ol>
+<ul>
+<li>Controller:</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/InsertBypage"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">InsertBypage</span><span class="params">(Vocaloid vocaloid,HashMap&lt;String,Object&gt; map)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> b = vocaloidService.insertOne(vocaloid);</span><br><span class="line">    map=<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    System.out.println(b);</span><br><span class="line">    <span class="keyword">if</span> (b)&#123;</span><br><span class="line">        map.put(<span class="string">"success"</span>,b);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        map.put(<span class="string">"success"</span>,b);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Service:</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">insertOne</span><span class="params">(Vocaloid vocaloid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> b;</span><br><span class="line">        <span class="comment">//将插入成功的返回值设为true，异常的返回值为false</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            b = vocaloidMapper.insertOne(vocaloid);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            b=<span class="keyword">false</span>;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//        int e=11/0;//异常测试</span></span><br><span class="line">        System.out.println(<span class="string">"新增一行vocaloid,返回："</span> + b);</span><br><span class="line">        <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>html&amp;Js</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%--easyUI按钮，增删改查工具条，iconCls是图标，plain:true是按钮3d感？--%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"CRUDbutton"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"addButton"</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"easyui-linkbutton"</span> <span class="attr">data-options</span>=<span class="string">"iconCls:'icon-add'"</span>&gt;</span>添加<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"updateButton"</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"easyui-linkbutton"</span> <span class="attr">data-options</span>=<span class="string">"iconCls:'icon-edit',plain:true"</span>&gt;</span>修改<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"deleteButton"</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"easyui-linkbutton"</span> <span class="attr">data-options</span>=<span class="string">"iconCls:'icon-remove',plain:true"</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">%--编辑窗口，默认关闭状态，用js控制打开--%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%--div--%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"Edit_window"</span> <span class="attr">class</span>=<span class="string">"easyui-window"</span> <span class="attr">title</span>=<span class="string">"客户数据编辑"</span> <span class="attr">style</span>=<span class="string">"width:500px;height:300px"</span></span></span><br><span class="line"><span class="tag">     <span class="attr">data-options</span>=<span class="string">"modal:true,closed:true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"insertForm"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>ID<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">class</span>=<span class="string">"easyui-validatebox"</span> <span class="attr">data-options</span>=<span class="string">"required:true"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Name<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">class</span>=<span class="string">"easyui-validatebox"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Sex<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"sex"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Color<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"color"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>Team_ID<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"team_id"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"insert_Button"</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"easyui-linkbutton"</span>&gt;</span>确定<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">%--增加按钮的事件--%</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line">    $(function () &#123;</span><br><span class="line">    //    点击“添加”按钮时，打开窗口</span><br><span class="line">        $("#addButton").click(function () &#123;</span><br><span class="line">            //打开窗口前清空里面的表单</span><br><span class="line">           $("#insertForm").form("clear");</span><br><span class="line">           //打开窗口</span><br><span class="line">            $("#Edit_window").window("open")</span><br><span class="line">        &#125;);</span><br><span class="line">        //点击确定按钮（上面的a标签）触发controller和事件</span><br><span class="line">        $("#insert_Button").click(function () &#123;</span><br><span class="line">            $("#insertForm").form(</span><br><span class="line">                "submit",</span><br><span class="line">                &#123;url:"$&#123;pageContext.request.contextPath&#125;/vocaloidController/InsertBypage.action",</span><br><span class="line">                    //success:服务器执行完毕回调函数</span><br><span class="line">                    success:function(data)&#123; //data: 服务器返回的数据，类型字符串类，此时我在InsertBypage方法返回值里放入了success变量</span><br><span class="line">                        //把data字符串类型转换对象类型</span><br><span class="line">                        data = eval("("+data+")");</span><br><span class="line"></span><br><span class="line">                        if (data.success) &#123;</span><br><span class="line">                            //关闭窗口</span><br><span class="line">                            $("#Edit_window").window("close");</span><br><span class="line">                            //刷新datagrid</span><br><span class="line">                            $("#vstable").datagrid("reload");</span><br><span class="line">                            $.messager.alert("提示"+data.success,"增加成功");</span><br><span class="line">                        &#125;else &#123;</span><br><span class="line">                            //关闭窗口</span><br><span class="line">                            $("#Edit_window").window("close");</span><br><span class="line">                            //刷新datagrid</span><br><span class="line">                            $("#vstable").datagrid("reload");</span><br><span class="line">                            $.messager.alert("提示"+data.success+"增加失败：","可能是id重复");</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            );</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mybatis分页插件/" rel="tag">#^_^#mybatis分页插件</a>
+          
+            <a href="/tags/数据分页/" rel="tag">#^_^#数据分页</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/05/MySQL-Error-2013/" rel="next" title="MySQL Error(2013):Lost connection to MySQL server">
+                <i class="fa fa-chevron-left"></i> MySQL Error(2013):Lost connection to MySQL server
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/06/int和Integer的区别/" rel="prev" title="int和Integer的区别">
+                int和Integer的区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Shirtiny" title="MyGitHub &rarr; https://github.com/Shirtiny" rel="noopener" target="_blank"><i class="fa fa-fw fa-Github"></i>MyGitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="B站直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>B站直播间</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用mybatis分页插件"><span class="nav-number">1.</span> <span class="nav-text">使用mybatis分页插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-jar包和依赖："><span class="nav-number">1.1.</span> <span class="nav-text">1. jar包和依赖：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-spring配置文件"><span class="nav-number">1.2.</span> <span class="nav-text">2. spring配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Controller"><span class="nav-number">1.3.</span> <span class="nav-text">3. Controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-什么时候会导致不安全的分页？"><span class="nav-number">1.4.</span> <span class="nav-text">4. 什么时候会导致不安全的分页？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-跳转页面过界"><span class="nav-number">1.5.</span> <span class="nav-text">5. 跳转页面过界</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用easyUI"><span class="nav-number">2.</span> <span class="nav-text">使用easyUI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-启用easyui-datagrid"><span class="nav-number">2.1.</span> <span class="nav-text">1. 启用easyui-datagrid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-参数解析"><span class="nav-number">2.2.</span> <span class="nav-text">2. 参数解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-easyUI配合controller的增删改查"><span class="nav-number">2.3.</span> <span class="nav-text">3. easyUI配合controller的增删改查</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'RqWpUO6KbzVA4uTWMnMAO4Mu-gzGzoHsz',
+    appKey: 'Fgpf8mVUTbuIrMGEdtmYAFiu',
+    placeholder: '留言~',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '5' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+</body>
+</html>
