@@ -497,19 +497,6 @@
           
             
             
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/03/EasyUI的使用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/03/EasyUI的使用/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -662,8 +649,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/07/05/MySQL-Error-2013/" rel="prev" title="MySQL Error(2013):Lost connection to MySQL server">
-                MySQL Error(2013):Lost connection to MySQL server <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/05/MySQL-Error-2013/" rel="prev" title="MySQL Error:Lost connection to MySQL server">
+                MySQL Error:Lost connection to MySQL server <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -688,6 +675,9 @@
 
   
     <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
     </div>
 
   
@@ -739,7 +729,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -805,7 +795,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">11</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1057,37 +1053,45 @@
   
 
   
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+   <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
   
 
-<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
-
-
-
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
 
 <script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
-  });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: 'RqWpUO6KbzVA4uTWMnMAO4Mu-gzGzoHsz',
-    appKey: 'Fgpf8mVUTbuIrMGEdtmYAFiu',
-    placeholder: '留言~',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '5' || 10,
-    visitor: false,
-    lang: '' || 'zh-cn'
-  });
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1562153935000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
 </script>
-
-
-
 
   
 
