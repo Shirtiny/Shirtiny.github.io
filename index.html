@@ -444,7 +444,7 @@
                 
               
 
-              <time title="创建时间：2019-08-03 18:48:20 / 修改时间：18:59:10" itemprop="dateCreated datePublished" datetime="2019-08-03T18:48:20+08:00">2019-08-03</time>
+              <time title="创建时间：2019-08-03 18:48:20 / 修改时间：19:33:51" itemprop="dateCreated datePublished" datetime="2019-08-03T18:48:20+08:00">2019-08-03</time>
             
 
             
@@ -511,6 +511,11 @@
 <ol>
 <li>运行注册机，点击Fix Host+Register，然后点击Generate，然后复制生成的序列号</li>
 </ol>
+<p><img src="https://file.moetu.org/images/2019/08/03/6c5ece4f5a3b15ce2e42a4377e6a4cd5a309630e350f261e.png" alt></p>
+<ol start="2">
+<li>输入上一步获得的序列号，用户名和公司名称随意。</li>
+</ol>
+<p><img src="https://file.moetu.org/images/2019/08/03/08729b7904025f053fc534129a2aef1d41c0e665d31a33f2.png" alt></p>
 
           
         
@@ -612,7 +617,7 @@
                 
               
 
-              <time title="创建时间：2019-08-03 14:39:14 / 修改时间：19:06:03" itemprop="dateCreated datePublished" datetime="2019-08-03T14:39:14+08:00">2019-08-03</time>
+              <time title="创建时间：2019-08-03 14:39:14 / 修改时间：19:29:45" itemprop="dateCreated datePublished" datetime="2019-08-03T14:39:14+08:00">2019-08-03</time>
             
 
             
@@ -963,12 +968,24 @@
                 
               
 
-              <time title="创建时间：2019-07-31 15:07:40 / 修改时间：16:02:56" itemprop="dateCreated datePublished" datetime="2019-07-31T15:07:40+08:00">2019-07-31</time>
+              <time title="创建时间：2019-07-31 15:07:40" itemprop="dateCreated datePublished" datetime="2019-07-31T15:07:40+08:00">2019-07-31</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-03 21:56:00" itemprop="dateModified" datetime="2019-08-03T21:56:00+08:00">2019-08-03</time>
               
             
           </span>
@@ -1021,42 +1038,17 @@
 
       
         
-          
-            <h1 id="使用IDEA创建Maven聚合工程"><a href="#使用IDEA创建Maven聚合工程" class="headerlink" title="使用IDEA创建Maven聚合工程"></a>使用IDEA创建Maven聚合工程</h1><h2 id="Zero-工作空间"><a href="#Zero-工作空间" class="headerlink" title="Zero. 工作空间"></a>Zero. 工作空间</h2><p>我新建了一个名为Idea_SSM04_WebProject的文件夹，用于存放这个项目：</p>
+          <h1 id="使用IDEA创建Maven聚合工程"><a href="#使用IDEA创建Maven聚合工程" class="headerlink" title="使用IDEA创建Maven聚合工程"></a>使用IDEA创建Maven聚合工程</h1><h2 id="Zero-工作空间"><a href="#Zero-工作空间" class="headerlink" title="Zero. 工作空间"></a>Zero. 工作空间</h2><p>我新建了一个名为Idea_SSM04_WebProject的文件夹，用于存放这个项目：</p>
 <p><img src="https://file.moetu.org/images/2019/07/31/QHA7ARU_XWEAFTG3KY2KHac73109ff37b4653.png" alt></p>
-<h2 id="1-创建一个Maven工程"><a href="#1-创建一个Maven工程" class="headerlink" title="1. 创建一个Maven工程"></a>1. 创建一个Maven工程</h2><p>新建一个Maven工程，作为项目的父工程，可不勾选骨架，用于统一版本号。</p>
-<p>将pom依赖导入</p>
-<h2 id="2-创建子工程"><a href="#2-创建子工程" class="headerlink" title="2. 创建子工程"></a>2. 创建子工程</h2><p>在上一步建好的工程上右键，新建Module，注意在后续选项中把add as Module改为None：</p>
-<p><img src="https://file.moetu.org/images/2019/07/31/db81cf368dfcbfcd04807a44b4d0e7f4186a2a3ed94e71b5.png" alt></p>
-<p>新工程名：WebShop-Common</p>
-<p>修改路径为：E:\Idea_SSM04_WebProject\WebShop-Common</p>
-<p>（然后再创建第二个子工程，与上步骤一样。）</p>
-<p>第二个子工程名：WebShop-SysManager</p>
-<p>修改路径为：E:\Idea_SSM04_WebProject\WebShop-SysManager</p>
-<h2 id="3-子工程之间的依赖"><a href="#3-子工程之间的依赖" class="headerlink" title="3. 子工程之间的依赖"></a>3. 子工程之间的依赖</h2><p>使用<code>dependency</code>来指定依赖关系</p>
-<p>如WebShop-SysManager的pom文件中增加：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>WebShop-SysManager<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.SH<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>WebShop-Common<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="4-创建模块"><a href="#4-创建模块" class="headerlink" title="4. 创建模块"></a>4. 创建模块</h2><p>接着在子工程里创建模块，直接在子工程右键新建Module即可。</p>
-<p>新建模块路径默认即可：</p>
-<p>SysManager-Dao</p>
-<p>SysManager-Service</p>
-<p>SysManager-Pojo</p>
-<p>SysManager-Web</p>
-<p>其中Web模块需要勾选webapp骨架，其他模块无需勾选骨架。</p>
-<h2 id="5-运行Maven项目"><a href="#5-运行Maven项目" class="headerlink" title="5. 运行Maven项目"></a>5. 运行Maven项目</h2><p>在含有webapp的工程pom里，这里是WebShop-SysManager，增加Tomcat7插件：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!-- 配置插件 --&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">port</span>&gt;</span>8080<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">path</span>&gt;</span>/<span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在右侧点击Maven，可查看当前项目的Maven详情：</p>
-<p><img src="https://file.moetu.org/images/2019/07/31/52e796816c0cbc1e6be27e4b9075eaf0227581cc0a53dc8c.png" alt></p>
-<p>在Add Configuration中点击加号，选Maven：</p>
-<p><img src="https://file.moetu.org/images/2019/07/31/43b0f708d0a0f8ad250810848dccf954ce6f4cdca2615103.png" alt></p>
-<p>配置如下，名字随便起：</p>
-<p><img src="https://file.moetu.org/images/2019/07/31/ef298cf0e8a16a17c454d7d69f522316a0d8875e7ad2b816.png" alt></p>
-<p>运行前，需要先把被依赖的工程install，接着install其他工程，install前请clean。webapp模块不需要安装，每次运行前最好都这样重复清理安装:</p>
-<p><img src="https://file.moetu.org/images/2019/07/31/83af61bc9de191d8cebeb11e35368d4971d7fa4fdded2b6a.png" alt></p>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/31/Idea-父子工程-多模块创建/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
