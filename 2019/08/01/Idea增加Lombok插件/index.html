@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="为IDE装上Lombok插件Lombok提供了一套注解，可以大量的简化java代码。 Lombok支持Eclipse或Idea，需要先下载zip文件：下载地址">
+<meta name="keywords" content="IntelliJ IDEA,Lombok插件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lombok插件">
+<meta property="og:url" content="http://Shirtiny.cn/2019/08/01/Idea增加Lombok插件/index.html">
+<meta property="og:site_name" content="☘">
+<meta property="og:description" content="为IDE装上Lombok插件Lombok提供了一套注解，可以大量的简化java代码。 Lombok支持Eclipse或Idea，需要先下载zip文件：下载地址">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/01/40f0d2d4a6db18dee9f3d76dda5dbddef1373a30bf77316e.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/01/974dfe8ff9aed7b06c0fc3850e6ec0dd42f24cc5523861b1.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/01/25c1c1ad8857a02b94eac2bd273e45700ef7bddcba69e6ae.png">
+<meta property="og:image" content="http://jnb.ociweb.com/jnb/jnbJan2010_files/jnbJan2010-DataAnnotation.png">
+<meta property="og:image" content="http://jnb.ociweb.com/jnb/jnbJan2010_files/jnbJan2010-LombokInstaller.png">
+<meta property="og:image" content="http://jnb.ociweb.com/jnb/jnbJan2010_files/jnbJan2010-UnhandledException.png">
+<meta property="og:image" content="http://jnb.ociweb.com/jnb/jnbJan2010_files/jnbJan2010-SneakyThrows.png">
+<meta property="og:updated_time" content="2019-08-03T04:42:22.463Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lombok插件">
+<meta name="twitter:description" content="为IDE装上Lombok插件Lombok提供了一套注解，可以大量的简化java代码。 Lombok支持Eclipse或Idea，需要先下载zip文件：下载地址">
+<meta name="twitter:image" content="https://file.moetu.org/images/2019/08/01/40f0d2d4a6db18dee9f3d76dda5dbddef1373a30bf77316e.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/08/01/Idea增加Lombok插件/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Lombok插件 | ☘</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/08/01/Idea增加Lombok插件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Lombok插件
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-01 22:42:18" itemprop="dateCreated datePublished" datetime="2019-08-01T22:42:18+08:00">2019-08-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-03 12:42:22" itemprop="dateModified" datetime="2019-08-03T12:42:22+08:00">2019-08-03</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习经验/" itemprop="url" rel="index"><span itemprop="name">学习经验</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="为IDE装上Lombok插件"><a href="#为IDE装上Lombok插件" class="headerlink" title="为IDE装上Lombok插件"></a>为IDE装上Lombok插件</h1><p>Lombok提供了一套注解，可以大量的简化java代码。</p>
+<p>Lombok支持Eclipse或Idea，需要先下载zip文件：<a href="https://github.com/mplushnikov/lombok-intellij-plugin/releases" target="_blank" rel="noopener">下载地址</a></p>
+<a id="more"></a>
+
+<h2 id="IDEA"><a href="#IDEA" class="headerlink" title="IDEA"></a>IDEA</h2><p>主要介绍下插件在Idea的使用</p>
+<p>下载插件后在IDEA界面，右下角Configure，选Plugins</p>
+<p><img src="https://file.moetu.org/images/2019/08/01/40f0d2d4a6db18dee9f3d76dda5dbddef1373a30bf77316e.png" alt></p>
+<p>进入插件界面后，点齿轮设置,选Install Plugin from Disk…  选刚刚下载插件的zip文件</p>
+<p><img src="https://file.moetu.org/images/2019/08/01/974dfe8ff9aed7b06c0fc3850e6ec0dd42f24cc5523861b1.png" alt></p>
+<p>点重启IDEA。</p>
+<p>重启后在Setting里设置：勾选Enable annotation processing</p>
+<p><img src="https://file.moetu.org/images/2019/08/01/25c1c1ad8857a02b94eac2bd273e45700ef7bddcba69e6ae.png" alt></p>
+<h2 id="Lombok的文档"><a href="#Lombok的文档" class="headerlink" title="Lombok的文档"></a>Lombok的文档</h2><ul>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#intro" target="_blank" rel="noopener">Introduction</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#installation" target="_blank" rel="noopener">Installation</a></li>
+<li>Lombok Annotations<ul>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#gettersetter" target="_blank" rel="noopener">@Getter and @Setter</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#nonnull" target="_blank" rel="noopener">@NonNull</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#tostring" target="_blank" rel="noopener">@ToString</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#equals" target="_blank" rel="noopener">@EqualsAndHashCode</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#data" target="_blank" rel="noopener">@Data</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#cleanup" target="_blank" rel="noopener">@Cleanup</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#synchronized" target="_blank" rel="noopener">@Synchronized</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#sneaky" target="_blank" rel="noopener">@SneakyThrows</a></li>
+</ul>
+</li>
+<li>Costs and Benefits<ul>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#whatsmissing" target="_blank" rel="noopener">What are we missing?</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#limitations" target="_blank" rel="noopener">Limitations</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#controversy" target="_blank" rel="noopener">Controversy</a></li>
+</ul>
+</li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#summary" target="_blank" rel="noopener">Summary</a></li>
+<li><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html#references" target="_blank" rel="noopener">References</a></li>
+</ul>
+<p><strong>详情：</strong></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>“Boilerplate” is a term used to describe code that is repeated in  many parts of an application with little alteration. One of the most  frequently voiced criticisms of the Java language is the volume of this  type of code that is found in most projects. This problem is frequently a  result of design decisions in various libraries, but is exacerbated by  limitations in the language itself. Project Lombok aims to reduce the  prevalence of some of the worst offenders by replacing them with a  simple set of annotations.</p>
+<p>While it is not uncommon for annotations to be used to indicate  usage, to implement bindings or even to generate code used by  frameworks, they are generally not used for the generation of code that  is directly utilized by the application. This is partly because doing so  would require that the annotations be eagerly processed at development  time. Project Lombok does just that. By integrating into the IDE,  Project Lombok is able to inject code that is immediately available to  the developer. For example, simply adding the <code>@Data</code> annotation to a data class, as below, results in a number of new methods in the IDE:</p>
+<p><img src="http://jnb.ociweb.com/jnb/jnbJan2010_files/jnbJan2010-DataAnnotation.png" alt="Image illustrating the availability of new methods on a data class in Eclipse."></p>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>Project Lombok is available as a single jar file on the <a href="http://projectlombok.org/" target="_blank" rel="noopener">project site</a>.  It includes the APIs for development as an installer for IDE  integration. On most systems, simply double-clicking the jar file will  launch the installer. If the system is not configured to correctly  launch jar files, it can also be run from the command line as follows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar lombok.jar</span><br></pre></td></tr></table></figure>
+
+<p>The installer will attempt to detect the location of a supported IDE.  If it cannot correctly determine where the IDE is installed, the  location can be specified manually. Simply click “Install/Update” and  IDE integration is complete. At the time of this article’s writing, only  Eclipse and NetBeans are supported. However, the release of the  IntelliJ IDEA source code has placed IDEA support as a possibility for  future releases, and limited success has already been reported with  JDeveloper.</p>
+<p><img src="http://jnb.ociweb.com/jnb/jnbJan2010_files/jnbJan2010-LombokInstaller.png" alt="Screenshot of the Lombok Installer"></p>
+<p>The jar file will still need to be included in the classpath of any  projects that will use Project Lombok annotations. Maven users can  include Lombok as a dependency by adding this to the project pom.xml  file:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;0.9.2&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br><span class="line">&lt;repositories&gt;</span><br><span class="line">    &lt;repository&gt;</span><br><span class="line">        &lt;id&gt;projectlombok.org&lt;/id&gt;</span><br><span class="line">        &lt;url&gt;http://projectlombok.org/mavenrepo&lt;/url&gt;</span><br><span class="line">    &lt;/repository&gt;</span><br><span class="line">&lt;/repositories&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Lombok-Annotations"><a href="#Lombok-Annotations" class="headerlink" title="Lombok Annotations"></a>Lombok Annotations</h2><p>It is not uncommon for a typical Java project to devote hundreds of  lines of code to the boilerplate required for defining simple data  classes. These classes generally contain a number of fields, getters and  setters for those fields, as well as <code>equals</code> and <code>hashCode</code> implementations. In the simplest scenarios, Project Lombok can reduce these classes to the required fields and a single <code>@Data</code> annotation.</p>
+<p>Of course, the simplest scenarios are not necessarily the ones that  developers face on a day-to-day basis. For that reason, there are a  number of annotations in Project Lombok to allow for more fine grained  control over the structure and behavior of a class.</p>
+<h3 id="Getter-and-Setter"><a href="#Getter-and-Setter" class="headerlink" title="@Getter and @Setter"></a>@Getter and @Setter</h3><p>The <code>@Getter</code> and <code>@Setter</code> annotations  generate a getter and setter for a field, respectively. The getters  generated correctly follow convention for boolean properties, resulting  in an <code>isFoo</code> getter method name instead of <code>getFoo</code>for any <code>boolean</code> field <code>foo</code>.  It should be noted that if the class to which the annotated field  belongs contains a method of the same name as the getter or setter to be  generated, regardless of parameter or return types, no corresponding  method will be generated.</p>
+<p>Both the <code>@Getter</code> and <code>@Setter</code> annotations take an optional parameter to specify the access level for the generated method.</p>
+<p>Lombok annotated code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Getter @Setter private boolean employed = true;</span><br><span class="line">@Setter(AccessLevel.PROTECTED) private String name;</span><br></pre></td></tr></table></figure>
+
+<p>Equivalent Java source code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">private boolean employed = true;</span><br><span class="line">private String name;</span><br><span class="line"></span><br><span class="line">public boolean isEmployed() &#123;</span><br><span class="line">    return employed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void setEmployed(final boolean employed) &#123;</span><br><span class="line">    this.employed = employed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protected void setName(final String name) &#123;</span><br><span class="line">    this.name = name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="NonNull"><a href="#NonNull" class="headerlink" title="@NonNull"></a>@NonNull</h3><p>The <code>@NonNull</code> annotation is used to indicate the need for  a fast-fail null check on the corresponding member. When placed on a  field for which Lombok is generating a setter method, a null check will  be generated that will result in a <code>NullPointerException</code> should  a null value be provided. Additionally, if Lombok is generating a  constructor for the owning class then the field will be added to the  constructor signature and the null check will be included in the  generated constructor code.</p>
+<p>This annotation mirrors <code>@NotNull</code> and <code>@NonNull</code> annotations  found in IntelliJ IDEA and FindBugs, among others. Lombok is annotation  agnostic with regards to these variations on the theme. If Lombok comes  across any member annotated with any annotation of the name <code>@NotNull</code> or <code>@NonNull</code>,  it will honor it by generating the appropriate corresponding code. The  authors of Project Lombok further comment that, in the event that  annotation of this type is added to Java, then the Lombok version will  be subject to removal.</p>
+<p>Lombok annotated code from the class <code>Family</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Getter @Setter @NonNull</span><br><span class="line">private List&lt;Person&gt; members;</span><br></pre></td></tr></table></figure>
+
+<p>Equivalent Java source code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@NonNull</span><br><span class="line">private List&lt;Person&gt; members;</span><br><span class="line"></span><br><span class="line">public Family(@NonNull final List&lt;Person&gt; members) &#123;</span><br><span class="line">    if (members == null) throw new java.lang.NullPointerException(&quot;members&quot;);</span><br><span class="line">    this.members = members;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">@NonNull</span><br><span class="line">public List&lt;Person&gt; getMembers() &#123;</span><br><span class="line">    return members;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void setMembers(@NonNull final List&lt;Person&gt; members) &#123;</span><br><span class="line">    if (members == null) throw new java.lang.NullPointerException(&quot;members&quot;);</span><br><span class="line">    this.members = members;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ToString"><a href="#ToString" class="headerlink" title="@ToString"></a>@ToString</h3><p>This annotation generates an implementation of the <code>toString</code> method.  By default, any non-static fields will be included in the output of the  method in name-value pairs. If desired, the inclusion of the property  names in the output can be suppressed by setting the annotation  parameter <code>includeFieldNames</code> to <code>false</code>.</p>
+<p>Specific fields can be excluded from the output of the generated method by including their field names in the <code>exclude</code> parameter. Alternatively, the <code>of</code> parameter can be used to list only those fields which are desired in the output. The output of the <code>toString</code> method of a superclass can also be included by setting the <code>callSuper</code> parameter to <code>true</code>.</p>
+<p>Lombok annotated code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@ToString(callSuper=true,exclude=&quot;someExcludedField&quot;)</span><br><span class="line">public class Foo extends Bar &#123;</span><br><span class="line">    private boolean someBoolean = true;</span><br><span class="line">    private String someStringField;</span><br><span class="line">    private float someExcludedField;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Equivalent Java source code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class Foo extends Bar &#123;</span><br><span class="line">    private boolean someBoolean = true;</span><br><span class="line">    private String someStringField;</span><br><span class="line">    private float someExcludedField;</span><br><span class="line">    </span><br><span class="line">    @java.lang.Override</span><br><span class="line">    public java.lang.String toString() &#123;</span><br><span class="line">        return &quot;Foo(super=&quot; + super.toString() +</span><br><span class="line">            &quot;, someBoolean=&quot; + someBoolean +</span><br><span class="line">            &quot;, someStringField=&quot; + someStringField + &quot;)&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="EqualsAndHashCode"><a href="#EqualsAndHashCode" class="headerlink" title="@EqualsAndHashCode"></a>@EqualsAndHashCode</h3><p>This class level annotation will cause Lombok to generate both <code>equals</code> and <code>hashCode</code> methods, as the two are tied together intrinsically by the <code>hashCode</code> contract. By default, any field in the class that is not static or transient will be considered by both methods. Much like <code>@ToString</code>, the <code>exclude</code> parameter is provided to prevent field from being included in the generated logic. One can also use the <code>of</code> parameter to list only those fields should be considered.</p>
+<p>Also like <code>@ToString</code>, there is a <code>callSuper</code> parameter for this annotation. Setting it to true will cause <code>equals</code> to verify equality by calling the <code>equals</code> from the superclass before considering fields in the current class. For the<code>hashCode</code> method, it results in the incorporation of the results of the superclass’s <code>hashCode</code> in the calculation of the hash. When setting <code>callSuper</code> to  true, be careful to make sure that the equals method in the parent  class properly handles instance type checking. If the parent class  checks that the class is of a specific type and not merely that the  classes of the two objects are the same, this can result in undesired  results. If the superclass is using a Lombok generated <code>equals</code> method, this is not an issue. However, other implementations may not handle this situation correctly. Also note that setting <code>callSuper</code> to true cannot be done when the class only extends <code>Object</code>,  as it would result in an instance equality check that short-circuits  the comparison of fields. This is due to the generated method calling  the <code>equals</code> implementation on <code>Object</code>, which  returns false if the two instances being compared are not the same  instance. As a result, Lombok will generate a compile time error in this  situation.</p>
+<p>Lombok annotated code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@EqualsAndHashCode(callSuper=true,exclude=&#123;&quot;address&quot;,&quot;city&quot;,&quot;state&quot;,&quot;zip&quot;&#125;)</span><br><span class="line">public class Person extends SentientBeing &#123;</span><br><span class="line">    enum Gender &#123; Male, Female &#125;</span><br><span class="line"></span><br><span class="line">    @NonNull private String name;</span><br><span class="line">    @NonNull private Gender gender;</span><br><span class="line">    </span><br><span class="line">    private String ssn;</span><br><span class="line">    private String address;</span><br><span class="line">    private String city;</span><br><span class="line">    private String state;</span><br><span class="line">    private String zip;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Equivalent Java source code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public class Person extends SentientBeing &#123;</span><br><span class="line">    </span><br><span class="line">    enum Gender &#123;</span><br><span class="line">        /*public static final*/ Male /* = new Gender() */,</span><br><span class="line">        /*public static final*/ Female /* = new Gender() */;</span><br><span class="line">    &#125;</span><br><span class="line">    @NonNull</span><br><span class="line">    private String name;</span><br><span class="line">    @NonNull</span><br><span class="line">    private Gender gender;</span><br><span class="line">    private String ssn;</span><br><span class="line">    private String address;</span><br><span class="line">    private String city;</span><br><span class="line">    private String state;</span><br><span class="line">    private String zip;</span><br><span class="line">    </span><br><span class="line">    @java.lang.Override</span><br><span class="line">    public boolean equals(final java.lang.Object o) &#123;</span><br><span class="line">        if (o == this) return true;</span><br><span class="line">        if (o == null) return false;</span><br><span class="line">        if (o.getClass() != this.getClass()) return false;</span><br><span class="line">        if (!super.equals(o)) return false;</span><br><span class="line">        final Person other = (Person)o;</span><br><span class="line">        if (this.name == null ? other.name != null : !this.name.equals(other.name)) return false;</span><br><span class="line">        if (this.gender == null ? other.gender != null : !this.gender.equals(other.gender)) return false;</span><br><span class="line">        if (this.ssn == null ? other.ssn != null : !this.ssn.equals(other.ssn)) return false;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @java.lang.Override</span><br><span class="line">    public int hashCode() &#123;</span><br><span class="line">        final int PRIME = 31;</span><br><span class="line">        int result = 1;</span><br><span class="line">        result = result * PRIME + super.hashCode();</span><br><span class="line">        result = result * PRIME + (this.name == null ? 0 : this.name.hashCode());</span><br><span class="line">        result = result * PRIME + (this.gender == null ? 0 : this.gender.hashCode());</span><br><span class="line">        result = result * PRIME + (this.ssn == null ? 0 : this.ssn.hashCode());</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Data"><a href="#Data" class="headerlink" title="@Data"></a>@Data</h3><p>The <code>@Data</code> annotation is likely the most frequently used annotation in the Project Lombok toolset. It combines the functionality of <code>@ToString</code>, <code>@EqualsAndHashCode</code>, <code>@Getter</code> and <code>@Setter</code>. Essentially, using <code>@Data</code> on a class is the same as annotating the class with a default <code>@ToString</code> and <code>@EqualsAndHashCode</code> as well as annotating each field with both <code>@Getter</code> and <code>@Setter</code>. Annotation a class with <code>@Data</code> also triggers Lombok’s constructor generation. This adds a public constructor that takes any <code>@NonNull</code> or <code>final</code> fields as parameters. This provides everything needed for a Plain Old Java Object (POJO).</p>
+<p>While <code>@Data</code> is extremely useful, it does not provide the  same granularity of control as the other Lombok annotations. In order  to override the default method generation behaviors, annotate the class,  field or method with one of the other Lombok annotations and specify  the necessary parameter values to achieve the desired effect.</p>
+<p><code>@Data</code> does provide a single parameter option that can be used to generate a static factory method. Setting the value of the <code>staticConstructor</code> parameter  to the desired method name will cause Lombok to make the generated  constructor private and expose a a static factory method of the given  name.</p>
+<p>Lombok annotated code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Data(staticConstructor=&quot;of&quot;)</span><br><span class="line">public class Company &#123;</span><br><span class="line">    private final Person founder;</span><br><span class="line">    private String name;</span><br><span class="line">    private List&lt;Person&gt; employees;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Equivalent Java source code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">public class Company &#123;</span><br><span class="line">    private final Person founder;</span><br><span class="line">    private String name;</span><br><span class="line">    private List&lt;Person&gt; employees;</span><br><span class="line">    </span><br><span class="line">    private Company(final Person founder) &#123;</span><br><span class="line">        this.founder = founder;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static Company of(final Person founder) &#123;</span><br><span class="line">        return new Company(founder);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public Person getFounder() &#123;</span><br><span class="line">        return founder;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setName(final String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public List&lt;Person&gt; getEmployees() &#123;</span><br><span class="line">        return employees;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setEmployees(final List&lt;Person&gt; employees) &#123;</span><br><span class="line">        this.employees = employees;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @java.lang.Override</span><br><span class="line">    public boolean equals(final java.lang.Object o) &#123;</span><br><span class="line">        if (o == this) return true;</span><br><span class="line">        if (o == null) return false;</span><br><span class="line">        if (o.getClass() != this.getClass()) return false;</span><br><span class="line">        final Company other = (Company)o;</span><br><span class="line">        if (this.founder == null ? other.founder != null : !this.founder.equals(other.founder)) return false;</span><br><span class="line">        if (this.name == null ? other.name != null : !this.name.equals(other.name)) return false;</span><br><span class="line">        if (this.employees == null ? other.employees != null : !this.employees.equals(other.employees)) return false;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @java.lang.Override</span><br><span class="line">    public int hashCode() &#123;</span><br><span class="line">        final int PRIME = 31;</span><br><span class="line">        int result = 1;</span><br><span class="line">        result = result * PRIME + (this.founder == null ? 0 : this.founder.hashCode());</span><br><span class="line">        result = result * PRIME + (this.name == null ? 0 : this.name.hashCode());</span><br><span class="line">        result = result * PRIME + (this.employees == null ? 0 : this.employees.hashCode());</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @java.lang.Override</span><br><span class="line">    public java.lang.String toString() &#123;</span><br><span class="line">        return &quot;Company(founder=&quot; + founder + &quot;, name=&quot; + name + &quot;, employees=&quot; + employees + &quot;)&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Cleanup"><a href="#Cleanup" class="headerlink" title="@Cleanup"></a>@Cleanup</h3><p>The <code>@Cleanup</code> annotation can be used to ensure that allocated resources are released. When a local variable is annotated with <code>@Cleanup</code>, any subsequent code is wrapped in a <code>try/finally</code> block that guarantees that the cleanup method is called at the end of the current scope. By default <code>@Cleanup</code> assumes  that the cleanup method is named “close”, as with input and output  streams. However, a different method name can be provided to the  annotation’s<code>value</code> parameter. Only cleanup methods which take no parameters are able to be used with this annotation.</p>
+<p>There is also a caveat to consider when using the @Cleanup  annotation. In the event that an exception is thrown by the cleanup  method, it will preempt any exception that was thrown in the method  body. This can result in the actual cause of an issue being buried and  should be considered when choosing to use Project Lombok’s resource  management. Furthermore, with automatic resource management on the  horizon in Java 7, this particular annotation is likely to be relatively  short-lived.</p>
+<p>Lombok annotated code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public void testCleanUp() &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        @Cleanup ByteArrayOutputStream baos = new ByteArrayOutputStream();</span><br><span class="line">        baos.write(new byte[] &#123;&apos;Y&apos;,&apos;e&apos;,&apos;s&apos;&#125;);</span><br><span class="line">        System.out.println(baos.toString());</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Equivalent Java source code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public void testCleanUp() &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span><br><span class="line">        try &#123;</span><br><span class="line">            baos.write(new byte[]&#123;&apos;Y&apos;, &apos;e&apos;, &apos;s&apos;&#125;);</span><br><span class="line">            System.out.println(baos.toString());</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            baos.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Synchronized"><a href="#Synchronized" class="headerlink" title="@Synchronized"></a>@Synchronized</h3><p>Using the <code>synchronized</code> keyword on a method can result in  unfortunate effects, as any developer who has worked on multi-threaded  software can attest. The synchronized keyword will lock on the current  object (<code>this</code>) in the case of an instance method or on the <code>class</code> object  for a static method. This means that there is the potential for code  outside of the control of the developer to lock on the same object,  resulting in a deadlock. It is generally advisable to instead lock  explicitly on a separate object that is dedicated solely to that purpose  and not exposed in such a way as to allow unsolicited locking. Project  Lombok provides the <code>@Synchronized</code> annotation for that very purpose.</p>
+<p>Annotating an instance method with <code>@Synchronized</code> will prompt Lombok to generate a private locking field named <code>$lock</code> on  which the method will lock prior to executing. Similarly, annotating a  static method in the same way will generate a private static object  named <code>$LOCK</code> for the static method to use in an identical  fashion. A different locking object can be specified by providing a  field name to the annotation’s <code>value</code> parameter. When a field name is provided, the developer must define the property as Lombok will not generate it.</p>
+<p>Lombok annotated code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">private DateFormat format = new SimpleDateFormat(&quot;MM-dd-YYYY&quot;);</span><br><span class="line"></span><br><span class="line">@Synchronized</span><br><span class="line">public String synchronizedFormat(Date date) &#123;</span><br><span class="line">    return format.format(date);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Equivalent Java source code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private final java.lang.Object $lock = new java.lang.Object[0];</span><br><span class="line">private DateFormat format = new SimpleDateFormat(&quot;MM-dd-YYYY&quot;);</span><br><span class="line"></span><br><span class="line">public String synchronizedFormat(Date date) &#123;</span><br><span class="line">    synchronized ($lock) &#123;</span><br><span class="line">        return format.format(date);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SneakyThrows"><a href="#SneakyThrows" class="headerlink" title="@SneakyThrows"></a>@SneakyThrows</h3><p><code>@SneakyThrows</code> is probably the Project Lombok annotation  with the most detractors, since it is a direct assault on checked  exceptions. There is a lot of disagreement with regards to the use of  checked exceptions, with a large number of developers holding that they  are a failed experiment. These developers will love <code>@SneakyThrows</code>.  Those developers on the other side of the checked/unchecked exception  fence will most likely view this as hiding potential problems.</p>
+<p>Throwing <code>IllegalAccessException</code> would normally generate an “Unhandled exception” error if <code>IllegalAccessException</code>, or some parent class, is not listed in a throws clause:</p>
+<p><img src="http://jnb.ociweb.com/jnb/jnbJan2010_files/jnbJan2010-UnhandledException.png" alt="Screenshot of Eclipse generating an error message regarding unhandled exceptions."></p>
+<p>When annotated with <code>@SneakyThrows</code>, the error goes away.</p>
+<p><img src="http://jnb.ociweb.com/jnb/jnbJan2010_files/jnbJan2010-SneakyThrows.png" alt="Screenshot of a method annotated with @SneakyThrows and generating no error in Eclipse."></p>
+<p>By default, <code>@SneakyThrows</code> will allow any checked exception to be thrown without declaring in the <code>throws</code> clause. This can be limited to a particular set of exceptions by providing an array of throwable classes ( <code>Class&lt;? extends Throwable&gt;</code>) to the <code>value</code> parameter of the annotation.</p>
+<p>Lombok annotated code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@SneakyThrows</span><br><span class="line">public void testSneakyThrows() &#123;</span><br><span class="line">    throw new IllegalAccessException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Equivalent Java source code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public void testSneakyThrows() &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        throw new IllegalAccessException();</span><br><span class="line">    &#125; catch (java.lang.Throwable $ex) &#123;</span><br><span class="line">        throw lombok.Lombok.sneakyThrow($ex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>A look at the above code and the signature of <code>Lombok.sneakyThrow(Throwable)</code> would lead most to believe that the exception is being wrapped in a <code>RuntimeException</code> and re-thrown, however this is not the case. The<code>sneakyThrow</code> method will never return normally and will instead throw the provided throwable completely unaltered.</p>
+<h2 id="Costs-and-Benefits"><a href="#Costs-and-Benefits" class="headerlink" title="Costs and Benefits"></a>Costs and Benefits</h2><p>As with any technology choice, there are both positive and negative  effects of using Project Lombok. Incorporating Lombok’s annotations in a  project can greatly reduce the number of lines of boilerplate code that  are either generated in the IDE or written by hand. This results in  reduced maintenance overhead, fewer bugs and more readable classes.</p>
+<p>That is not to say that there are not downsides to using Project  Lombok annotations in your project. Project Lombok is largely aimed at  filling gaps in the Java language. As such, there is the possibility  that changes to the language will take place that preclude the use of  Lombok’s annotations, such as the addition of first class property  support. Additionally, when used in combination with annotation-based  object-relational mapping (ORM) frameworks, the number of annotations on  data classes can begin to get unwieldy. This is largely offset by the  amount of code that is superseded by the Lombok annotations. However,  those who shun the frequent use of annotations may choose to look the  other way.</p>
+<h3 id="What-is-missing"><a href="#What-is-missing" class="headerlink" title="What is missing?"></a>What is missing?</h3><p>Project Lombok provides the <code>delombok</code> utility for  replacing the Lombok annotations with equivalent source code. This can  be done for an entire source directory via the command line.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar lombok.jar delombok src -d src-delomboked</span><br></pre></td></tr></table></figure>
+
+<p>Alternatively, an Ant task is provided for incorporation into a build process.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;target name=&quot;delombok&quot;&gt;</span><br><span class="line">    &lt;taskdef classname=&quot;lombok.delombok.ant.DelombokTask&quot;</span><br><span class="line">        classpath=&quot;WebRoot/WEB-INF/lib/lombok.jar&quot; name=&quot;delombok&quot; /&gt;</span><br><span class="line">    &lt;mkdir dir=&quot;src-delomboked&quot; /&gt;</span><br><span class="line">    &lt;delombok verbose=&quot;true&quot; encoding=&quot;UTF-8&quot; to=&quot;src-delomboked&quot;</span><br><span class="line">        from=&quot;src&quot; /&gt;</span><br><span class="line">&lt;/target&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Both <code>delombok</code> and the corresponding Ant task come packaged in the core <code>lombok.jar</code> download.  Along with allowing Lombok annotations to be useful in applications  built using Google Web Toolkit (GWT) or other incompatible frameworks,  running <code>delombok</code> on the <code>Person</code> class makes it  easy to contrast the class as written using the Lombok annotations  against code that includes the equivalent boilerplate inline.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">package com.ociweb.jnb.lombok;</span><br><span class="line"></span><br><span class="line">import java.util.Date;</span><br><span class="line"></span><br><span class="line">import lombok.Data;</span><br><span class="line">import lombok.EqualsAndHashCode;</span><br><span class="line">import lombok.NonNull;</span><br><span class="line"></span><br><span class="line">@Data</span><br><span class="line">@EqualsAndHashCode(exclude=&#123;&quot;address&quot;,&quot;city&quot;,&quot;state&quot;,&quot;zip&quot;&#125;)</span><br><span class="line">public class Person &#123;</span><br><span class="line">    enum Gender &#123; Male, Female &#125;</span><br><span class="line"></span><br><span class="line">    @NonNull private String firstName;</span><br><span class="line">    @NonNull private String lastName;</span><br><span class="line">    @NonNull private final Gender gender;</span><br><span class="line">    @NonNull private final Date dateOfBirth;</span><br><span class="line">    </span><br><span class="line">    private String ssn;</span><br><span class="line">    private String address;</span><br><span class="line">    private String city;</span><br><span class="line">    private String state;</span><br><span class="line">    private String zip;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The code utilizing the Project Lombok annotations is significantly  more concise than the equivalent class with the boilerplate included.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br></pre></td><td class="code"><pre><span class="line">package com.ociweb.jnb.lombok;</span><br><span class="line"></span><br><span class="line">import java.util.Date;</span><br><span class="line">import lombok.NonNull;</span><br><span class="line"></span><br><span class="line">public class Person &#123;</span><br><span class="line">    </span><br><span class="line">    enum Gender &#123;</span><br><span class="line">        /*public static final*/ Male /* = new Gender() */,</span><br><span class="line">        /*public static final*/ Female /* = new Gender() */;</span><br><span class="line">    &#125;</span><br><span class="line">    @NonNull</span><br><span class="line">    private String firstName;</span><br><span class="line">    @NonNull</span><br><span class="line">    private String lastName;</span><br><span class="line">    @NonNull</span><br><span class="line">    private final Gender gender;</span><br><span class="line">    @NonNull</span><br><span class="line">    private final Date dateOfBirth;</span><br><span class="line">    private String ssn;</span><br><span class="line">    private String address;</span><br><span class="line">    private String city;</span><br><span class="line">    private String state;</span><br><span class="line">    private String zip;</span><br><span class="line">    </span><br><span class="line">    public Person(@NonNull final String firstName, @NonNull final String lastName,</span><br><span class="line">            @NonNull final Gender gender, @NonNull final Date dateOfBirth) &#123;</span><br><span class="line">        if (firstName == null)</span><br><span class="line">            throw new java.lang.NullPointerException(&quot;firstName&quot;);</span><br><span class="line">        if (lastName == null)</span><br><span class="line">            throw new java.lang.NullPointerException(&quot;lastName&quot;);</span><br><span class="line">        if (gender == null)</span><br><span class="line">            throw new java.lang.NullPointerException(&quot;gender&quot;);</span><br><span class="line">        if (dateOfBirth == null)</span><br><span class="line">            throw new java.lang.NullPointerException(&quot;dateOfBirth&quot;);</span><br><span class="line">        this.firstName = firstName;</span><br><span class="line">        this.lastName = lastName;</span><br><span class="line">        this.gender = gender;</span><br><span class="line">        this.dateOfBirth = dateOfBirth;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @NonNull</span><br><span class="line">    public String getFirstName() &#123;</span><br><span class="line">        return firstName;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setFirstName(@NonNull final String firstName) &#123;</span><br><span class="line">        if (firstName == null)</span><br><span class="line">            throw new java.lang.NullPointerException(&quot;firstName&quot;);</span><br><span class="line">        this.firstName = firstName;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @NonNull</span><br><span class="line">    public String getLastName() &#123;</span><br><span class="line">        return lastName;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setLastName(@NonNull final String lastName) &#123;</span><br><span class="line">        if (lastName == null)</span><br><span class="line">            throw new java.lang.NullPointerException(&quot;lastName&quot;);</span><br><span class="line">        this.lastName = lastName;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @NonNull</span><br><span class="line">    public Gender getGender() &#123;</span><br><span class="line">        return gender;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @NonNull</span><br><span class="line">    public Date getDateOfBirth() &#123;</span><br><span class="line">        return dateOfBirth;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public String getSsn() &#123;</span><br><span class="line">        return ssn;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setSsn(final String ssn) &#123;</span><br><span class="line">        this.ssn = ssn;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public String getAddress() &#123;</span><br><span class="line">        return address;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setAddress(final String address) &#123;</span><br><span class="line">        this.address = address;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public String getCity() &#123;</span><br><span class="line">        return city;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setCity(final String city) &#123;</span><br><span class="line">        this.city = city;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public String getState() &#123;</span><br><span class="line">        return state;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setState(final String state) &#123;</span><br><span class="line">        this.state = state;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public String getZip() &#123;</span><br><span class="line">        return zip;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setZip(final String zip) &#123;</span><br><span class="line">        this.zip = zip;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @java.lang.Override</span><br><span class="line">    public java.lang.String toString() &#123;</span><br><span class="line">        return &quot;Person(firstName=&quot; + firstName + &quot;, lastName=&quot; + lastName + </span><br><span class="line">            &quot;, gender=&quot; + gender + &quot;, dateOfBirth=&quot; + dateOfBirth +</span><br><span class="line">            &quot;, ssn=&quot; + ssn + &quot;, address=&quot; + address + &quot;, city=&quot; + city +</span><br><span class="line">            &quot;, state=&quot; + state + &quot;, zip=&quot; + zip + &quot;)&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @java.lang.Override</span><br><span class="line">    public boolean equals(final java.lang.Object o) &#123;</span><br><span class="line">        if (o == this) return true;</span><br><span class="line">        if (o == null) return false;</span><br><span class="line">        if (o.getClass() != this.getClass()) return false;</span><br><span class="line">        final Person other = (Person)o;</span><br><span class="line">        if (this.firstName == null</span><br><span class="line">                ? other.firstName != null</span><br><span class="line">                : !this.firstName.equals(other.firstName))</span><br><span class="line">            return false;</span><br><span class="line">        if (this.lastName == null</span><br><span class="line">                ? other.lastName != null</span><br><span class="line">                : !this.lastName.equals(other.lastName))</span><br><span class="line">            return false;</span><br><span class="line">        if (this.gender == null</span><br><span class="line">                ? other.gender != null</span><br><span class="line">                : !this.gender.equals(other.gender))</span><br><span class="line">            return false;</span><br><span class="line">        if (this.dateOfBirth == null</span><br><span class="line">                ? other.dateOfBirth != null</span><br><span class="line">                : !this.dateOfBirth.equals(other.dateOfBirth))</span><br><span class="line">            return false;</span><br><span class="line">        if (this.ssn == null</span><br><span class="line">                ? other.ssn != null</span><br><span class="line">                : !this.ssn.equals(other.ssn))</span><br><span class="line">            return false;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @java.lang.Override</span><br><span class="line">    public int hashCode() &#123;</span><br><span class="line">        final int PRIME = 31;</span><br><span class="line">        int result = 1;</span><br><span class="line">        result = result * PRIME +</span><br><span class="line">            (this.firstName == null ? 0 : this.firstName.hashCode());</span><br><span class="line">        result = result * PRIME +</span><br><span class="line">            (this.lastName == null ? 0 : this.lastName.hashCode());</span><br><span class="line">        result = result * PRIME +</span><br><span class="line">            (this.gender == null ? 0 : this.gender.hashCode());</span><br><span class="line">        result = result * PRIME +</span><br><span class="line">            (this.dateOfBirth == null ? 0 : this.dateOfBirth.hashCode());</span><br><span class="line">        result = result * PRIME +</span><br><span class="line">            (this.ssn == null ? 0 : this.ssn.hashCode());</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Keep in mind that this is not just code that normally has to be  written, but must also be read by maintaining developers. This means  that, when using the annotations provided by Project Lombok, developers  do not have to wade through countless lines of code in order to  determine if the class in question is a simple data class or something  more sinister.</p>
+<h3 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h3><p>While Project Lombok does some dramatic things to make a developer’s life easier, it has its limitations. Browsing the <a href="http://code.google.com/p/projectlombok/issues/list" target="_blank" rel="noopener">issues list</a> will  quickly illuminate some of the current shortcomings, most of which are  minor. One important problem is the inability to detect the constructors  of a superclass. This means that if a superclass has no default  constructor any subclasses cannot use the @Data annotation without  explicitly writing a constructor to make use of the available superclass  constructor. Since Project Lombok respects any methods that match the  name of a method to be generated, the majority of its feature  shortcomings can be overcome using this approach.</p>
+<h3 id="Controversy"><a href="#Controversy" class="headerlink" title="Controversy"></a>Controversy</h3><p>A number of issues have been raised against the use of Project  Lombok. The most common argument holds that annotations were intended  for “meta” information and are not to be used in such a way that would  leave the codebase unable to be compiled were they removed. This is  certainly the situation with Lombok annotations. New methods result from  these annotations that are intended to be used not only by a framework,  but by other parts of the application. Project Lombok’s  development-time support is its bread and butter, but this does have  consequences, not the least of which is limited IDE support.</p>
+<p>As previously stated, <code>@SneakyThrows</code> is bound to stir up  the age-old argument over checked and unchecked exceptions. Opinions on  this debate are often almost religious in their ferocity. As such, the  arguments against the use of <code>@SneakyThrows</code> are also sure to excite fervor among the passionate.</p>
+<p>Another point of contention is the implementation of both the code supporting IDE integration as well as the <code>javac</code> annotation  processor. Both of these pieces of Project Lombok make use of  non-public APIs to accomplish their sorcery. This means that there is a  risk that Project Lombok will be broken with subsequent IDE or JDK  releases. Here is how one of the project founders, Reinier Zwitserloot  described the situation:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">It&apos;s a total hack. Using non-public API. Presumptuous casting (knowing that an</span><br><span class="line">annotation processor running in javac will get an instance of JavacAnnotationProcessor,</span><br><span class="line">which is the internal implementation of AnnotationProcessor (an interface), which</span><br><span class="line">so happens to have a couple of extra methods that are used to get at the live AST).</span><br><span class="line"></span><br><span class="line">On eclipse, it&apos;s arguably worse (and yet more robust) - a java agent is used to inject</span><br><span class="line">code into the eclipse grammar and parser class, which is of course entirely non-public</span><br><span class="line">API and totally off limits.</span><br><span class="line"></span><br><span class="line">If you could do what lombok does with standard API, I would have done it that way, but</span><br><span class="line">you can&apos;t. Still, for what its worth, I developed the eclipse plugin for eclipse v3.5</span><br><span class="line">running on java 1.6, and without making any changes it worked on eclipse v3.4 running</span><br><span class="line">on java 1.5 as well, so it&apos;s not completely fragile.</span><br></pre></td></tr></table></figure>
+
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Project Lombok is a powerful tool for the pragmatic developer. It  provides a set of useful annotations for eliminating a tremendous amount  of boilerplate code from your Java classes. In the best cases, a mere  five characters can replace hundreds of lines of code. The result is  Java classes that are clean, concise and easy to maintain. These  benefits do come with a cost however. Using Project Lombok in an  IntelliJ IDEA shop is simply not yet a viable option. There is a risk of  breakage with IDE and JDK upgrades as well as controversy surrounding  the goals and implementation of the project. What all this translates to  is no different than what must be considered for any technology choice.  There are always gains to be made and losses to be had. The question is  simply whether or not Project Lombok can provide more value than cost  for the project at hand. If nothing else, Project Lombok is sure to  inject some new life into the discussion of language features that have  withered on the vine thus far and that is a win from any perspective.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li>Project Lombok -<br><a href="http://projectlombok.org/" target="_blank" rel="noopener">http://projectlombok.org</a></li>
+<li>Lombok API Documentation -<br><a href="http://projectlombok.org/api/index.html" target="_blank" rel="noopener">http://projectlombok.org/api/index.html</a></li>
+<li>Project Lombok Issues List -<br><a href="http://code.google.com/p/projectlombok/issues/list" target="_blank" rel="noopener">http://code.google.com/p/projectlombok/issues/list</a></li>
+<li>Use Lombok via Maven -<br><a href="http://projectlombok.org/mavenrepo/index.html" target="_blank" rel="noopener">http://projectlombok.org/mavenrepo/index.html</a></li>
+<li>Project Lombok Google Group -<br><a href="http://groups.google.com/group/project-lombok" target="_blank" rel="noopener">http://groups.google.com/group/project-lombok</a></li>
+<li>Reviewing Project Lombok or the Right Way to Write a Library -<br><a href="http://www.cforcoding.com/2009/11/reviewing-project-lombok-or-right-way.html" target="_blank" rel="noopener">http://www.cforcoding.com/2009/11/reviewing-project-lombok-or-right-way.html</a></li>
+<li>Morbok: Extensions for Lombok -<br><a href="http://code.google.com/p/morbok/" target="_blank" rel="noopener">http://code.google.com/p/morbok</a></li>
+<li>Using Project Lombok with JDeveloper -<br><a href="http://kingsfleet.blogspot.com/2009/09/project-lombok-interesting-bean.html" target="_blank" rel="noopener">http://kingsfleet.blogspot.com/2009/09/project-lombok-interesting-bean.html</a></li>
+<li>Example Code -<br><a href="http://jnb.ociweb.com/jnb/jnbJan2010_files/LombokExample.zip" target="_blank" rel="noopener">LombokExample.zip</a></li>
+</ul>
+<p>Thanks to Mark Volkmann, Eric Burke, Mario Aquino and Lance Finney  for reviewing and providing suggestions for this article, and a special  thanks to Mark Volkmann for introducing me to Project Lombok.</p>
+<p><a href="http://jnb.ociweb.com/jnb/jnbJan2010.html" target="_blank" rel="noopener">http://jnb.ociweb.com/jnb/jnbJan2010.html</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/IntelliJ-IDEA/" rel="tag">#^_^#IntelliJ IDEA</a>
+          
+            <a href="/tags/Lombok插件/" rel="tag">#^_^#Lombok插件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/31/Idea-父子工程-多模块创建/" rel="next" title="Idea Maven父子工程+多模块创建">
+                <i class="fa fa-chevron-left"></i> Idea Maven父子工程+多模块创建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/03/虚拟机、Linux系统-CentOs-的安装/" rel="prev" title="虚拟机、Linux系统(CentOs)的安装">
+                虚拟机、Linux系统(CentOs)的安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为IDE装上Lombok插件"><span class="nav-text">为IDE装上Lombok插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IDEA"><span class="nav-text">IDEA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lombok的文档"><span class="nav-text">Lombok的文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Installation"><span class="nav-text">Installation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lombok-Annotations"><span class="nav-text">Lombok Annotations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Getter-and-Setter"><span class="nav-text">@Getter and @Setter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NonNull"><span class="nav-text">@NonNull</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ToString"><span class="nav-text">@ToString</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EqualsAndHashCode"><span class="nav-text">@EqualsAndHashCode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data"><span class="nav-text">@Data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cleanup"><span class="nav-text">@Cleanup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Synchronized"><span class="nav-text">@Synchronized</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SneakyThrows"><span class="nav-text">@SneakyThrows</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Costs-and-Benefits"><span class="nav-text">Costs and Benefits</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-missing"><span class="nav-text">What is missing?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Limitations"><span class="nav-text">Limitations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controversy"><span class="nav-text">Controversy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-text">Summary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-text">References</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1564670538000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+</body>
+</html>
