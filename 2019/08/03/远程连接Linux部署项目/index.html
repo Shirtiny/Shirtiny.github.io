@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Linux操作、远程连接、项目部署1. 安装工具环境准备： 各种安装包：Xshell Plus 6|Xshell 6、Xftp 6 、linux版本的jdk、Linux版本的MySQL、Linux版本的Nginx 现在下载jdk需要登录Oracle：Oracle账号分享  我当时用的账号 用户名：nicabeta@email-wizard.com 密码：MQEemoh3pOsRAn2c4tjh">
+<meta name="keywords" content="开发知识,Linux系统,远程连接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="远程连接Linux部署项目">
+<meta property="og:url" content="http://Shirtiny.cn/2019/08/03/远程连接Linux部署项目/index.html">
+<meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:description" content="Linux操作、远程连接、项目部署1. 安装工具环境准备： 各种安装包：Xshell Plus 6|Xshell 6、Xftp 6 、linux版本的jdk、Linux版本的MySQL、Linux版本的Nginx 现在下载jdk需要登录Oracle：Oracle账号分享  我当时用的账号 用户名：nicabeta@email-wizard.com 密码：MQEemoh3pOsRAn2c4tjh">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/03/6c5ece4f5a3b15ce2e42a4377e6a4cd5a309630e350f261e.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/03/08729b7904025f053fc534129a2aef1d41c0e665d31a33f2.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/4c6a625e68ad26f176088e16125af4e928eb7848fe817f29.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/fbbbd4b91d95d962b6ffda9461402f8b1ed2beb69b28c392.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/f33c89083aeae41e5bb93fd5b9a2478ab5743f04e1951ffb.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/d88c704c3055427cffa74a3b708c688284fb8cf8cdead45c.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/e4fc5b52a092306685aada0c5c54b68ad9d5a80d73e46070.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/1b0ba70cd8ae57cc714f75dd8109b867a4871bb2bef003ef.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/3e034ad559c27149e2979604a86db52c29c616becf5a8bf9.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/c32e7f4d2da173f4a8112fb22efd42851995e96704360c16.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/7618635d3a5ae65bd1e4e16b092edbd2132c9b05756756d7.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/24166f93837f3efa8cadc9e120b1a0976f5f163c56300d8a.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/e61dbd80eaaea14fc10196e593fa857b4d955cacc14038ae.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/4e4b42881449063c9db3a31db4efe0c12a854c6a2a9b7f84.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/fd52ce16b5d1c6bc402f938d51aebdb6bc115668b71f8702.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/2eb763dbe97de3fa4c7c17a980af1d473a25d8d3bd02e4db.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/04/ae7510d73b276d4e98fc8e3838dc085da26df6b37a396232.png">
+<meta property="og:updated_time" content="2019-08-05T04:02:50.203Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="远程连接Linux部署项目">
+<meta name="twitter:description" content="Linux操作、远程连接、项目部署1. 安装工具环境准备： 各种安装包：Xshell Plus 6|Xshell 6、Xftp 6 、linux版本的jdk、Linux版本的MySQL、Linux版本的Nginx 现在下载jdk需要登录Oracle：Oracle账号分享  我当时用的账号 用户名：nicabeta@email-wizard.com 密码：MQEemoh3pOsRAn2c4tjh">
+<meta name="twitter:image" content="https://file.moetu.org/images/2019/08/03/6c5ece4f5a3b15ce2e42a4377e6a4cd5a309630e350f261e.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/08/03/远程连接Linux部署项目/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>远程连接Linux部署项目 | ☘(๑•̀ㅂ•́)و✧</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘(๑•̀ㅂ•́)و✧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/08/03/远程连接Linux部署项目/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">远程连接Linux部署项目
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-03 18:48:20" itemprop="dateCreated datePublished" datetime="2019-08-03T18:48:20+08:00">2019-08-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-05 12:02:50" itemprop="dateModified" datetime="2019-08-05T12:02:50+08:00">2019-08-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习经验/" itemprop="url" rel="index"><span itemprop="name">学习经验</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux操作、远程连接、项目部署"><a href="#Linux操作、远程连接、项目部署" class="headerlink" title="Linux操作、远程连接、项目部署"></a>Linux操作、远程连接、项目部署</h1><h2 id="1-安装工具"><a href="#1-安装工具" class="headerlink" title="1. 安装工具"></a>1. 安装工具</h2><p><strong>环境准备：</strong></p>
+<p>各种安装包：Xshell Plus 6|Xshell 6、Xftp 6 、<a href="https://download.oracle.com/otn/java/jdk/8u221-b11/230deb18db3e4014bb8e3e8324f81b43/jdk-8u221-linux-x64.tar.gz" target="_blank" rel="noopener">linux版本的jdk</a>、<a href="https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.17-1.el7.x86_64.rpm-bundle.tar" target="_blank" rel="noopener">Linux版本的MySQL</a>、<a href="https://nginx.org/download/nginx-1.17.1.tar.gz" target="_blank" rel="noopener">Linux版本的Nginx</a></p>
+<p>现在下载jdk需要登录Oracle：<a href="http://bugmenot.com/view/oracle.com" target="_blank" rel="noopener">Oracle账号分享</a></p>
+<blockquote>
+<p>我当时用的账号</p>
+<p>用户名：<a href="mailto:nicabeta@email-wizard.com" target="_blank" rel="noopener">nicabeta@email-wizard.com</a></p>
+<p>密码：MQEemoh3pOsRAn2c4tjh</p>
+</blockquote>
+<p>注册机：NetSarang_AIO_7in1_Keygen_v1.4_DFoX_URET</p>
+<a id="more"></a>
+
+<p><strong>开始安装</strong></p>
+<ul>
+<li>Xshell Plus 6 或 Xshell 6</li>
+</ul>
+<ol>
+<li>运行注册机，选择你安装的软件,点击Fix Host+Register，然后点击Generate，然后复制生成的序列号</li>
+</ol>
+<p><img src="https://file.moetu.org/images/2019/08/03/6c5ece4f5a3b15ce2e42a4377e6a4cd5a309630e350f261e.png" alt></p>
+<ol start="2">
+<li>输入上一步获得的序列号，用户名和公司名称随意，选择路径后安装即可。</li>
+</ol>
+<p><img src="https://file.moetu.org/images/2019/08/03/08729b7904025f053fc534129a2aef1d41c0e665d31a33f2.png" alt></p>
+<ul>
+<li>Xftp同上：</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/08/04/4c6a625e68ad26f176088e16125af4e928eb7848fe817f29.png" alt></p>
+<p><img src="https://file.moetu.org/images/2019/08/04/fbbbd4b91d95d962b6ffda9461402f8b1ed2beb69b28c392.png" alt></p>
+<p><img src="https://file.moetu.org/images/2019/08/04/f33c89083aeae41e5bb93fd5b9a2478ab5743f04e1951ffb.png" alt></p>
+<p>​    点下一步，安装即可。</p>
+<h2 id="2-更换服务器的JDK"><a href="#2-更换服务器的JDK" class="headerlink" title="2. 更换服务器的JDK"></a>2. 更换服务器的JDK</h2><h3 id="2-1-拿到服务器ip"><a href="#2-1-拿到服务器ip" class="headerlink" title="2.1. 拿到服务器ip"></a>2.1. 拿到服务器ip</h3><p>买的服务器会直接给你ip的，这里我用的虚拟机，桥接模式下与我本机的ip应该是一样的。</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/d88c704c3055427cffa74a3b708c688284fb8cf8cdead45c.png" alt></p>
+<p>点左上角Applications，点Favorites下的 Terminal：</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/e4fc5b52a092306685aada0c5c54b68ad9d5a80d73e46070.png" alt></p>
+<p>在弹出的命令行窗口，输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br><span class="line"><span class="meta">#</span><span class="bash">获取ip配置信息，windows下命令是ipconfig</span></span><br></pre></td></tr></table></figure>
+
+<p>回车，即可看到ip信息，复制ens33里的inet后的ip地址：</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/1b0ba70cd8ae57cc714f75dd8109b867a4871bb2bef003ef.png" alt></p>
+<h3 id="2-2-使用Xshell建立连接"><a href="#2-2-使用Xshell建立连接" class="headerlink" title="2.2. 使用Xshell建立连接"></a>2.2. 使用Xshell建立连接</h3><p>打开Xshell 6，新建会话，名称随意，主机是刚刚的ip地址：</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/3e034ad559c27149e2979604a86db52c29c616becf5a8bf9.png" alt></p>
+<p>点击连接，在提示框输入服务器需要的用户名密码，都正确的话会连接成功，有时候第一次连接会报错，再连一次就好了。连接成功会显示：</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/c32e7f4d2da173f4a8112fb22efd42851995e96704360c16.png" alt></p>
+<h3 id="2-3-卸载open-JDK"><a href="#2-3-卸载open-JDK" class="headerlink" title="2.3. 卸载open JDK"></a>2.3. 卸载open JDK</h3><p>1.Xshell输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+
+<p>可看到当前java版本：</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/7618635d3a5ae65bd1e4e16b092edbd2132c9b05756756d7.png" alt></p>
+<p>2.Xshell输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep jdk</span><br><span class="line"><span class="meta">#</span><span class="bash">抓取jdk</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://file.moetu.org/images/2019/08/04/24166f93837f3efa8cadc9e120b1a0976f5f163c56300d8a.png" alt></p>
+<p>3.Xshell输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps #加要删除对象的完整名称（上面抓取时显示了），需要root身份，这里是：</span><br><span class="line">rpm -e --nodeps java-1.8.0-openjdk-1.8.0.181-7.b13.el7.x86_64</span><br><span class="line">rpm -e --nodeps java-1.8.0-openjdk-headless-1.8.0.181-7.b13.el7.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>不报错，并且输入java -version提示找不到文件，即卸载成功：</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/e61dbd80eaaea14fc10196e593fa857b4d955cacc14038ae.png" alt></p>
+<h3 id="2-4-安装准备的JDK"><a href="#2-4-安装准备的JDK" class="headerlink" title="2.4. 安装准备的JDK"></a>2.4. 安装准备的JDK</h3><p>1.Xshell输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pwd</span><br><span class="line"><span class="meta">#</span><span class="bash">获取当前所在的目录（文件夹）路径</span></span><br></pre></td></tr></table></figure>
+
+<p>此时在/root目录下。</p>
+<p>2.Xshell输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line"><span class="meta">#</span><span class="bash">进入指定目录，可用<span class="built_in">pwd</span>确认当前所在的目录</span></span><br><span class="line">mkdir java</span><br><span class="line"><span class="meta">#</span><span class="bash">在当前目录 创建java文件夹</span></span><br><span class="line">cd java</span><br><span class="line"><span class="meta">#</span><span class="bash">进入java文件夹内，可用<span class="built_in">pwd</span>确认当前所在的目录</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://file.moetu.org/images/2019/08/04/4e4b42881449063c9db3a31db4efe0c12a854c6a2a9b7f84.png" alt></p>
+<p>点击帮助正下方的绿色按钮，打开Xftp，右边一般会自动定位到服务器的当前目录，左边是本机电脑，把下载好的jdk拖到右边就行了，注意目录：</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/fd52ce16b5d1c6bc402f938d51aebdb6bc115668b71f8702.png" alt></p>
+<p>3.Xshell输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ls</span><br><span class="line"><span class="meta">#</span><span class="bash">列出当前目录的文件名称</span></span><br><span class="line">ll</span><br><span class="line"><span class="meta">#</span><span class="bash">列出当前目录文件的详细信息</span></span><br><span class="line"></span><br><span class="line">tar -zxvf 文件名</span><br><span class="line"><span class="meta">#</span><span class="bash">解压tar包压缩文件，此处为：</span></span><br><span class="line">tar -zxvf jdk-8u221-linux-x64.tar.gz</span><br><span class="line"></span><br><span class="line">ls</span><br><span class="line"><span class="meta">#</span><span class="bash">列出当前目录的文件名称</span></span><br><span class="line">cd jdk1.8.0_221</span><br><span class="line"><span class="meta">#</span><span class="bash">进入jdk解压后的文件夹</span></span><br><span class="line">ls</span><br><span class="line"><span class="meta">#</span><span class="bash">列出当前目录的文件名称</span></span><br></pre></td></tr></table></figure>
+
+<p>4.Xshell输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line"><span class="meta">#</span><span class="bash">编辑指定的文件，这里是配置环境变量</span></span><br></pre></td></tr></table></figure>
+
+<p>5.键盘按I键，进入Insert编辑，按方向键把光标移到最下方：</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/2eb763dbe97de3fa4c7c17a980af1d473a25d8d3bd02e4db.png" alt></p>
+<p>输入（##是注释）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#jdk1.8</span></span></span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_221</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br></pre></td></tr></table></figure>
+
+<p>键盘按esc，输入冒号wq（意为保存并退出），回车。</p>
+<p>此处输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:wq</span><br><span class="line"><span class="meta">#</span><span class="bash">保存并退出</span></span><br></pre></td></tr></table></figure>
+
+<p>扩展知识：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:q!</span><br><span class="line"><span class="meta">#</span><span class="bash">不保存强制退出s</span></span><br></pre></td></tr></table></figure>
+
+<p>6.Xshell输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/profile</span><br><span class="line"><span class="meta">#</span><span class="bash">将指定文件显示出来，这里是看一下刚刚的文件是否已保存</span></span><br><span class="line">source /etc/profile</span><br><span class="line"><span class="meta">#</span><span class="bash">使刚刚的配置文件生效</span></span><br><span class="line">java -version</span><br><span class="line"><span class="meta">#</span><span class="bash">验证jdk</span></span><br></pre></td></tr></table></figure>
+
+<p>正常的结果：</p>
+<p><img src="https://file.moetu.org/images/2019/08/04/ae7510d73b276d4e98fc8e3838dc085da26df6b37a396232.png" alt></p>
+<p>到此JDK安装配置结束。</p>
+<h2 id="3-安装MySQL"><a href="#3-安装MySQL" class="headerlink" title="3. 安装MySQL"></a>3. 安装MySQL</h2><p>。以后装</p>
+<h2 id="4-安装Redis"><a href="#4-安装Redis" class="headerlink" title="4. 安装Redis"></a>4. 安装Redis</h2><p>。以后装</p>
+<h2 id="5-安装Nginx"><a href="#5-安装Nginx" class="headerlink" title="5. 安装Nginx"></a>5. 安装Nginx</h2><h3 id="5-1-准备安装包"><a href="#5-1-准备安装包" class="headerlink" title="5.1. 准备安装包"></a>5.1. 准备安装包</h3><p>把安装文件传到服务器。</p>
+<p>或者使用weget方式在服务器内下载也行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">weget http://nginx.org/download/nginx-1.17.1.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash">下载安装包到usr/<span class="built_in">local</span></span></span><br></pre></td></tr></table></figure>
+
+<p>解压</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nginx-1.17.1.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash">解压，z表示gzip压缩格式，x表示提取文件，v表示显示解压过程，f指定文件</span></span><br><span class="line">ll</span><br><span class="line"><span class="meta">#</span><span class="bash">显示当前文件夹的文件</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-准备安装环境"><a href="#5-2-准备安装环境" class="headerlink" title="5.2. 准备安装环境"></a>5.2. 准备安装环境</h3><p>安装前必须安装nginx所需的依赖库。</p>
+<p>安装依赖，仔细执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc-c++</span><br><span class="line">yum install pcre</span><br><span class="line">yum install pcre-devel</span><br><span class="line">yum install zlib</span><br><span class="line">yum install zlib-devel</span><br><span class="line">yum install openssl</span><br><span class="line">yum install openssl-devel</span><br><span class="line"><span class="meta">#</span><span class="bash">遇到选项输y即可</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-安装Nginx"><a href="#5-3-安装Nginx" class="headerlink" title="5.3. 安装Nginx"></a>5.3. 安装Nginx</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ll</span><br><span class="line"><span class="meta">#</span><span class="bash">显示当前文件夹的文件</span></span><br><span class="line">cd nginx-1.17.1</span><br><span class="line">ll</span><br><span class="line"><span class="meta">#</span><span class="bash">显示当前文件夹的文件</span></span><br><span class="line">./configure</span><br><span class="line"><span class="meta">#</span><span class="bash">执行configure文件，输一半名字按tab会自动补全文件名的</span></span><br></pre></td></tr></table></figure>
+
+<p>执行make安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br><span class="line"><span class="meta">#</span><span class="bash">注意在nginx-1.17.1目录下执行</span></span><br><span class="line"><span class="meta">#</span><span class="bash">它会将nginx安装到/usr/<span class="built_in">local</span>/nginx目录下</span></span><br><span class="line">cd ..</span><br><span class="line"><span class="meta">#</span><span class="bash">返回上一目录</span></span><br><span class="line">ll</span><br><span class="line"><span class="meta">#</span><span class="bash">显示当前文件夹的文件</span></span><br><span class="line">cd nginx</span><br><span class="line">pwd</span><br><span class="line"><span class="meta">#</span><span class="bash">显示当前所在的目录</span></span><br></pre></td></tr></table></figure>
+
+<p>配置Nginx开机启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /lib/systemd/system</span><br><span class="line">vim nginx.service</span><br><span class="line"><span class="meta">#</span><span class="bash">创建nginx.service文件并编辑，也可以用touch命令创建。</span></span><br><span class="line"><span class="meta">#</span><span class="bash">vim不行就vi</span></span><br></pre></td></tr></table></figure>
+
+<p>按I，添加如下内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=nginx</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/usr/local/nginx/sbin/nginx</span><br><span class="line">ExecReload=/usr/local/nginx/sbin/nginx reload</span><br><span class="line">ExecStop=/usr/local/nginx/sbin/nginx quit</span><br><span class="line">PrivateTmp=true</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>esc</p>
+<p>:wq 保存并退出，用cat检查下刚刚的文件。</p>
+<p>接着输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable nginx.service</span><br><span class="line"><span class="meta">#</span><span class="bash">使其开机启动</span></span><br></pre></td></tr></table></figure>
+
+<p>安装配置，到此就完成了。</p>
+<h3 id="5-4-Nginx指令、运行检查"><a href="#5-4-Nginx指令、运行检查" class="headerlink" title="5.4. Nginx指令、运行检查"></a>5.4. Nginx指令、运行检查</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx.service</span><br><span class="line"><span class="meta">#</span><span class="bash">启动</span></span><br><span class="line"></span><br><span class="line">systemctl stop nginx.service</span><br><span class="line"><span class="meta">#</span><span class="bash">停止</span></span><br><span class="line"></span><br><span class="line">systemctl restart nginx.service</span><br><span class="line"><span class="meta">#</span><span class="bash">重启</span></span><br></pre></td></tr></table></figure>
+
+<p>启动Nginx，浏览器输入ip，若访问不到：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">添加80端口配置防火墙</span></span><br><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent</span><br><span class="line"><span class="meta">#</span><span class="bash">重新加载</span></span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<p>再去访问即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x /usr/local/nginx</span><br><span class="line"><span class="meta">#</span><span class="bash">访问权限,a+x ==&gt; all user can execute  所有用户可执行</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>关于路径</strong></p>
+<p>nginx根目录是/nginx/html文件夹。我的是：/usr/local/nginx/html</p>
+<p>比如在html文件夹下建images文件夹，里面放张图片123.png，那么图片的路径就是：<a href="http://ip地址/images/123.png" target="_blank" rel="noopener">http://ip地址/images/123.png</a></p>
+<p><strong>路径配置</strong></p>
+<p>比如在根部吗建立data文件夹，在data下建立www和images两个文件夹：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir /data</span><br><span class="line">cd /data</span><br><span class="line">mkdir www</span><br><span class="line">cd ..</span><br><span class="line">mkdir images</span><br><span class="line">ll</span><br></pre></td></tr></table></figure>
+
+<p>然后打开nginx的配置文件/usr/local/nginx/conf/nginx.conf</p>
+<p>注释掉原文http｛｝代码块，或者再其基础上修改成:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">http&#123;</span><br><span class="line">server &#123;</span><br><span class="line"><span class="meta">	#</span><span class="bash">root的路径实际是nginx文件夹内的相对路径,/是主机根目录</span></span><br><span class="line"><span class="meta">	#</span><span class="bash">把访问时的ip地址/，设置为本机根目录下的/data/www文件夹</span></span><br><span class="line"><span class="meta">	#</span><span class="bash"> 首页设为其文件夹下的index.html或index.htm</span></span><br><span class="line">    location / &#123;</span><br><span class="line">        root /data/www;</span><br><span class="line">   		index  index.html index.htm;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">	#</span><span class="bash">地址栏里<span class="string">"/"</span>后的路径是直接匹配目录/data下的路径 </span></span><br><span class="line"><span class="meta">	#</span><span class="bash">如访问ip地址/images时,配匹配/data/images </span></span><br><span class="line"><span class="meta">	#</span><span class="bash">把访问时的ip/images路径，设置为</span></span><br><span class="line">    location /images/ &#123;</span><br><span class="line">        root /data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关于<a href="https://www.jianshu.com/p/3f6a39064f7d" target="_blank" rel="noopener">SSL证书</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/开发知识/" rel="tag">#^_^#开发知识</a>
+          
+            <a href="/tags/Linux系统/" rel="tag">#^_^#Linux系统</a>
+          
+            <a href="/tags/远程连接/" rel="tag">#^_^#远程连接</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/03/虚拟机、Linux系统-CentOs-的安装/" rel="next" title="虚拟机、Linux系统(CentOs)的安装">
+                <i class="fa fa-chevron-left"></i> 虚拟机、Linux系统(CentOs)的安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/04/搭梯子访问墙外网站/" rel="prev" title="搭梯子访问墙外网站">
+                搭梯子访问墙外网站 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux操作、远程连接、项目部署"><span class="nav-text">Linux操作、远程连接、项目部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装工具"><span class="nav-text">1. 安装工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-更换服务器的JDK"><span class="nav-text">2. 更换服务器的JDK</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-拿到服务器ip"><span class="nav-text">2.1. 拿到服务器ip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-使用Xshell建立连接"><span class="nav-text">2.2. 使用Xshell建立连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-卸载open-JDK"><span class="nav-text">2.3. 卸载open JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-安装准备的JDK"><span class="nav-text">2.4. 安装准备的JDK</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-安装MySQL"><span class="nav-text">3. 安装MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-安装Redis"><span class="nav-text">4. 安装Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-安装Nginx"><span class="nav-text">5. 安装Nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-准备安装包"><span class="nav-text">5.1. 准备安装包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-准备安装环境"><span class="nav-text">5.2. 准备安装环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-安装Nginx"><span class="nav-text">5.3. 安装Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-Nginx指令、运行检查"><span class="nav-text">5.4. Nginx指令、运行检查</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1564829300000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+</body>
+</html>
