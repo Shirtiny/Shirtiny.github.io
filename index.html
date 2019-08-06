@@ -444,7 +444,7 @@
                 
               
 
-              <time title="创建时间：2019-08-06 18:29:45 / 修改时间：18:44:39" itemprop="dateCreated datePublished" datetime="2019-08-06T18:29:45+08:00">2019-08-06</time>
+              <time title="创建时间：2019-08-06 18:29:45 / 修改时间：22:00:00" itemprop="dateCreated datePublished" datetime="2019-08-06T18:29:45+08:00">2019-08-06</time>
             
 
             
@@ -502,12 +502,14 @@
 
       
         
-          <div class="note default">
-            <p>有了服务器支持，现在可以用自己的视频源了，个人视频源意味着视频内容不再受公网限制。</p><p>之前做html播放示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。</p>
+          <h2 id="更新视频、音频插件支持"><a href="#更新视频、音频插件支持" class="headerlink" title="更新视频、音频插件支持"></a>更新视频、音频插件支持</h2><div class="note default">
+            <p>有了服务器支持，现在可以用自己的视频源了，视频内容可以不再受公网限制。</p><p>之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。</p>
           </div>
 
 <p><strong>效果：</strong></p>
-<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://78.141.206.203/video/ys.mp4"},"danmaku":{"api":"http://dplayer.daoapp.io"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://78.141.206.203/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+
+<p>这个插件是基于<a href="https://github.com/MoePlayer/DPlayer" target="_blank" rel="noopener">DPlayer</a>的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -616,7 +618,7 @@
                 
               
 
-              <time title="创建时间：2019-08-06 12:54:59 / 修改时间：18:25:02" itemprop="dateCreated datePublished" datetime="2019-08-06T12:54:59+08:00">2019-08-06</time>
+              <time title="创建时间：2019-08-06 12:54:59 / 修改时间：21:18:36" itemprop="dateCreated datePublished" datetime="2019-08-06T12:54:59+08:00">2019-08-06</time>
             
 
             
@@ -800,7 +802,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-06 17:12:24" itemprop="dateModified" datetime="2019-08-06T17:12:24+08:00">2019-08-06</time>
+                <time title="修改时间：2019-08-06 21:14:04" itemprop="dateModified" datetime="2019-08-06T21:14:04+08:00">2019-08-06</time>
               
             
           </span>
@@ -853,26 +855,17 @@
 
       
         
-          
-            <h1 id="Sftp中文件上传、下载到服务器（草稿，未完）"><a href="#Sftp中文件上传、下载到服务器（草稿，未完）" class="headerlink" title="Sftp中文件上传、下载到服务器（草稿，未完）"></a>Sftp中文件上传、下载到服务器（草稿，未完）</h1><p>连接</p>
+          <h1 id="Sftp中文件上传、下载到服务器（草稿，未完）"><a href="#Sftp中文件上传、下载到服务器（草稿，未完）" class="headerlink" title="Sftp中文件上传、下载到服务器（草稿，未完）"></a>Sftp中文件上传、下载到服务器（草稿，未完）</h1><p><strong>连接</strong></p>
 <p>我用common-net，ftp连接时使用21端口会超时，后来发现使用Xftp工具也超时</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection timed out: connect</span><br></pre></td></tr></table></figure>
-
-<p>查了下百度，<a href="https://zhidao.baidu.com/question/251945042.html" target="_blank" rel="noopener">端口问题</a>，然后我换了22端口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> Could not parse response code.</span><br><span class="line">Server Reply: SSH-<span class="number">2.0</span>-OpenSSH_7.4</span><br></pre></td></tr></table></figure>
-
-<p>还是不行，百度了下，开始用sftp协议试</p>
-<p>参考文章：<a href="https://www.ktanx.com/blog/p/4028" target="_blank" rel="noopener">主要参考</a>，<a href="https://blog.csdn.net/LNView/article/details/72412606" target="_blank" rel="noopener">详细参考</a></p>
-<p>然后凑出的上传下载：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload</span><span class="params">()</span> <span class="keyword">throws</span> IOException, JSchException, SftpException </span>&#123;</span><br><span class="line">       ChannelSftp sftp = <span class="keyword">null</span>;</span><br><span class="line">       JSch jsch = <span class="keyword">new</span> JSch();</span><br><span class="line">       Session sshSession = jsch.getSession(<span class="string">"root"</span>, <span class="string">"108.160.134.51"</span>, <span class="number">22</span>);</span><br><span class="line">       sshSession.setPassword(<span class="string">"5M[nFXRG?[qv)*AR"</span>);</span><br><span class="line">       sshSession.setConfig(<span class="string">"StrictHostKeyChecking"</span>, <span class="string">"no"</span>);</span><br><span class="line">       sshSession.connect();</span><br><span class="line">       Channel channel = sshSession.openChannel(<span class="string">"sftp"</span>);</span><br><span class="line">       channel.connect();</span><br><span class="line">       sftp = (ChannelSftp) channel;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       sftp.cd(<span class="string">"/data/images"</span>);</span><br><span class="line">       File file=<span class="keyword">new</span> File(<span class="string">"D:\\aria2\\1.avi"</span>);</span><br><span class="line">       String fileName=<span class="string">"1.avi"</span>;</span><br><span class="line">       sftp.put(<span class="keyword">new</span> FileInputStream(file),fileName);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download</span><span class="params">()</span> <span class="keyword">throws</span> JSchException, SftpException, FileNotFoundException </span>&#123;</span><br><span class="line">       ChannelSftp sftp = <span class="keyword">null</span>;</span><br><span class="line">       JSch jsch = <span class="keyword">new</span> JSch();</span><br><span class="line">       Session sshSession = jsch.getSession(<span class="string">"root"</span>, <span class="string">"108.160.134.51"</span>, <span class="number">22</span>);</span><br><span class="line">       sshSession.setPassword(<span class="string">"5M[nFXRG?[qv)*AR"</span>);</span><br><span class="line">       sshSession.setConfig(<span class="string">"StrictHostKeyChecking"</span>, <span class="string">"no"</span>);</span><br><span class="line">       sshSession.connect();</span><br><span class="line">       Channel channel = sshSession.openChannel(<span class="string">"sftp"</span>);</span><br><span class="line">       channel.connect();</span><br><span class="line">       sftp = (ChannelSftp) channel;</span><br><span class="line"></span><br><span class="line">       File file=<span class="keyword">new</span> File(<span class="string">"D:\\aria2\\123.png"</span>);</span><br><span class="line"></span><br><span class="line">       sftp.get(<span class="string">"/data/images/123.png"</span>, <span class="keyword">new</span> FileOutputStream(file));</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<p>下载</p>
-<p><a href="https://blog.csdn.net/xujingcheng123/article/details/78997819/" target="_blank" rel="noopener">拒绝访问问题</a></p>
-<p>视频播放尝试</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://78.141.206.203/video/mll.mp4"</span> <span class="attr">scrolling</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">framespacing</span>=<span class="string">"0"</span> <span class="attr">allowfullscreen</span>=<span class="string">"true"</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/08/05/Sftp文件上传、下载/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
