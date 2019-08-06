@@ -96,17 +96,18 @@
 
 
 
-  <meta name="description" content="yum install python-setuptools wget https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz –no-check-certificatetar -xzvf pip-1.3.1.tar.gzcd pip-1.3.1python setup.py install pip install shadows">
+  <meta name="description" content="Sftp中文件上传、下载到服务器（草稿，未完）">
+<meta name="keywords" content="ftp,上传下载">
 <meta property="og:type" content="website">
-<meta property="og:title" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:title" content="Sftp文件上传、下载">
 <meta property="og:url" content="http://Shirtiny.cn/新建文本文档.html">
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
-<meta property="og:description" content="yum install python-setuptools wget https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz –no-check-certificatetar -xzvf pip-1.3.1.tar.gzcd pip-1.3.1python setup.py install pip install shadows">
+<meta property="og:description" content="Sftp中文件上传、下载到服务器（草稿，未完）">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-05T04:31:32.881Z">
+<meta property="og:updated_time" content="2019-08-06T09:13:16.819Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="☘(๑•̀ㅂ•́)و✧">
-<meta name="twitter:description" content="yum install python-setuptools wget https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz –no-check-certificatetar -xzvf pip-1.3.1.tar.gzcd pip-1.3.1python setup.py install pip install shadows">
+<meta name="twitter:title" content="Sftp文件上传、下载">
+<meta name="twitter:description" content="Sftp中文件上传、下载到服务器（草稿，未完）">
 
 
 
@@ -124,7 +125,7 @@
   };
 </script>
 
-  <title> | ☘(๑•̀ㅂ•́)و✧</title>
+  <title>Sftp文件上传、下载 | ☘(๑•̀ㅂ•́)و✧</title>
   
 
 
@@ -418,7 +419,7 @@
     <div class="post-block page">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">
+<h1 class="post-title" itemprop="name headline">Sftp文件上传、下载
 
 </h1>
 
@@ -438,20 +439,25 @@
       <div class="post-body">
         
         
-          <p>yum install python-setuptools</p>
-<p>wget <a href="https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz" target="_blank" rel="noopener">https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz</a> –no-check-certificate<br>tar -xzvf pip-1.3.1.tar.gz<br>cd pip-1.3.1<br>python setup.py install</p>
-<p>pip install shadowsocks<br>mkdir /etc/shadowsocks<br>vi /etc/shadowsocks/config.json</p>
-<p>{
-    “server”:”108.160.134.51”,<br>    “port_password”: {<br>        “8888”: “224895477”,<br>        “8889”: “224895477”<br>    },<br>    “timeout”:600,<br>    “method”:”aes-256-cfb”,<br>    “fast_open”: false<br>}</p>
-<p>ssserver -c /etc/shadowsocks/config.json -d start</p>
-<p>#ssserver -c /etc/shadowsocks/config.json -d stop</p>
-<p>vi /etc/systemd/system/shadowsocks.service</p>
-<p>[Unit]<br>Description=Shadowsocks<br>After=network.target</p>
-<p>[Service]<br>Type=forking<br>PIDFile=/run/shadowsocks/server.pid<br>PermissionsStartOnly=true<br>ExecStartPre=/bin/mkdir -p /run/shadowsocks<br>ExecStartPre=/bin/chown root:root /run/shadowsocks<br>ExecStart=/usr/bin/ssserver –pid-file /var/run/shadowsocks/server.pid -c /etc/shadowsocks/config.json -d start<br>Restart=on-abort<br>User=root<br>Group=root<br>UMask=0027</p>
-<p>[Install]<br>WantedBy=multi-user.target</p>
-<p>chmod 755 /etc/systemd/system/shadowsocks.service</p>
-<p>systemctl start shadowsocks<br>systemctl enable shadowsocks</p>
-<p>firewall-cmd –zone=public –add-port=8888/tcp –permanent<br>firewall-cmd –zone=public –add-port=8889/tcp –permanent<br>firewall-cmd –reload</p>
+          <h1 id="Sftp中文件上传、下载到服务器（草稿，未完）"><a href="#Sftp中文件上传、下载到服务器（草稿，未完）" class="headerlink" title="Sftp中文件上传、下载到服务器（草稿，未完）"></a>Sftp中文件上传、下载到服务器（草稿，未完）</h1><a id="more"></a>
+
+<p>连接</p>
+<p>我用common-net，ftp连接时使用21端口会超时，后来发现使用Xftp工具也超时</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection timed out: connect</span><br></pre></td></tr></table></figure>
+
+<p>查了下百度，<a href="https://zhidao.baidu.com/question/251945042.html" target="_blank" rel="noopener">端口问题</a>，然后我换了22端口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> Could not parse response code.</span><br><span class="line">Server Reply: SSH-<span class="number">2.0</span>-OpenSSH_7.4</span><br></pre></td></tr></table></figure>
+
+<p>还是不行，百度了下，开始用sftp协议试</p>
+<p>参考文章：<a href="https://www.ktanx.com/blog/p/4028" target="_blank" rel="noopener">主要参考</a>，<a href="https://blog.csdn.net/LNView/article/details/72412606" target="_blank" rel="noopener">详细参考</a></p>
+<p>然后凑出的上传下载：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload</span><span class="params">()</span> <span class="keyword">throws</span> IOException, JSchException, SftpException </span>&#123;</span><br><span class="line">       ChannelSftp sftp = <span class="keyword">null</span>;</span><br><span class="line">       JSch jsch = <span class="keyword">new</span> JSch();</span><br><span class="line">       Session sshSession = jsch.getSession(<span class="string">"root"</span>, <span class="string">"108.160.134.51"</span>, <span class="number">22</span>);</span><br><span class="line">       sshSession.setPassword(<span class="string">"5M[nFXRG?[qv)*AR"</span>);</span><br><span class="line">       sshSession.setConfig(<span class="string">"StrictHostKeyChecking"</span>, <span class="string">"no"</span>);</span><br><span class="line">       sshSession.connect();</span><br><span class="line">       Channel channel = sshSession.openChannel(<span class="string">"sftp"</span>);</span><br><span class="line">       channel.connect();</span><br><span class="line">       sftp = (ChannelSftp) channel;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       sftp.cd(<span class="string">"/data/images"</span>);</span><br><span class="line">       File file=<span class="keyword">new</span> File(<span class="string">"D:\\aria2\\1.avi"</span>);</span><br><span class="line">       String fileName=<span class="string">"1.avi"</span>;</span><br><span class="line">       sftp.put(<span class="keyword">new</span> FileInputStream(file),fileName);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download</span><span class="params">()</span> <span class="keyword">throws</span> JSchException, SftpException, FileNotFoundException </span>&#123;</span><br><span class="line">       ChannelSftp sftp = <span class="keyword">null</span>;</span><br><span class="line">       JSch jsch = <span class="keyword">new</span> JSch();</span><br><span class="line">       Session sshSession = jsch.getSession(<span class="string">"root"</span>, <span class="string">"108.160.134.51"</span>, <span class="number">22</span>);</span><br><span class="line">       sshSession.setPassword(<span class="string">"5M[nFXRG?[qv)*AR"</span>);</span><br><span class="line">       sshSession.setConfig(<span class="string">"StrictHostKeyChecking"</span>, <span class="string">"no"</span>);</span><br><span class="line">       sshSession.connect();</span><br><span class="line">       Channel channel = sshSession.openChannel(<span class="string">"sftp"</span>);</span><br><span class="line">       channel.connect();</span><br><span class="line">       sftp = (ChannelSftp) channel;</span><br><span class="line"></span><br><span class="line">       File file=<span class="keyword">new</span> File(<span class="string">"D:\\aria2\\123.png"</span>);</span><br><span class="line"></span><br><span class="line">       sftp.get(<span class="string">"/data/images/123.png"</span>, <span class="keyword">new</span> FileOutputStream(file));</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>下载</p>
+<p><a href="https://blog.csdn.net/xujingcheng123/article/details/78997819/" target="_blank" rel="noopener">拒绝访问问题</a></p>
+<p>视频播放尝试</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://78.141.206.203/video/mll.mp4"</span> <span class="attr">scrolling</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">framespacing</span>=<span class="string">"0"</span> <span class="attr">allowfullscreen</span>=<span class="string">"true"</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 
         
       </div>
@@ -501,8 +507,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -519,7 +534,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -619,7 +634,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">28</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -672,6 +695,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Sftp中文件上传、下载到服务器（草稿，未完）"><span class="nav-text">Sftp中文件上传、下载到服务器（草稿，未完）</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
@@ -877,7 +917,7 @@
 <script>
   function renderGitment() {
     var gitment = new Gitment({
-      id: '1564979492881',
+      id: '1564996971000',
       owner: 'Shirtiny',
       repo: 'Shirtiny.github.io',
       

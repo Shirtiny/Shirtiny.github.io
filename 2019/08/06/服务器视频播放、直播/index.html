@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Nginx：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？">
+<meta name="keywords" content="视频播放,直播">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在线视频播放、直播">
+<meta property="og:url" content="http://Shirtiny.cn/2019/08/06/服务器视频播放、直播/index.html">
+<meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:description" content="Nginx：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/06/868a0e21139d2a46763092795d80f492418570ec72a99de2.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/06/0a87f7c15a2bace2078ca7aa438baa14b81f63881f6bcb2f.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/06/22bde64b43037c0e309e77b006668844ad9590eb4e8c5ae6.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/06/ac795843d7b785461228e5016d48be19fadac9450a258c71.png">
+<meta property="og:updated_time" content="2019-08-06T09:07:41.314Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在线视频播放、直播">
+<meta name="twitter:description" content="Nginx：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？">
+<meta name="twitter:image" content="https://file.moetu.org/images/2019/08/06/868a0e21139d2a46763092795d80f492418570ec72a99de2.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/08/06/服务器视频播放、直播/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>在线视频播放、直播 | ☘(๑•̀ㅂ•́)و✧</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘(๑•̀ㅂ•́)و✧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/08/06/服务器视频播放、直播/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在线视频播放、直播
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-06 12:54:59 / 修改时间：17:07:41" itemprop="dateCreated datePublished" datetime="2019-08-06T12:54:59+08:00">2019-08-06</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习经验/" itemprop="url" rel="index"><span itemprop="name">学习经验</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Nginx：视频、直播"><a href="#Nginx：视频、直播" class="headerlink" title="Nginx：视频、直播"></a>Nginx：视频、直播</h1><p>前篇文章说了Sftp下的文件上传，访问时比如<a href>图片</a>、<a href>json</a>文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？</p>
+<a id="more"></a>
+
+<p><strong>环境准备：</strong></p>
+<p>可用的服务器（CentOS 7系统）、<a href="https://shirtiny.cn/2019/08/03/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5Linux%E9%83%A8%E7%BD%B2%E9%A1%B9%E7%9B%AE/">Nginx</a>、<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="noopener">Nginx-Rtmp模块</a> 、<a href="https://ffmpeg.zeranoe.com/builds/" target="_blank" rel="noopener">Ffmpeg</a>、<a href="https://account.jwplayer.com/static/download/jwplayer-6.10.zip" target="_blank" rel="noopener">Jwplayer</a>(可以从连接另存文件，不用登录)</p>
+<p><strong>工具</strong>：Xshell 6、Xftp 5</p>
+<h2 id="1-在线视频播放"><a href="#1-在线视频播放" class="headerlink" title="1. 在线视频播放"></a>1. 在线视频播放</h2><p>其实要播放比较简单，主要问题是网速、负载等，这些是生产环境需要考虑的。</p>
+<h3 id="1-1-安装Nginx"><a href="#1-1-安装Nginx" class="headerlink" title="1.1. 安装Nginx"></a>1.1. 安装Nginx</h3><p>服务器安装Nginx，包括远程工具，参照我之前的<a href="https://shirtiny.cn/2019/08/03/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5Linux%E9%83%A8%E7%BD%B2%E9%A1%B9%E7%9B%AE/">文章</a>即可。</p>
+<p>### </p>
+<h3 id="1-2-安装Nginx-Rtmp模块"><a href="#1-2-安装Nginx-Rtmp模块" class="headerlink" title="1.2. 安装Nginx-Rtmp模块"></a>1.2. 安装Nginx-Rtmp模块</h3><ul>
+<li><p>在Github上下载<a href="https://github.com/arut/nginx-rtmp-module/archive/v1.2.1.tar.gz" target="_blank" rel="noopener">nginx-rtmp-module-1.2.1.tar.gz</a></p>
+</li>
+<li><p>使用Xftp将下载的压缩包传到服务器的/usr/local文件夹。放哪都行，自己能找到就行。</p>
+</li>
+<li><p>使用tar命令解压该文件，得到nginx-rtmp-module-1.2.1文件夹，我的文件夹位置为：</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx-rtmp-module-1.2.1</span><br></pre></td></tr></table></figure>
+
+<p>此时，你需要找到之前Nginx解压后的文件夹，就是那个带版本号的文件夹。我的Nginx源码目录是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx-1.17.1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>进入Nginx源码文件夹</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/nginx-1.17.1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装Nginx-Rtmp模块</li>
+</ul>
+<p>此时，一定要进入nginx源码文件，不然找不到configure。还要注意找到之前rtmp模块解压后的文件夹位置，此时我nginx-1.17.1和nginx-rtmp-module-1.2.1都是放在/usr/local下的，所以用../就能找到。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure --add-module=../nginx-rtmp-module-1.2.1 --with-http_ssl_module</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>模块安装完成。</p>
+<p>参考：<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="noopener">官方文档</a></p>
+<h3 id="1-3-视频播放配置"><a href="#1-3-视频播放配置" class="headerlink" title="1.3. 视频播放配置"></a>1.3. 视频播放配置</h3><ul>
+<li>打开/usr/local/nginx/conf目录下的nginx.conf配置文件，nginx是Nginx的安装目录</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+
+<p>键盘按i编辑，方向键移动光标，编辑完按 ” :wq “ 保存退出</p>
+<p><strong>编辑内容：</strong></p>
+<p>光标移动到文件最底部大括号外 （http｛｝代码块外），增加rtmp代码块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">rtmp&#123;</span><br><span class="line">  </span><br><span class="line">    server&#123;</span><br><span class="line"></span><br><span class="line">	listen 2019;</span><br><span class="line">	chunk_size 4096;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">	#</span><span class="bash">应用名随意，play播放指定目录或者 HTTP 地址的 flv 或者 mp4 文件</span></span><br><span class="line">      application video &#123;</span><br><span class="line">                play /data/video;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时虽然可以播放视频了，但http还找不到资源，所以还需要定义访问路径。</p>
+<p>把光标移到http代码块里，按如下内容修改和增加代码，其实只加了个location，配置文件里#后内容是注释，忽略或删除。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    tcp_nopush     on;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line"><span class="meta">		#</span><span class="bash">之前配置的根目录</span></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   /data/www;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">		#</span><span class="bash">之前配置的图片目录</span></span><br><span class="line">	    location /images/ &#123;</span><br><span class="line">        	root /data;</span><br><span class="line">   	     &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">		#</span><span class="bash">新增的video目录，即浏览器访问http://ip地址/video时，会进入服务器的/data/video目录</span></span><br><span class="line">        location /video/ &#123;</span><br><span class="line">            root /data;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">       </span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存并退出，然后重启Nginx服务。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-测试视频播放"><a href="#1-4-测试视频播放" class="headerlink" title="1.4. 测试视频播放"></a>1.4. 测试视频播放</h3><ul>
+<li><p>在服务器的/data/video目录下放入一个mll.mp4视频文件，目录/data/video要建个，根据你的配置的目录来。</p>
+</li>
+<li><p>浏览器访问<a href="http://ip地址/video/mll.mp4" target="_blank" rel="noopener">http://ip地址/video/mll.mp4</a></p>
+</li>
+<li><p>如：<a href="http://108.160.134.51/video/mll.mp4" target="_blank" rel="noopener">http://108.160.134.51/video/mll.mp4</a></p>
+</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/08/06/868a0e21139d2a46763092795d80f492418570ec72a99de2.png" alt></p>
+<p>播放成功即可，我服务器速度贼慢，后面换个服务器试试效果。</p>
+<p>这时，就可以把视频嵌入到html中播放了，比如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://78.141.206.203/video/ct.mp4"</span> <span class="attr">scrolling</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">framespacing</span>=<span class="string">"0"</span> <span class="attr">allowfullscreen</span>=<span class="string">"true"</span> <span class="attr">autoplay</span>=<span class="string">""</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"400px"</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<iframe src="http://78.141.206.203/video/ct.mp4" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" autoplay width="100%" height="450px"> </iframe>
+
+<p>服务器我换成伦敦的了，现在速度快多了。</p>
+<p><a href="https://www.jianshu.com/p/f2d5b7757e0e" target="_blank" rel="noopener">Vultr测ping</a>、<a href="https://www.i5seo.com/tips-vultr-backup-data-transfer.html" target="_blank" rel="noopener">服务器数据迁移备份</a></p>
+<h2 id="2-直播"><a href="#2-直播" class="headerlink" title="2. 直播"></a>2. 直播</h2><p>这里搭建一个简单的直播体系，实际要复杂的多。</p>
+<p>直播应该有推流端、服务器处理端、和接收端。</p>
+<h3 id="2-1-服务器端配置"><a href="#2-1-服务器端配置" class="headerlink" title="2.1. 服务器端配置"></a>2.1. 服务器端配置</h3><p>之前配过视频播放了，这里也用Nginx-Rtmp模块，配置一下nginx就行了。</p>
+<ul>
+<li>还是打开/usr/local/nginx/conf目录下的nginx.conf配置文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+
+<p>键盘按i编辑，方向键移动光标，编辑完按 ” :wq “ 保存退出</p>
+<p><strong>编辑内容：</strong></p>
+<p>rtmp代码块</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rtmp&#123;</span><br><span class="line">  </span><br><span class="line">    server&#123;</span><br><span class="line"><span class="meta">	#</span><span class="bash">端口号，要记住</span></span><br><span class="line">	listen 2019;</span><br><span class="line">	chunk_size 4096;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      application video &#123;</span><br><span class="line">                play /data/video;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">		#</span><span class="bash">新增live应用，名字可自定。live on，开启直播，一对多广播</span></span><br><span class="line">	    application live &#123;</span><br><span class="line"></span><br><span class="line">		live on;</span><br><span class="line"></span><br><span class="line">	&#125;  </span><br><span class="line"></span><br><span class="line"><span class="meta">		#</span><span class="bash">hls，暂时用不到，可以不写</span></span><br><span class="line">       application hls_alic&#123;</span><br><span class="line">		live on;</span><br><span class="line">		hls  on;</span><br><span class="line">		hls_path /tmp/hls;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>http代码块</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    tcp_nopush     on;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   /data/www;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">	    location /images/ &#123;</span><br><span class="line">        	root /data;</span><br><span class="line">   	     &#125;</span><br><span class="line"></span><br><span class="line">        location /video/ &#123;</span><br><span class="line">            root /data;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line"><span class="meta">		#</span><span class="bash">新增，访问http://ip/<span class="built_in">stat</span>时，为当前 HTTP location 设置 RTMP statistics 处理程序。RTMP statistics 是一个静态的 XML 文档。可以使用 rtmp_stat_stylesheet 指令在浏览器中作为 XHTML 页面查看这个文档。添加 XML 样式表引用到 statistics XML 使其可以在浏览器中可视。</span></span><br><span class="line">         location /stat &#123;    </span><br><span class="line">            rtmp_stat all;</span><br><span class="line">            rtmp_stat_stylesheet stat.xsl;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">		#</span><span class="bash">新增，能直接访问stat.xsl文件，上面的一块，就是能在浏览器看到rtmp的状态信息</span></span><br><span class="line">        location /stat.xsl &#123; </span><br><span class="line">             root /usr/local/nginx-rtmp-module-1.2.1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">       </span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重启Nginx服务。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>顺便让防火墙开放你配置的端口，比如这里我配置的2019端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#添加2019端口配置防火墙</span><br><span class="line">firewall-cmd --zone=public --add-port=2019/tcp --permanent</span><br><span class="line">#重新加载</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<p>浏览器访问http://你的服务器Ip/stat，如<a href="http://108.160.134.51/stat，若出现以下页面，则服务器配置成功。" target="_blank" rel="noopener">http://108.160.134.51/stat，若出现以下页面，则服务器配置成功。</a></p>
+<p><img src="https://file.moetu.org/images/2019/08/06/0a87f7c15a2bace2078ca7aa438baa14b81f63881f6bcb2f.png" alt></p>
+<h3 id="2-2-推流端"><a href="#2-2-推流端" class="headerlink" title="2.2. 推流端"></a>2.2. 推流端</h3><p>推流可以用FFmpeg，功能强大，使用命令行进行操作，可以在服务器上使用，就是参数比较多，对新手不友好。</p>
+<p>还可以用OBS，有windows版本，是大家常用的直播工具了。</p>
+<p><strong>OBS</strong></p>
+<ul>
+<li>先说下Obs，这个软件比较常见。在设置里面，左侧菜单选输出，输出模式选高级，点录像，选择输出到URL</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/08/06/22bde64b43037c0e309e77b006668844ad9590eb4e8c5ae6.png" alt></p>
+<p>URL的格式是：rtmp://你的服务器ip:端口号/服务器配置的应用名/自定义个名字，容器格式最好选flv，因为体积会小点，其他看自己情况选。</p>
+<p><strong>FFmpeg</strong></p>
+<ul>
+<li>FFmpeg，这个可以装在windows本机上，也可以装在服务器上，使用方式是命令行，下面说一下服务器上怎么装。windows同理，无所谓，可以用其他软件。</li>
+<li>我的服务器系统：CentOs 7，安装流程：<ul>
+<li>先安装环境支持，EPEL Release</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y epel-release rpm</span><br><span class="line"><span class="meta">#</span><span class="bash">若出现缺少Code提示，执行：sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><ul>
+<li>安装Nux-Dextop</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro</span><br><span class="line">sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>正式安装FFmpeg</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y ffmpeg</span><br><span class="line"><span class="meta">#</span><span class="bash">检查是否安装成功</span></span><br><span class="line">ffmpeg -version</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用</li>
+</ul>
+<p>这里使用服务器上的视频/data/video/mll.mp4，模拟推流。</p>
+<p>推流到rtmp://localhost:2019/live/test，本地2019端口下的live应用，当然也可以推到远处的服务器，后面的test是自定义的名字。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -re -i /data/video/mll.mp4 -c copy   -f flv rtmp://localhost:2019/live/test</span><br></pre></td></tr></table></figure>
+
+<p>可以根据网速自定义码率：</p>
+<p>-b:v 3000k 意为视频码率3000k</p>
+<p>-b:a 320k 指音频</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -re -i /data/video/mllo.mp4 -c copy -b:v 3000k -b:a 320k  -f flv rtmp://localhost:2019/live/test</span><br></pre></td></tr></table></figure>
+
+<p>更多使用参考：<a href="https://www.jianshu.com/p/ddafe46827b7" target="_blank" rel="noopener">ffmpeg基础使用</a></p>
+<p>推流后，我们需要一个接收端才能看到推流的效果。</p>
+<h3 id="2-3-接收端（拉流端）"><a href="#2-3-接收端（拉流端）" class="headerlink" title="2.3. 接收端（拉流端）"></a>2.3. 接收端（拉流端）</h3><p>这里我用的<a href="https://download.csdn.net/download/akeron/9752210" target="_blank" rel="noopener">JWPlayer</a></p>
+<ul>
+<li>解压JWPlayer，新建个html，与jwPlayer文件夹同级目录。</li>
+</ul>
+<p>Html内容如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"  </span></span><br><span class="line"><span class="meta">"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/1999/xhtml"</span> <span class="attr">xml:lang</span>=<span class="string">"en"</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"content-type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>live-player<span class="tag">&lt;/<span class="name">title</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">'text/javascript'</span> <span class="attr">src</span>=<span class="string">'jwplayer/jwplayer.js'</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">b</span>&gt;</span>RTMP直播系统<span class="tag">&lt;/<span class="name">b</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">'mediaspace'</span>&gt;</span>This text will be replaced<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">'text/javascript'</span>&gt;</span>  </span><br><span class="line">// var server = window.location.hostname;  </span><br><span class="line">// mylive 对应nginx.conf配置项application的名字  </span><br><span class="line">// live_stream 对应Adobe Flash Stream Media Live Encoder配置的stream名称  </span><br><span class="line">var live_url = 'rtmp://108.160.134.51:2019/live/test';  //链接的服务器流，与推流一致</span><br><span class="line">jwplayer('mediaspace').setup(&#123;  </span><br><span class="line">'flashplayer': 'jwplayer/jwplayer.flash.swf',  </span><br><span class="line">'file': live_url,  </span><br><span class="line">'controlbar': 'bottom',  </span><br><span class="line">'width': '760',  </span><br><span class="line">'height': '428',  </span><br><span class="line">//autostart: true,  //如果打开此标志，在打开网页时会自动播放直播流  </span><br><span class="line">&#125;);  </span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中live_url应与推流端的推流地址一致，此html可传到服务器上Nginx管理的目录下，直接访问。也可在本地运行。</p>
+<p>运行效果如图：</p>
+<p><img src="https://file.moetu.org/images/2019/08/06/ac795843d7b785461228e5016d48be19fadac9450a258c71.png" alt></p>
+<p>一个简单的直播系统便建好了。</p>
+<p><strong>参考文章：</strong></p>
+<ul>
+<li><a href="https://blog.csdn.net/mengzhengjie/article/details/52579703" target="_blank" rel="noopener">利用RTMP实现直播系统</a></li>
+<li><a href="https://blog.csdn.net/tryscan/article/details/78344250" target="_blank" rel="noopener">Nginx+RTMP 搭建视频点播服务器</a></li>
+<li><a href="https://blog.csdn.net/defonds/article/details/9274479/" target="_blank" rel="noopener">译·Nginx RTMP模块指令详解</a></li>
+<li><a href="https://www.linuxidc.com/Linux/2018-10/154934.htm" target="_blank" rel="noopener">CentOS 7.5下FFmpeg安装、简单使用总结</a></li>
+<li><a href="https://www.jianshu.com/p/ddafe46827b7" target="_blank" rel="noopener">ffmpeg基础使用</a></li>
+<li><a href="https://blog.csdn.net/kingroc/article/details/50839994" target="_blank" rel="noopener">利用nginx搭建RTMP视频点播、直播/回放</a></li>
+<li><a href="https://blog.csdn.net/sha1996118/article/details/79717471" target="_blank" rel="noopener">ffmpeg+nginx+rtmp+web实现视频直播网站</a></li>
+<li><a href="https://blog.csdn.net/jingqiang521/article/details/54948982" target="_blank" rel="noopener">使用nginx+nginx-rtmp-module+ffmpeg搭建流媒体服务器</a></li>
+<li><a href="https://blog.csdn.net/akeron/article/details/54974034" target="_blank" rel="noopener">Linux&amp;Windows搭建基于nginx的视频点播服务器</a></li>
+<li></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/视频播放/" rel="tag">#^_^#视频播放</a>
+          
+            <a href="/tags/直播/" rel="tag">#^_^#直播</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/05/Sftp文件上传、下载/" rel="next" title="Sftp文件上传、下载">
+                <i class="fa fa-chevron-left"></i> Sftp文件上传、下载
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx：视频、直播"><span class="nav-text">Nginx：视频、直播</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-在线视频播放"><span class="nav-text">1. 在线视频播放</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-安装Nginx"><span class="nav-text">1.1. 安装Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-安装Nginx-Rtmp模块"><span class="nav-text">1.2. 安装Nginx-Rtmp模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-视频播放配置"><span class="nav-text">1.3. 视频播放配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-测试视频播放"><span class="nav-text">1.4. 测试视频播放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-直播"><span class="nav-text">2. 直播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-服务器端配置"><span class="nav-text">2.1. 服务器端配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-推流端"><span class="nav-text">2.2. 推流端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-接收端（拉流端）"><span class="nav-text">2.3. 接收端（拉流端）</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1565067299000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+</body>
+</html>
