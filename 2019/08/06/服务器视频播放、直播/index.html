@@ -108,7 +108,7 @@
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/06/0a87f7c15a2bace2078ca7aa438baa14b81f63881f6bcb2f.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/06/22bde64b43037c0e309e77b006668844ad9590eb4e8c5ae6.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/06/ac795843d7b785461228e5016d48be19fadac9450a258c71.png">
-<meta property="og:updated_time" content="2019-08-06T13:18:36.900Z">
+<meta property="og:updated_time" content="2019-08-07T10:05:40.043Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在线视频播放、直播">
 <meta name="twitter:description" content="Nginx：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？">
@@ -451,12 +451,24 @@
                 
               
 
-              <time title="创建时间：2019-08-06 12:54:59 / 修改时间：21:18:36" itemprop="dateCreated datePublished" datetime="2019-08-06T12:54:59+08:00">2019-08-06</time>
+              <time title="创建时间：2019-08-06 12:54:59" itemprop="dateCreated datePublished" datetime="2019-08-06T12:54:59+08:00">2019-08-06</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-07 18:05:40" itemprop="dateModified" datetime="2019-08-07T18:05:40+08:00">2019-08-07</time>
               
             
           </span>
@@ -613,7 +625,10 @@
 <p>URL的格式是：rtmp://你的服务器ip:端口号/服务器配置的应用名/自定义个名字，容器格式最好选flv，因为体积会小点，其他看自己情况选。</p>
 <p><strong>FFmpeg</strong></p>
 <ul>
-<li>FFmpeg，这个可以装在windows本机上，也可以装在服务器上，使用方式是命令行，下面说一下服务器上怎么装。windows同理，无所谓，可以用其他软件。</li>
+<li>FFmpeg，这个可以装在windows本机上，也可以装在服务器上，使用方式是命令行，下面说一下服务器上怎么装。windows同理，无所谓，可以用其他软件。<ul>
+<li>【FFmpeg使用示例：】ffmpeg -i /data/video/am.mkv -vcodec h264 -s 1920*1080 /data/video/am.mp4</li>
+</ul>
+</li>
 <li>我的服务器系统：CentOs 7，安装流程：<ul>
 <li>先安装环境支持，EPEL Release</li>
 </ul>
@@ -670,7 +685,7 @@
 <li><a href="https://blog.csdn.net/sha1996118/article/details/79717471" target="_blank" rel="noopener">ffmpeg+nginx+rtmp+web实现视频直播网站</a></li>
 <li><a href="https://blog.csdn.net/jingqiang521/article/details/54948982" target="_blank" rel="noopener">使用nginx+nginx-rtmp-module+ffmpeg搭建流媒体服务器</a></li>
 <li><a href="https://blog.csdn.net/akeron/article/details/54974034" target="_blank" rel="noopener">Linux&amp;Windows搭建基于nginx的视频点播服务器</a></li>
-<li></li>
+<li><a href="https://www.cnblogs.com/xueweihan/p/7082832.html" target="_blank" rel="noopener">Nginx优化静态文件访问</a></li>
 </ul>
 
       
