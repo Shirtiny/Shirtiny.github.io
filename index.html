@@ -163,7 +163,7 @@
  
 
 
-<link rel="stylesheet" type="text/css" href="/assets/css/DPlayer.min.css"><script src="/assets/js/DPlayer.min.js"></script></head>
+<script src="/assets/js/DPlayer.min.js"></script><link rel="stylesheet" type="text/css" href="/assets/css/DPlayer.min.css"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
@@ -383,6 +383,221 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/08/11/JsonP跨域请求/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/11/JsonP跨域请求/" class="post-title-link" itemprop="url">JsonP跨域请求</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-11 15:14:27 / 修改时间：17:42:49" itemprop="dateCreated datePublished" datetime="2019-08-11T15:14:27+08:00">2019-08-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习经验/" itemprop="url" rel="index"><span itemprop="name">学习经验</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="使用JsonP跨域获取json数据"><a href="#使用JsonP跨域获取json数据" class="headerlink" title="使用JsonP跨域获取json数据"></a>使用JsonP跨域获取json数据</h1><h2 id="JsonP示例"><a href="#JsonP示例" class="headerlink" title="JsonP示例"></a>JsonP示例</h2><p><strong>JsonP</strong>的主要实现举例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> category = &#123;<span class="attr">OBJ</span>: $(<span class="string">"#_JD_ALLSORT"</span>),</span><br><span class="line">		URL_Serv: <span class="string">"http://localhost:8082/category.json"</span></span><br><span class="line">&#125;,<span class="attr">FN_GetData</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	<span class="comment">//使用jsonp来实现跨域请求</span></span><br><span class="line">       $.getJSONP(<span class="keyword">this</span>.URL_Serv, category.getDataService);</span><br><span class="line">    	<span class="comment">//直接使用ajax请求json数据</span></span><br><span class="line">    	<span class="comment">/*$.getJSON(this.URL_Serv, function(json)&#123;</span></span><br><span class="line"><span class="comment">    		category.getDataService(json);</span></span><br><span class="line"><span class="comment">    	&#125;);*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//解析json数据</span></span><br><span class="line">&#125;,<span class="attr">getDataService</span>: <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> b = [], c = <span class="keyword">this</span>;</span><br><span class="line">        $.each(a.data, <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.index = a, <span class="string">"l"</span> == <span class="keyword">this</span>.t &amp;&amp; (<span class="keyword">this</span>.i = c.FN_RefactorJSON(<span class="keyword">this</span>.i, <span class="number">7</span>)), b.push(c.renderItem(<span class="keyword">this</span>, a))</span><br><span class="line">        &#125;);</span><br><span class="line">        b.push(<span class="string">'&lt;div class="extra"&gt;&lt;a &#123;if pageConfig.isHome&#125;clstag="homepage|keycount|home2013|0614a"&#123;/if&#125; href="http://www.jd.com/allSort.aspx"&gt;\u5168\u90e8\u5546\u54c1\u5206\u7c7b&lt;/a&gt;&lt;/div&gt;'</span>), <span class="keyword">this</span>.OBJ.attr(<span class="string">"load"</span>, <span class="string">"1"</span>).html(b.join(<span class="string">""</span>)), $.bigiframe(<span class="keyword">this</span>.OBJ), <span class="keyword">this</span>.FN_GetBrands();</span><br><span class="line">        <span class="keyword">var</span> d = <span class="keyword">this</span>, e = <span class="keyword">this</span>.OBJ.outerWidth(), f = <span class="keyword">this</span>.OBJ.outerHeight();</span><br><span class="line">        $(<span class="string">"#_JD_ALLSORT"</span>).dropdown(&#123;<span class="attr">delay</span>: <span class="number">0</span>,<span class="attr">onmouseleave</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                $(<span class="string">"#_JD_ALLSORT .item"</span>).removeClass(<span class="string">"hover"</span>)</span><br><span class="line">            &#125;&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> b, c, g = <span class="built_in">document</span>.documentElement.scrollTop + <span class="built_in">document</span>.body.scrollTop, h = $(<span class="string">"#nav-2013"</span>).offset().top + <span class="number">39</span>;</span><br><span class="line">            h &gt;= g ? (c = a.hasClass(<span class="string">"fore13"</span>) ? <span class="number">3</span> : <span class="number">3</span>, g = c) : (b = a.offset().top, g = g &gt; b - <span class="number">5</span> ? b - h - <span class="number">10</span> : <span class="built_in">Math</span>.max(<span class="number">3</span>, g - h));</span><br><span class="line">            <span class="keyword">var</span> i = a.find(<span class="string">".i-mc"</span>);</span><br><span class="line">            <span class="keyword">if</span> (i.css(&#123;<span class="attr">top</span>: g + <span class="string">"px"</span>&#125;), d.OBJ.find(<span class="string">"iframe"</span>)) &#123;</span><br><span class="line">                <span class="keyword">var</span> j = i.outerWidth() + e, k = i.outerHeight() &gt; f ? i.outerHeight() : f;</span><br><span class="line">                d.OBJ.find(<span class="string">"iframe"</span>).css(&#123;<span class="attr">width</span>: j,<span class="attr">height</span>: k,<span class="attr">top</span>: g&#125;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>http://localhost:8082/category.json</code>的内容为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">category.getDataService(</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"u"</span>: <span class="string">"/products/1.html"</span>,</span><br><span class="line">            <span class="attr">"n"</span>: <span class="string">"&lt;a href='/products/1.html'&gt;图书、音像、电子书刊&lt;/a&gt;"</span>,</span><br><span class="line">            <span class="attr">"i"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"u"</span>: <span class="string">"/products/2.html"</span>,</span><br><span class="line">                    <span class="attr">"n"</span>: <span class="string">"电子书刊"</span>,</span><br><span class="line">                    <span class="attr">"i"</span>: [</span><br><span class="line">                        <span class="string">"/products/3.html|电子书"</span>,</span><br><span class="line">                        <span class="string">"/products/4.html|网络原创"</span>,</span><br><span class="line">                        <span class="string">"/products/5.html|数字杂志"</span>,</span><br><span class="line">                        <span class="string">"/products/6.html|多媒体图书"</span></span><br><span class="line">                   		 ]</span><br><span class="line">                &#125;</span><br><span class="line">                ]</span><br><span class="line">&#125;]&#125;</span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+
+<p>其实是一段js，把json包装在参数里。</p>
+<h2 id="跨域请求"><a href="#跨域请求" class="headerlink" title="跨域请求"></a>跨域请求</h2><p><strong>为什么不能直接用Ajax</strong></p>
+<p>直接使用ajax请求另一个端口上的json数据:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//直接使用ajax请求另一个端口上的json数据</span></span><br><span class="line">    	$.getJSON(<span class="keyword">this</span>.URL_Serv, <span class="function"><span class="keyword">function</span>(<span class="params">json</span>)</span>&#123;</span><br><span class="line">    		category.getDataService(json);</span><br><span class="line">    	&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>会出现以下异常：</p>
+<p><img src="https://file.moetu.org/images/2019/08/11/0d731392d5e45c795df88c3558352a4ab63fdf76ea5e177b.png" alt></p>
+<p><code>No &#39;Access-Control-Allow-Origin&#39;</code></p>
+<p><strong>什么是跨域</strong></p>
+<p>当一个请求url的<strong>协议、域名、端口</strong>三者之间任意一个与当前页面url不同即为跨域。</p>
+<blockquote>
+<p> <strong>协议</strong>http-&gt;https、<strong>端口</strong>8081-&gt;8082、<strong>域名</strong>Shirtiny.cn-&gt;Github.com，都为跨域。</p>
+</blockquote>
+<p><strong>跨域问题的产生</strong></p>
+<p><strong>同源策略</strong>（<em>Sameoriginpolicy</em>）是一种约定，它是浏览器最核心也最基本的安全功能。</p>
+<p>同源策略会阻止一个域的javascript脚本和另外一个域的内容进行交互。所谓同源（即指在同一个域）就是两个页面具有相同的协议（<em>protocol</em>），主机（<em>host</em>）和端口号（<em>port</em>）</p>
+<p><strong>跨域的解决方式</strong></p>
+<ul>
+<li>document.domain</li>
+<li>跨文档通信 API</li>
+<li>JSONP</li>
+<li>CORS</li>
+</ul>
+<h2 id="JsonP流程"><a href="#JsonP流程" class="headerlink" title="JsonP流程"></a>JsonP流程</h2><p>JSONP 只支持get请求，不支持post请求。</p>
+<p><strong>核心思想</strong>：用特定方式请求 JSON 数据，服务器收到请求后，将数据放在一个指定名字的回调函数的参数位置传回来。</p>
+<h3 id="数据库查询-gt-构建pojo对象"><a href="#数据库查询-gt-构建pojo对象" class="headerlink" title="数据库查询-&gt;构建pojo对象"></a>数据库查询-&gt;构建pojo对象</h3><p>首先需要把数据库中的数据查询出来，数据库中有时并不是直接保存的json数据，如存储的分类目录表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_item_cat`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">'类目ID'</span>,</span><br><span class="line">  <span class="string">`parent_id`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'父类目ID=0时，代表的是一级的类目'</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'类目名称'</span>,</span><br><span class="line">  <span class="string">`status`</span> <span class="built_in">int</span>(<span class="number">1</span>) <span class="keyword">DEFAULT</span> <span class="string">'1'</span> <span class="keyword">COMMENT</span> <span class="string">'状态。可选值:1(正常),2(删除)'</span>,</span><br><span class="line">  <span class="string">`sort_order`</span> <span class="built_in">int</span>(<span class="number">4</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'排列序号，表示同级类目的展现次序，如数值相等则按名称次序排列。取值范围:大于零的整数'</span>,</span><br><span class="line">  <span class="string">`is_parent`</span> <span class="built_in">tinyint</span>(<span class="number">1</span>) <span class="keyword">DEFAULT</span> <span class="string">'1'</span> <span class="keyword">COMMENT</span> <span class="string">'该类目是否为父类目，1为true，0为false'</span>,</span><br><span class="line">  <span class="string">`created`</span> datetime <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'创建时间'</span>,</span><br><span class="line">  <span class="string">`updated`</span> datetime <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'创建时间'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`parent_id`</span> (<span class="string">`parent_id`</span>,<span class="string">`status`</span>) <span class="keyword">USING</span> BTREE,</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`sort_order`</span> (<span class="string">`sort_order`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">1183</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 <span class="keyword">COMMENT</span>=<span class="string">'商品类目'</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://file.moetu.org/images/2019/08/11/f4463037965cd41601fca439e38267f44a693683df03ce05.png" alt></p>
+<p>为了能让查询到的数据转为json格式，我们需要构建Pojo对象。</p>
+<h4 id="需要的Json数据格式："><a href="#需要的Json数据格式：" class="headerlink" title="需要的Json数据格式："></a>需要的Json数据格式：</h4><p><img src="https://file.moetu.org/images/2019/08/11/72e0d43bea074160422435b2539339598ccd4604107481dc.png" alt></p>
+<p>我们可以看到<code>data</code>是根节点，它有很多[0]、[1]、[2]这样的节点。节点包含属性u、n、i，而其中i又是一个子节点，它又包含了自己的u、n、i属性，其中i最终包含了若干字符串。</p>
+<h4 id="pojo类的构建"><a href="#pojo类的构建" class="headerlink" title="pojo类的构建"></a>pojo类的构建</h4><p>我们把根节点<code>data</code>单独拿出来，构建出<strong>JsonData类</strong>，因为一个Json里会有1个存放节点集合的<code>data</code>根节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.SH.Rest.Pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonData</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    List&lt;?&gt; data;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> List&lt;?&gt; getData() &#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(List&lt;?&gt; data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonData</span><span class="params">(List&lt;?&gt; data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"JsonData&#123;"</span> +</span><br><span class="line">                <span class="string">"data="</span> + data +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每个<code>data</code>的节点以及节点的子节点，都有u、n、i 这3个属性，其中i都为一个集合，所以我们构建<strong>DataNode类</strong>，用来表示子节点。使用@JsonProperty(“”)注解，用来指定对应属性，转换成json数据对应的key名称。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.SH.Rest.Pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonProperty;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataNodes</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@JsonProperty</span>(<span class="string">"u"</span>)</span><br><span class="line">    String url;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@JsonProperty</span>(<span class="string">"n"</span>)</span><br><span class="line">    String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@JsonProperty</span>(<span class="string">"i"</span>)</span><br><span class="line">    List&lt;?&gt; item;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DataNodes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DataNodes</span><span class="params">(String url, String name, List&lt;?&gt; item)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.url = url;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.item = item;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"DataNodes&#123;"</span> +</span><br><span class="line">                <span class="string">"url='"</span> + url + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", name='"</span> + name + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", item="</span> + item +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUrl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> url;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUrl</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.url = url;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;?&gt; getItem() &#123;</span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItem</span><span class="params">(List&lt;?&gt; item)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.item = item;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Service递归构建，得到节点pojo对象集合"><a href="#Service递归构建，得到节点pojo对象集合" class="headerlink" title="Service递归构建，得到节点pojo对象集合"></a>Service递归构建，得到节点pojo对象集合</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.SH.Rest.Service.serviceImpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonPserviceImpl</span> <span class="keyword">implements</span> <span class="title">IJsonPService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> TbItemCatMapper tbItemCatMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;?&gt; selectJson(<span class="keyword">long</span> parentId) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设定查询条件，先查询库中所有parentId为0的目录，即所有顶层目录</span></span><br><span class="line">        TbItemCatExample example = <span class="keyword">new</span> TbItemCatExample();</span><br><span class="line">        TbItemCatExample.Criteria criteria = example.createCriteria();</span><br><span class="line">        criteria.andParentIdEqualTo(parentId);</span><br><span class="line">        List&lt;TbItemCat&gt; list = tbItemCatMapper.selectByExample(example);<span class="comment">//执行</span></span><br><span class="line"></span><br><span class="line">        List resultList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">//向list中添加节点</span></span><br><span class="line">        <span class="keyword">for</span> (TbItemCat tbItemCat : list) &#123;</span><br><span class="line">            <span class="comment">//判断是否为父节点</span></span><br><span class="line">            <span class="keyword">if</span> (tbItemCat.getIsParent()) &#123;</span><br><span class="line">                DataNode dataNode = <span class="keyword">new</span> DataNode();</span><br><span class="line">                <span class="keyword">if</span> (parentId == <span class="number">0</span>) &#123;</span><br><span class="line">                    dataNode.setName(<span class="string">"&lt;a href='/products/"</span>+tbItemCat.getId()+<span class="string">".html'&gt;"</span>+tbItemCat.getName()+<span class="string">"&lt;/a&gt;"</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    dataNode.setName(tbItemCat.getName());</span><br><span class="line">                &#125;</span><br><span class="line">                dataNode.setUrl(<span class="string">"/products/"</span>+tbItemCat.getId()+<span class="string">".html"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//递归</span></span><br><span class="line">                dataNode.setItem(selectJson(tbItemCat.getId()));</span><br><span class="line"></span><br><span class="line">                resultList.add(dataNode);</span><br><span class="line">                <span class="comment">//如果是叶子节点</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                resultList.add(<span class="string">"/products/"</span>+tbItemCat.getId()+<span class="string">".html|"</span> + tbItemCat.getName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> resultList;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Controller把节点集合封装到data根节点对象，然后转换成json字符串"><a href="#Controller把节点集合封装到data根节点对象，然后转换成json字符串" class="headerlink" title="Controller把节点集合封装到data根节点对象，然后转换成json字符串"></a>Controller把节点集合封装到data根节点对象，然后转换成json字符串</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.SH.Rest.Controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonPController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IJsonPService jsonPService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/AllCategory"</span>,produces = <span class="string">"text/plain;charset=UTF-8"</span>)</span><br><span class="line">   <span class="comment">/*设置输出编码，或</span></span><br><span class="line"><span class="comment">    @RequestMapping(value="/itemcat/list", </span></span><br><span class="line"><span class="comment">			produces=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")</span></span><br><span class="line"><span class="comment">			*/</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">AllCategory</span><span class="params">(String callBack)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        List&lt;?&gt; dataNodelist = jsonPService.selectJson(<span class="number">0</span>);</span><br><span class="line">        JsonData data=<span class="keyword">new</span> JsonData();</span><br><span class="line">        data.setData(dataNodelist);</span><br><span class="line">        String json = JsonUtils.objectToJson(data);</span><br><span class="line">     <span class="comment">//拼接成js语句，callBack参数为请求中传递来的函数名</span></span><br><span class="line">        json=callBack+<span class="string">"("</span>+json+<span class="string">");"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> json;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另一种方式（需要spring版本支持）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/AllCategory"</span>)</span><br><span class="line">	<span class="meta">@ResponseBody</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">AllCategory</span><span class="params">(String callBack)</span> </span>&#123;</span><br><span class="line">		 List&lt;?&gt; dataNodelist = jsonPService.selectJson(<span class="number">0</span>);</span><br><span class="line">        JsonData data=<span class="keyword">new</span> JsonData();</span><br><span class="line">        data.setData(dataNodelist);</span><br><span class="line">		MappingJacksonValue mappingJacksonValue = <span class="keyword">new</span> MappingJacksonValue(data);</span><br><span class="line">		mappingJacksonValue.setJsonpFunction(callback);</span><br><span class="line">		<span class="keyword">return</span> mappingJacksonValue;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时客户端只需要发请求：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="comment">//本机：端口/AllCategory?callBack=自定义函数</span></span><br></pre></td></tr></table></figure>
+
+<p>然后会自动调用自定义的函数，并将参数值（也就是json数据）传过来，详情可以看文章开头。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1997,202 +2212,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/07/29/改回来用Gitment评论系统/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shirtiny">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/shirtiny.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/07/29/改回来用Gitment评论系统/" class="post-title-link" itemprop="url">改回来用Gitment评论系统</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-07-29 11:52:41" itemprop="dateCreated datePublished" datetime="2019-07-29T11:52:41+08:00">2019-07-29</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-03 23:57:34" itemprop="dateModified" datetime="2019-08-03T23:57:34+08:00">2019-08-03</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/系统维护/" itemprop="url" rel="index"><span itemprop="name">系统维护</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <div class="note default">
-            <p>先前使用Gitment评论系统，由于作者证书失效，跨域服务不可用，改用了一段时间的Valine。</p><p>Valine不需要登录，昵称和邮箱都是自定义的，身份只能靠浏览器、ip来识别。评论起来方便是方便，不过可读性不高，头像也比较单一。</p>
-          </div>
-
-<div class="note success">
-            <p>相比起来，Gitment是使用Github账户登录的，身份唯一，在github互动也方便，可读性强。</p>
-          </div>
-
-<div class="note success">
-            <p>今天偶然看到一篇<a href="https://sjq597.github.io/2018/05/18/Hexo-%E4%BD%BF%E7%94%A8Gitment%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/" target="_blank" rel="noopener">文章</a>，写得很详细，加上同样都是next主题（我比较懒，没怎么搞主题）可以傻瓜式操作，直接cv大法把js链接copy来了，感谢。</p>
-          </div>
-
-<p><strong>修改内容</strong>：</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/07/29/改回来用Gitment评论系统/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2236,7 +2260,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">21</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2348,7 +2372,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">34</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
