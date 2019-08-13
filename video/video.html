@@ -1,0 +1,211 @@
+<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head><meta name="generator" content="Hexo 3.8.0">
+		<meta charset="UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+		<title>放映厅</title>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<link rel="stylesheet" type="text/css" href="https://shirtiny.cn/css/fyt/normalize.css">
+		<link rel="stylesheet" type="text/css" href="https://shirtiny.cn/css/fyt/demo.css">
+		<link rel="stylesheet" type="text/css" href="https://shirtiny.cn/fonts/font-awesome-4.2.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="https://shirtiny.cn/css/fyt/menu_bubble.css">
+		<script src="https://shirtiny.cn/js/fyt/snap.svg-min.js"></script>
+		<link rel="stylesheet" href="https://shirtiny.cn/css/DPlayer.min.css">
+		<script src="https://shirtiny.cn/js/DPlayer.min.js"></script>
+		<script src="https://shirtiny.cn/js/fyt/bideo/bideo.js"></script>
+		<!--[if IE]>
+  		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<style>
+			#dplayer {
+					position: absolute;
+					top: 20%;
+					left: 20%;
+					/* margin:0 auto; */
+					/* display: none; */
+					/* 隐藏视频 */
+				 } 
+			#back{
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				min-width: 100%;
+				min-height: 100%;
+				width: auto;
+				height: auto; 
+				/* z-index: -100;  */
+				/* -webkit-filter: grayscale(20%); */
+				} 
+		
+				 
+* {
+  margin: 0; padding: 0;
+}
+ 
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+ 
+#container1 {
+  overflow: hidden;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  height: 100%;
+}
+ 
+#background_video {
+  position: absolute;
+ 
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+ 
+  object-fit: cover;
+  height: 100%; width: 100%;
+}
+ 
+#video_cover {
+  position: absolute;
+ 
+  width: 100%; height: 100%;
+ 
+  background: url('video_cover.jpeg') no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+ 
+/* #overlay {
+  position: absolute;
+  top: 0; right: 0; left: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+} */
+</style>
+
+	</head>
+
+	<body>
+
+		<!-- 视频背景 -->
+			<div id="container1">
+					<!-- muted静音 -->
+						<video id="background_video" loop></video>
+						<div id="video_cover"></div>
+						<div id="overlay"></div>
+					 <!-- 暂停按钮 -->
+						<!-- <div id="video_controls">
+								<span id="play">
+								  <img src="play.png">
+								</span>
+								<span id="pause">
+								  <img src="pause.png">
+								</span>
+							  </div> -->
+					 
+						<section id="main_content">
+						  <div id="head">
+							<!-- <h1>HTML5轻松实现全屏视频背景-Bideo.js https://www.helloweba.net/javascript/544.html</h1> -->
+							<!-- <p class="sub_head">一个可以轻松添加页面全屏背景视频的Javscript库</p>
+							<p class="info">(稍等片刻，视频加载需要一点点时间.)</p> -->
+						  </div>
+						</section>
+					</div>
+			
+		
+			<div class="menu-wrap">
+					<nav class="menu">
+						<div class="icon-list">
+							<a href="#"><i class="fa fa-fw "></i><span></span></a>
+							<a href="https://Shirtiny.cn"><i class="fa fa-fw "></i><span style="font-size: 20px">☘Blog首页</span></a>
+							<a href><i class="fa fa-fw fa-star-o"></i><span>放映厅</span></a>
+							<a href="#"><i class="fa fa-fw fa-bell-o"></i><span>噪音</span></a>
+							<a href="#"><i class="fa fa-fw fa-envelope-o"></i><span>Messages</span></a>
+							<a href="#"><i class="fa fa-fw fa-comment-o"></i><span>Comments</span></a>
+							<a href="#"><i class="fa fa-fw fa-bar-chart-o"></i><span>Analytics</span></a>
+							<a href="#"><i class="fa fa-fw fa-newspaper-o"></i><span>Reading List</span></a>
+							<a href="#"><i class="fa fa-fw "></i><span></span></a>
+						</div>
+					</nav>
+					<button class="close-button" id="close-button">Close Menu</button>
+					<div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+						<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewbox="0 0 100 800" preserveaspectratio="none">
+							<path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+						</svg>
+					</div>
+				</div>
+				<button class="menu-button" id="open-button">Open Menu</button>
+				
+				<div class="content-wrap" style="background: #fff;">
+				<!-- 视频播放器 -->
+						<!-- <div id="dplayer" style="height:500px;width: 880px" ></div> -->
+				</div>
+
+				
+				
+
+				
+				
+			
+				
+			   
+			   
+			   <script>
+				//    视频背景Js
+				(function () {
+  					var bv = new Bideo();
+  					bv.init({
+    			// Video元素
+    				videoEl: document.querySelector('#background_video'),
+ 
+    			// 容器元素
+    			container: document.querySelector('body'),
+ 
+    			// 自适应调整
+    			resize: true,
+ 
+			    // autoplay: false,
+ 
+    			isMobile: window.matchMedia('(max-width: 768px)').matches,
+				//按钮
+    			// playButton: document.querySelector('#play'),
+    			// pauseButton: document.querySelector('#pause'),
+ 
+  			  // 加载视频源, 根据实际业务更换自己的视频源文件
+    		src: [
+      		{
+        		src: 'http://78.141.206.203/video/fyt_3.mp4',
+        		type: 'video/mp4'
+     		 },
+    		//   {
+    		//     src: 'night.webm',
+    		//     type: 'video/webm;codecs="vp8, vorbis"'
+    		//   }
+    		],
+ 
+    		// 一旦视频加载后即将视频封面隐藏
+    		onLoad: function () {
+      		document.querySelector('#video_cover').style.display = 'none';
+   			 }
+ 			 });
+			}());
+
+				//    dplayer 播放器
+				const dp = new DPlayer({
+				container: document.getElementById('dplayer'),
+				theme: '#b7daff',
+				autoplay: false,
+				preload: 'none',
+				video: {
+					url: 'http://78.141.206.203/video/yyj.mp4',
+					type: 'auto'
+				},
+			});
+			
+				</script>
+				<!-- 导航条js -->
+		<script src="https://shirtiny.cn/js/fyt/classie.js"></script>
+		<script src="https://shirtiny.cn/js/fyt/main4.js"></script>
+	</body>
+</html>
