@@ -121,7 +121,7 @@
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/04/fd52ce16b5d1c6bc402f938d51aebdb6bc115668b71f8702.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/04/2eb763dbe97de3fa4c7c17a980af1d473a25d8d3bd02e4db.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/04/ae7510d73b276d4e98fc8e3838dc085da26df6b37a396232.png">
-<meta property="og:updated_time" content="2019-08-18T13:45:58.234Z">
+<meta property="og:updated_time" content="2019-08-19T07:52:11.859Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="远程连接Linux部署环境">
 <meta name="twitter:description" content="远程连接、Linux环境部署1. 安装工具环境准备： 各种安装包：Xshell Plus 6|Xshell 6、Xftp 5、linux版本的jdk、Linux版本的MySQL、Linux版本的Nginx 现在下载jdk需要登录Oracle：Oracle账号分享  我当时用的账号 用户名：nicabeta@email-wizard.com 密码：MQEemoh3pOsRAn2c4tjh  注册机：">
@@ -498,7 +498,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-18 21:45:58" itemprop="dateModified" datetime="2019-08-18T21:45:58+08:00">2019-08-18</time>
+                <time title="修改时间：2019-08-19 15:52:11" itemprop="dateModified" datetime="2019-08-19T15:52:11+08:00">2019-08-19</time>
               
             
           </span>
@@ -649,7 +649,17 @@
 <p><img src="https://file.moetu.org/images/2019/08/04/ae7510d73b276d4e98fc8e3838dc085da26df6b37a396232.png" alt></p>
 <p>到此JDK安装配置结束。</p>
 <h2 id="3-安装MySQL"><a href="#3-安装MySQL" class="headerlink" title="3. 安装MySQL"></a>3. 安装MySQL</h2><p>。以后装</p>
-<h2 id="4-安装Redis"><a href="#4-安装Redis" class="headerlink" title="4. 安装Redis"></a>4. 安装Redis</h2><p>非关系型数据库</p>
+<h2 id="4-安装Redis"><a href="#4-安装Redis" class="headerlink" title="4. 安装Redis"></a>4. 安装Redis</h2><p>非关系型数据库，Redis是一个开源的使用C语言编写(3万多行代码)，支持网络，可基于内存亦可持久化的日志型，Key-Value数据库，并提供多种语言的API。</p>
+<p><strong>持久化</strong></p>
+<p>Redis是内存数据库，数据都是存储在内存中，为了避免进程退出导致数据的永久丢失，需要定期将Redis中的数据以某种形式（数据或命令）从内存保存到硬盘。</p>
+<blockquote>
+<p>通常，Redis将数据存储于内存中，或被配置为使用虚拟内存。通过两种方式可以实现数据持久化：使用快照（snapshot）的方式，将内存中的数据不断写入磁盘，或使用类似MySQL的binlog日志（aof但并不用于主从同步）方式，记录每次更新的日志。前者性能较高，但是可能会引起一定程度的数据丢失；后者相反。</p>
+</blockquote>
+<p><strong>数据类型</strong></p>
+<p>作为Key-value型存储系统数据库，Redis提供了键（Key）和值（value）映射关系。但是，除了常规的数值或字符串，Redis的键值还可以是以下形式之一，下面为最为常用的数据类型：</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; String 字符串</span><br><span class="line">&gt; Hash 哈希表</span><br><span class="line">&gt; List 列表</span><br><span class="line">&gt; Set 集合</span><br><span class="line">&gt; Sorted set 有序集合</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
 <h3 id="4-1-准备安装包或wget下载"><a href="#4-1-准备安装包或wget下载" class="headerlink" title="4.1. 准备安装包或wget下载"></a>4.1. 准备安装包或wget下载</h3><p><a href="http://download.redis.io/releases/redis-5.0.5.tar.gz" target="_blank" rel="noopener">离线下载</a></p>
 <p>或</p>
 <p>服务器上选个存放安装包的目录，用wget下载</p>
@@ -914,7 +924,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -943,7 +953,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1046,7 +1058,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">43</span>
+                      
+                    
+                    <span class="site-state-item-count">44</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
