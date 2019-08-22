@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
 <meta property="og:description" content="更新视频、音频插件支持             有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。             效果： (function(){var player = new DPlayer({&quot;container&quot;:document.getElement">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-12T07:48:03.876Z">
+<meta property="og:updated_time" content="2019-08-22T04:31:44.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="新增视频播放插件">
 <meta name="twitter:description" content="更新视频、音频插件支持             有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。             效果： (function(){var player = new DPlayer({&quot;container&quot;:document.getElement">
@@ -482,7 +482,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-12 15:48:03" itemprop="dateModified" datetime="2019-08-12T15:48:03+08:00">2019-08-12</time>
+                <time title="修改时间：2019-08-22 12:31:44" itemprop="dateModified" datetime="2019-08-22T12:31:44+08:00">2019-08-22</time>
               
             
           </span>
@@ -539,7 +539,7 @@
           </div>
 
 <p><strong>效果：</strong></p>
-<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://78.141.206.203/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://45.77.226.194/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
 
 <p>这个插件是基于<a href="https://github.com/MoePlayer/DPlayer" target="_blank" rel="noopener">DPlayer</a>的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。</p>
 <a id="more"></a>
@@ -563,7 +563,7 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;</span></span><br><span class="line">&#123;% dplayer  "url=http://78.141.206.203/video/ys.mp4"  "loop=yes"  "theme=#FADFA3"  "autoplay=true"   %&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;</span></span><br><span class="line">&#123;% dplayer  "url=http://45.77.226.194/video/ys.mp4"  "loop=yes"  "theme=#FADFA3"  "autoplay=true"   %&#125;</span><br></pre></td></tr></table></figure>
 
 <p>其实相当于使用<a href="https://github.com/MoePlayer/DPlayer" target="_blank" rel="noopener">DPlayer</a>：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#123;% raw %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"player1"</span> <span class="attr">class</span>=<span class="string">"dplayer"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"dist/DPlayer.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="comment">&lt;!-- use your path --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> dp = <span class="keyword">new</span> DPlayer(&#123;&#123;</span></span><br><span class="line"><span class="javascript">    container: <span class="built_in">document</span>.getElementById(<span class="string">'dplayer'</span>),</span></span><br><span class="line"><span class="javascript">    autoplay: <span class="literal">false</span>,</span></span><br><span class="line"><span class="javascript">    theme: <span class="string">'#FADFA3'</span>,</span></span><br><span class="line"><span class="javascript">    loop: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">    screenshot: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">    hotkey: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">    logo: <span class="string">'logo.png'</span>,</span></span><br><span class="line">    volume: 0.2,</span><br><span class="line"><span class="javascript">    mutex: <span class="literal">true</span>,</span></span><br><span class="line">    video: &#123;</span><br><span class="line"><span class="javascript">        url: <span class="string">'http://78.141.206.203/video/ys.mp4'</span>,</span></span><br><span class="line"><span class="javascript">        pic: <span class="string">''</span>,</span></span><br><span class="line"><span class="javascript">        thumbnails: <span class="string">''</span>,</span></span><br><span class="line"><span class="javascript">        type: <span class="string">'auto'</span></span></span><br><span class="line">    &#125;,</span><br><span class="line">    subtitle: &#123;</span><br><span class="line">     </span><br><span class="line">    &#125;,</span><br><span class="line">    danmaku: &#123;</span><br><span class="line">       </span><br><span class="line">        &#125;,</span><br><span class="line"><span class="javascript">        unlimited: <span class="literal">true</span></span></span><br><span class="line">    &#125;,</span><br><span class="line">    contextmenu: [</span><br><span class="line">        &#123;</span><br><span class="line">           </span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">&#123;% endraw %&#125;</span><br></pre></td></tr></table></figure>
@@ -577,12 +577,12 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% aplayer  "马宿"  "Zelda"  "http://78.141.206.203/music/masu.mp3"  "autoplay" %&#125;</span><br></pre></td></tr></table></figure>
 
 
-        <div id="aplayer-axqVIVnw" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-gDSisteP" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-axqVIVnw"),
+            element: document.getElementById("aplayer-gDSisteP"),
             narrow: false,
             autoplay: true,
             showlrc: false,
@@ -756,9 +756,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
