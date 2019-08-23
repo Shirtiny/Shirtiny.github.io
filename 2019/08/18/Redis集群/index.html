@@ -109,7 +109,7 @@
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/18/c27bd7a4a67a06b1b3d8b23360109629f3ca88d1787c602e.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/18/683bd26643f23fd77fe9ef0d985a635d26957e1d5a50787a.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/18/e1c3380e5314845905a89b66f4c7b1408e30b7f79d730218.png">
-<meta property="og:updated_time" content="2019-08-18T10:34:26.291Z">
+<meta property="og:updated_time" content="2019-08-23T09:29:11.676Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis集群">
 <meta name="twitter:description" content="Redis集群搭建集群描述 Redis集群至少需要奇数个主节点，因为需要投票的方式来确认某一节点的运行状况。每个主节点需要有个备份节点，提高容错。所以，假设有3个主节点，则需要6个节点来完成集群，所以集群最少为6个。">
@@ -469,12 +469,24 @@
                 
               
 
-              <time title="创建时间：2019-08-18 16:30:00 / 修改时间：18:34:26" itemprop="dateCreated datePublished" datetime="2019-08-18T16:30:00+08:00">2019-08-18</time>
+              <time title="创建时间：2019-08-18 16:30:00" itemprop="dateCreated datePublished" datetime="2019-08-18T16:30:00+08:00">2019-08-18</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-23 17:29:11" itemprop="dateModified" datetime="2019-08-23T17:29:11+08:00">2019-08-23</time>
               
             
           </span>
@@ -535,7 +547,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>使用yum之前，记得更新一下yum</span><br><span class="line">yum -y update</span><br><span class="line"><span class="meta">#</span>安装ruby</span><br><span class="line">yum install ruby</span><br><span class="line">yum install rubygems</span><br></pre></td></tr></table></figure>
 
 <p><strong>安装ruby和redis的接口程序</strong></p>
-<p>把<a href="http://78.141.206.203/file/redis-3.0.0.gem" target="_blank" rel="noopener">redis-3.0.0.gem</a>传到服务器，然后拷贝redis-3.0.0.gem至/usr/local文件夹下。</p>
+<p>把<a href="http://server.shirtiny.cn/file/redis-3.0.0.gem" target="_blank" rel="noopener">redis-3.0.0.gem</a>传到服务器，然后拷贝redis-3.0.0.gem至/usr/local文件夹下。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem install /usr/local/redis-3.0.0.gem</span><br></pre></td></tr></table></figure>
 
 <h2 id="集群创建"><a href="#集群创建" class="headerlink" title="集群创建"></a>集群创建</h2><p>因为本人没必要租6个服务器或创建6个虚拟机，这里使用6个Redis实例，同一台服务器用不同的端口表示不同的redis服务器来模拟集群。</p>
@@ -743,7 +755,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -881,7 +893,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">45</span>
+                      
+                    
+                    <span class="site-state-item-count">46</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

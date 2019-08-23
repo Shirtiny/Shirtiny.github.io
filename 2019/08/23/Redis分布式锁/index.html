@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="收藏：Redis实现分布式锁1.前提准备1.1.学习目标 知道什么是分布式锁 知道分布式锁的几种实现方式知道Redis分布式锁原理 学会Lua脚本的编写学学如何执行Lua脚本掌握Redission的使用  1.2.知识准备必须的前置知识包括：  Redis的基本命令** Spring的Java配置方式 JDK中的线程同步方式，例如synchronize关键字，Lock 等**  下列知识如果也会，">
+<meta name="keywords" content="Redis,分布式锁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis分布式锁">
+<meta property="og:url" content="http://Shirtiny.cn/2019/08/23/Redis分布式锁/index.html">
+<meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:description" content="收藏：Redis实现分布式锁1.前提准备1.1.学习目标 知道什么是分布式锁 知道分布式锁的几种实现方式知道Redis分布式锁原理 学会Lua脚本的编写学学如何执行Lua脚本掌握Redission的使用  1.2.知识准备必须的前置知识包括：  Redis的基本命令** Spring的Java配置方式 JDK中的线程同步方式，例如synchronize关键字，Lock 等**  下列知识如果也会，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image1.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image2.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image3.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image4.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image5.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image6.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image7.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image8.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image9.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image10.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image11.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image12.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image13.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image14.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image15.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image16.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image17.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image18.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image19.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image20.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image21.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image22.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image23.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image24.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image25.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image26.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image27.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image28.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image29.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image30.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image31.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image32.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image33.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image34.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image35.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image36.png">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image37.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image38.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image39.jpeg">
+<meta property="og:image" content="http://shirtiny.cn/images/media/image40.jpeg">
+<meta property="og:updated_time" content="2019-08-23T10:37:47.150Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis分布式锁">
+<meta name="twitter:description" content="收藏：Redis实现分布式锁1.前提准备1.1.学习目标 知道什么是分布式锁 知道分布式锁的几种实现方式知道Redis分布式锁原理 学会Lua脚本的编写学学如何执行Lua脚本掌握Redission的使用  1.2.知识准备必须的前置知识包括：  Redis的基本命令** Spring的Java配置方式 JDK中的线程同步方式，例如synchronize关键字，Lock 等**  下列知识如果也会，">
+<meta name="twitter:image" content="http://shirtiny.cn/images/media/image1.jpeg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/08/23/Redis分布式锁/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Redis分布式锁 | ☘(๑•̀ㅂ•́)و✧</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘(๑•̀ㅂ•́)و✧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-放映厅">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/video/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>放映厅</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/08/23/Redis分布式锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis分布式锁
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-23 18:24:02 / 修改时间：18:37:47" itemprop="dateCreated datePublished" datetime="2019-08-23T18:24:02+08:00">2019-08-23</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/收藏/" itemprop="url" rel="index"><span itemprop="name">收藏</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="收藏：Redis实现分布式锁"><a href="#收藏：Redis实现分布式锁" class="headerlink" title="收藏：Redis实现分布式锁"></a>收藏：Redis实现分布式锁</h1><h2 id="1-前提准备"><a href="#1-前提准备" class="headerlink" title="1.前提准备"></a>1.前提准备</h2><h3 id="1-1-学习目标"><a href="#1-1-学习目标" class="headerlink" title="1.1.学习目标"></a>1.1.<strong>学习目标</strong></h3><blockquote>
+<p>知道什么是分布式锁</p>
+<p>知道分布式锁的几种实现方式知道Redis分布式锁原理</p>
+<p>学会Lua脚本的编写学学如何执行Lua脚本掌握Redission的使用</p>
+</blockquote>
+<h3 id="1-2-知识准备"><a href="#1-2-知识准备" class="headerlink" title="1.2.知识准备"></a>1.2.<strong>知识准备</strong></h3><p>必须的前置知识包括：</p>
+<blockquote>
+<p>Redis的基本命令**</p>
+<p>Spring的Java配置方式</p>
+<p>JDK中的线程同步方式，例如synchronize关键字，Lock 等**</p>
+</blockquote>
+<p>下列知识如果也会，听课会更轻松：</p>
+<blockquote>
+<p>SpringBoot基本使用</p>
+<p>SpringDataRedis的基本使用</p>
+<p>zookeeper的使用</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="2-什么是分布式锁"><a href="#2-什么是分布式锁" class="headerlink" title="2.什么是分布式锁"></a>2.什么是分布式锁</h2><p>在讨论分布式锁前，我们先假设一个业务场景：</p>
+<h3 id="2-1-业务场景"><a href="#2-1-业务场景" class="headerlink" title="2.1.业务场景"></a>2.1.<strong>业务场景</strong></h3><p>我们假设一个这样的业务场景：</p>
+<blockquote>
+<p>在电商中，用户购买商品需要扣减商品库存，一般有两种扣减库存方式： 下单减库存</p>
+<p>优点：用户体验好，下单成功，库存直接扣除，用户支付不会出现库存不足情况</p>
+<p>缺点：用户一直不付款，这个商品的库存就会被占用，其他人就无法购买了。支付减库存</p>
+<p>优点：不会导致库存被恶意锁定，对商家有利</p>
+<p>缺点：用户体验不好，用户支付时可能商品库存不足了，会导致用户交易失败</p>
+</blockquote>
+<p>那么，我们一般为了用户体验，会采用下单减库存。但是为了解决下单减库存的缺陷，会创建一个定时 任务，定时去清理超时未支付的订单。</p>
+<p>在这个定时任务中，需要完成的业务步骤主要包括：</p>
+<ol>
+<li><p>查询超时未支付订单，获取订单中商品信息</p>
+</li>
+<li><p>修改这些未支付订单的状态，为已关闭</p>
+</li>
+<li><p>恢复订单中商品扣减的库存</p>
+</li>
+</ol>
+<p>如图：</p>
+<p><img src="../../../../images/media/image1.jpeg" alt>{width=”6.115095144356955in” height=”3.26in”}</p>
+<p>但是，如果我们给订单服务搭建一个100台服务节点的集群，那么就会在同一时刻有100个定时任务触发 并执行，设想一下这样的场景：</p>
+<blockquote>
+<p>订单服务A执行了步骤1，但还没有执行步骤B</p>
+<p>订单服务B执行了步骤1，于是查询到了与订单服务A查询到的一样的数据订单服务A执行步骤2和3，此时订单中对应商品的库存已经恢复了</p>
+<p>订单服务B也执行了步骤2和步骤3，此时订单中对应商品的库存再次被增加</p>
+<p>库存被错误的恢复了多次， 。</p>
+</blockquote>
+<p>就像这样：</p>
+<p><img src="../../../../images/media/image2.jpeg" alt>{width=”6.17472987751531in” height=”3.239374453193351in”}</p>
+<p>因为任务的并发执行，出现了线程安全问题，商品库存被错误的增加了多次，你能想到解决办法吗？</p>
+<h3 id="2-2-为什么需要分布式锁"><a href="#2-2-为什么需要分布式锁" class="headerlink" title="2.2.为什么需要分布式锁"></a>2.2.为什么需要分布式锁</h3><p>对于线程安全问题，我们都很熟悉了，传统的解决方案就是对线程操作资源的代码加锁。如图：</p>
+<p><img src="../../../../images/media/image3.jpeg" alt>{width=”6.13799978127734in” height=”3.96in”}</p>
+<p>理想状态下，加了锁以后，在当前订单服务执行时，其它订单服务需要等待当前订单服务完成业务后才 能执行，这样就避免了线程安全问题的发生。</p>
+<p>但是，这样真的能解决问题吗？ 答案时否定的，为什么呢。</p>
+<h4 id="2-2-1-线程锁"><a href="#2-2-1-线程锁" class="headerlink" title="2.2.1.线程锁"></a>2.2.1.线程锁</h4><p>我们通常使用的synchronized或者Lock都是线程锁，对同一个JVM进程内的多个线程有效。因为锁的本质 是内存中存放一个标记，记录获取锁的线程时谁，<strong>这个标记对每个线程都可见</strong>。</p>
+<blockquote>
+<p>获取锁：就是判断标记中是否已经有线程存在，如果有，则获取锁失败，如果没有，在标记中记录 当前线程</p>
+<p>释放锁：就是删除标记中保存的线程，并唤醒等待队列中的其它线程</p>
+</blockquote>
+<p>因此，锁生效的前提是：</p>
+<blockquote>
+<p>互斥：锁的标记只有一个线程可以获取共享：标记对所有线程可见</p>
+</blockquote>
+<p>然而我们启动的多个订单服务，就是多个JVM，内存中的锁显然是不共享的，每个JVM进程都有自己的 锁，自然无法保证线程的互斥了，如图：</p>
+<p><img src="../../../../images/media/image4.jpeg" alt>{width=”6.1806266404199475in” height=”3.9875in”}</p>
+<p>要解决这个问题，就必须保证各个订单服务能够共享内存中的锁标记，此时，分布式锁就闪亮登场了！</p>
+<h4 id="2-2-2-分布式锁"><a href="#2-2-2-分布式锁" class="headerlink" title="2.2.2.分布式锁"></a>2.2.2.分布式锁</h4><p>线程锁时一个多线程可见的内存标记，保证同一个任务，同一时刻只能被多线程中的某一个执行。但是 这样的锁在分布式系统中，多进程环境下， 就达不到预期的效果了。</p>
+<p><img src="../../../../images/media/image5.jpeg" alt>{width=”6.1075295275590555in” height=”4.5625in”}</p>
+<p>分布式锁实现有多种方式，其原理都基本类似，只要满足下列要求即可：</p>
+<blockquote>
+<p><strong>多进程可见</strong>：多进程可见，否则就无法实现分布式效果</p>
+<p><strong>互斥（）</strong>：同一时刻，只能有一个进程获得锁，执行任务后释放锁可重入（可选）：同一个任务再次获取改锁不会被死锁</p>
+<p>阻塞锁（可选）：获取失败时，具备重试机制，尝试再次获取锁性能好（可选）：效率高，应对高并发场景</p>
+<p>高可用：避免锁服务宕机或处理好宕机的补救措施</p>
+</blockquote>
+<p>常见的分布式锁实现方案包括： 等</p>
+<h2 id="3-Redis实现分布式锁"><a href="#3-Redis实现分布式锁" class="headerlink" title="3.Redis实现分布式锁"></a>3.Redis实现分布式锁</h2><p>按照上面的分析，实现分布是锁要满足五点：多进程可见，互斥，可重入，阻塞，高性能，高可用等。 我们来看看Redis如何满足这些需求。</p>
+<h3 id="3-1-版本1-基本实现"><a href="#3-1-版本1-基本实现" class="headerlink" title="3.1.版本1-基本实现"></a>3.1.版本1-基本实现</h3><p>第一次尝试，我们先关注其中必须满足的2个条件：</p>
+<blockquote>
+<p>多进程可见</p>
+<p>互斥，锁可释放</p>
+</blockquote>
+<ol>
+<li>多进程可见</li>
+</ol>
+<p>首先Redis本身就是基于JVM之外的，因此满足多进程可见的要求。</p>
+<ol start="2">
+<li>互斥</li>
+</ol>
+<p>互斥就是说只能有一个进程获取锁标记，这个我们可以基于Redis的setnx指令来实现。setnx是set when not exits的意思。当多次执行setnx命令时，只有第一次执行的才会成功并返回1，其它情况返回0：</p>
+<p><img src="../../../../images/media/image6.png" alt>{width=”6.15452646544182in” height=”1.9121872265966755in”}</p>
+<p>多个进程来对同一个key执行setnx操作，肯定只有一个能执行成功，其它一定会失败，满足了互斥的需 求。</p>
+<ol start="3">
+<li>释放锁</li>
+</ol>
+<p>释放锁其实只需要把锁的key删除即可，使用del xxx指令。不过，仔细思考，如果在我们执行del之前， 服务突然宕机，那么锁岂不是永远无法删除了？！</p>
+<p>为了避免因服务宕机引起锁无法释放问题，我们可以在获取锁的时候，给锁加一个有效时间，当时间超 出时，就会自动释放锁，这样就不会死锁了。</p>
+<p>但时setnx指令没有设置时间的功能，我们要借助于set指令，然后结合set的 NX和PX参数来完成。</p>
+<p><img src="../../../../images/media/image7.png" alt>{width=”6.120077646544182in” height=”1.3715616797900263in”}</p>
+<blockquote>
+<p>其中可以指定这样几个参数：</p>
+<p>EX：过期时长，单位是秒PX：过期时长，单位是毫秒NX：等同于setnx</p>
+</blockquote>
+<p><img src="../../../../images/media/image8.png" alt>{width=”6.157244094488189in” height=”2.1743744531933507in”}</p>
+<p>因此，获取和释放锁的基本流程如图：</p>
+<p><img src="../../../../images/media/image9.jpeg" alt>{width=”6.160136701662292in” height=”4.308957786526684in”}</p>
+<p>步骤如下：</p>
+<blockquote>
+<p>1、通过set命令设置锁</p>
+<p>2、判断返回结果是否是OK</p>
+</blockquote>
+<ol>
+<li><p>Nil，获取失败，结束或重试（自旋锁）</p>
+</li>
+<li><p>OK，获取锁成功</p>
+</li>
+</ol>
+<blockquote>
+<p>执行业务</p>
+<p>释放锁，DEL 删除key即可</p>
+<p>3、异常情况，服务宕机。超时时间EX结束，会自动释放锁</p>
+</blockquote>
+<h3 id="3-2-版本2-互斥性"><a href="#3-2-版本2-互斥性" class="headerlink" title="3.2.版本2-互斥性"></a>3.2.版本2-互斥性</h3><p>刚才的初级版本中，会有一定的安全问题。</p>
+<p>大家思考一下，释放锁就是用DEL语句把锁对应的key给删除，有没有这么一种可能性：</p>
+<ol>
+<li><p>3个进程：A和B和C，在执行任务，并争抢锁，此时A获取了锁，并设置自动过期时间为10s</p>
+</li>
+<li><p>A开始执行业务，因为某种原因，业务阻塞，耗时超过了10秒，此时锁自动释放了</p>
+</li>
+<li><p>B恰好此时开始尝试获取锁，因为锁已经自动释放，成功获取锁</p>
+</li>
+<li><p>A此时业务执行完毕，执行释放锁逻辑（删除key），于是B的锁被释放了，而B其实还在执行业务</p>
+</li>
+<li><p>此时进程C尝试获取锁，也成功了，因为A把B的锁删除了。</p>
+</li>
+</ol>
+<p>问题出现了：B和C同时获取了锁，违反了互斥性！</p>
+<p>如何解决这个问题呢？我们应该在删除锁之前，判断这个锁是否是自己设置的锁，如果不是（例如自己 的锁已经超时释放），那么就不要删除了。</p>
+<blockquote>
+<p>那么问题来了：<strong>如何得知当前获取锁的是不是自己</strong>呢？</p>
+</blockquote>
+<p>我们可以在set 锁时，存入当前线程的唯一标识！删除锁前，判断下里面的值是不是与自己标识释放一致，如果不一致，说明不是自己的锁，就不要删除了。</p>
+<p>流程如图：</p>
+<p><img src="../../../../images/media/image10.jpeg" alt>{width=”6.123056649168854in” height=”4.335in”}</p>
+<h3 id="3-3-版本3-重入性"><a href="#3-3-版本3-重入性" class="headerlink" title="3.3.版本3-重入性"></a>3.3.版本3-重入性</h3><p>接下来我们来看看分布式锁的第三个特性，重入性。</p>
+<p>如果我们在获取锁以后，执行代码的过程中，再次尝试获取锁，执行setnx肯定会失败，因为锁已经存在 了。这样有可能导致死锁，这样的锁就是<strong>不可重入</strong>的。</p>
+<p>如何解决呢？</p>
+<blockquote>
+<p>当然是想办法改造成<strong>可重入锁</strong>。</p>
+</blockquote>
+<h4 id="3-3-1-重入锁"><a href="#3-3-1-重入锁" class="headerlink" title="3.3.1.重入锁"></a>3.3.1.重入锁</h4><p>什么叫做可重入锁呢？</p>
+<p>可重入锁可以避免因同一线程中多次获取锁而导致死锁发生。</p>
+<p>那么，如何实现可重入锁呢？</p>
+<blockquote>
+<p>获取锁：首先尝试获取锁，如果获取失败，<strong>判断这个锁是否是自己的，如果是则允许再次获取</strong>， 而且必须记录重复获取锁的次数。</p>
+<p>释放锁：释放锁不能直接删除了，因为锁是可重入的，如果锁进入了多次，在最内层直接删除锁， 导致外部的业务在没有锁的情况下执行，会有安全问题。因此必须<strong>获取锁时累计重入的次数，释 放时则减去重入次数，如果减到0，则可以删除锁</strong>.</p>
+</blockquote>
+<p>因此，存储在锁中的信息就必须包含：key、线程标识、重入次数。不能再使用简单的key-value结构， 这里推荐使用hash结构：</p>
+<blockquote>
+<p>key：lock hashKey：线程信息hashValue：重入次数，默认1</p>
+</blockquote>
+<h4 id="3-4-2-流程图"><a href="#3-4-2-流程图" class="headerlink" title="3.4.2.流程图"></a>3.4.2.流程图</h4><p>需要用到的一些Redis命令包括：</p>
+<blockquote>
+<p>EXISTS key：判断一个Key是否存在</p>
+<p>HEXISTS key field：判断一个hash的field是否存在HSET key field value ：给一个hash的field设置一个值</p>
+<p>HINCRBY key field increment：给一个hash的field值增加指定数值EXPIRE key seconds：给一个key设置过期时间</p>
+<p>DEL key：删除指定key</p>
+</blockquote>
+<p>具体流程如图：</p>
+<p><img src="../../../../images/media/image11.png" alt>{width=”6.1191557305336834in” height=”6.7425in”}</p>
+<p>下面我们假设锁的key为” 获取锁的步骤：</p>
+<blockquote>
+<p>1、判断lock是否存在</p>
+</blockquote>
+<p>“，hashKey是当前线程的id：”</p>
+<p>“，锁自动释放时间假设为20</p>
+<blockquote>
+<p>存在，说明有人获取锁了，下面判断是不是自己的锁判断当前线程id作为hashKey是否存在：</p>
+<p>不存在，说明锁已经有了，且不是自己获取的，锁获取失败，end 存在，说明是自己获取的锁，重入次数+1：</p>
+<p>2、不存在，说明可以获取锁，</p>
+</blockquote>
+<p>3、设置锁自动释放时间， 释放锁的步骤：</p>
+<blockquote>
+<p>1、判断当前线程id作为hashKey是否存在：</p>
+<p>不存在，说明锁已经失效，不用管了</p>
+<p>，去到步骤3</p>
+<p>存在，说明锁还在，重入次数减1：</p>
+<p>2、判断重入次数是否为0：</p>
+<p>为0，说明锁全部释放，删除key：</p>
+<p>，获取新的重入次数</p>
+<p>大于0，说明锁还在使用，重置有效时间：</p>
+</blockquote>
+<h3 id="3-4-Lua脚本"><a href="#3-4-Lua脚本" class="headerlink" title="3.4.Lua脚本"></a>3.4.Lua脚本</h3><p>上面探讨的Redis锁实现方案都忽略了一个非常重要的问题：<strong>原子性</strong>问题。无论是获取锁，还是释放锁 的过程，都是有多行Redis指令来完成的，如果不能保证这些Redis命令执行的原子性，则整个过程都是 不安全的。</p>
+<p>而Redis中支持以Lua脚本来运行多行命令，并且保证整个脚本运行的原子性。 接下来，我们分几块来学习Lua脚本的使用：</p>
+<blockquote>
+<p>Redis中如何执行Lua脚本</p>
+<p>Lua脚本的基本语法</p>
+<p>编写上述分布式锁对应的Lua脚本</p>
+</blockquote>
+<h4 id="3-4-1-Redis中如何执行Lua脚本"><a href="#3-4-1-Redis中如何执行Lua脚本" class="headerlink" title="3.4.1.Redis中如何执行Lua脚本"></a>3.4.1.Redis中如何执行Lua脚本</h4><p>与操作Lua相关的命令如下：</p>
+<p>其中我们会用到的几个：</p>
+<p><img src="../../../../images/media/image12.png" alt>{width=”4.520832239720035in” height=”0.8958333333333334in”}</p>
+<p>直接执行一段脚本，参数包括：</p>
+<blockquote>
+<p>script：脚本内容，或者脚本地址</p>
+<p>numkeys：脚本中用到的key的数量，接下来的numkeys个参数会作为key参数，剩下的作为arg参数</p>
+<p>key：作为key的参数，会被存入脚本环境中的KEYS数组，角标从1开始</p>
+<p>arg：其它参数，会被存入脚本环境中的ARGV数组，角标从1开始</p>
+</blockquote>
+<p>示例：</p>
+<blockquote>
+<p>，其中：</p>
+</blockquote>
+<p>：就是脚本的内容，直接返回字符串，没有别的命令</p>
+<blockquote>
+<p><img src="../../../../images/media/image13.png" alt>：就是说没有用key参数，直接返回</p>
+</blockquote>
+<p>效果：</p>
+<p><img src="../../../../images/media/image14.png" alt>{width=”4.416666666666667in” height=”0.90625in”}</p>
+<p><img src="../../../../images/media/image15.png" alt>{width=”5.458332239720035in” height=”0.875in”}</p>
+<p>将一段脚本编译并缓存起来，生成一个SHA1值并返回，作为脚本字典的key，方便下次使用。 参数script就是脚本内容或地址。</p>
+<p>以之前案例中的的脚本为例：</p>
+<p><img src="../../../../images/media/image16.png" alt>{width=”4.510416666666667in” height=”0.9583333333333334in”}</p>
+<p>此处返回的 就是脚本缓存后得到的sha1值。</p>
+<p>在脚本字典中，每一个这样的sha1值，对应一段解析好的脚本：</p>
+<p><img src="../../../../images/media/image17.jpeg" alt>{width=”5.958333333333333in” height=”2.0729166666666665in”}<img src="../../../../images/media/image18.png" alt>{width=”4.666666666666667in” height=”0.8854166666666666in”}</p>
+<p>与EVAL类似，执行一段脚本，区别是通过脚本的sha1值，去脚本缓存中查找，然后执行，参数：</p>
+<blockquote>
+<p>sha1：就是脚本对应的sha1值</p>
+</blockquote>
+<p>我们用刚刚缓存的脚本为例：</p>
+<p><img src="../../../../images/media/image19.png" alt>{width=”5.802083333333333in” height=”0.9583333333333334in”}</p>
+<h4 id="3-4-2-Lua脚本的基本语法"><a href="#3-4-2-Lua脚本的基本语法" class="headerlink" title="3.4.2.Lua脚本的基本语法"></a>3.4.2.Lua脚本的基本语法</h4><p>Lua的详细语法大家可以参考网站上的一些教学，例如： <a href="https://www.runoob.com/lua/lua-tutorial.html" target="_blank" rel="noopener"><strong>[Lua菜鸟教程]{.underline}</strong></a>，任何语言都是从基本的如：变量、数据类型、循环、逻辑判断、运算、数组等入手。相信熟悉java的你应该可以快速上手Lua。</p>
+<p>我们的分布式锁脚本中，主要用到的是对Redis指令的调用，还有些变量声明等。因此我们从这几块入手，看一些简单命令即可：</p>
+<ol>
+<li>变量声明</li>
+</ol>
+<p>声明一个局部变量，用local关键字即可：</p>
+<p>这样的逻辑判断，再加上一</p>
+<ol start="2">
+<li><p>打印结果</p>
+</li>
+<li><p>条件控制</p>
+</li>
+<li><p>循环语句：</p>
+</li>
+</ol>
+<p>注意，使用break可以跳出循环。</p>
+<p>大家能否利用上述语法编写一个猜数字的小游戏？</p>
+<p>提示： 可以用来读取一个用户输入的数字</p>
+<p>代码示例：</p>
+<p><img src="../../../../images/media/image20.png" alt>{width=”4.885415573053368in” height=”2.9791666666666665in”}</p>
+<ol start="5">
+<li>Lua调用Redis指令</li>
+</ol>
+<p>当我们再Redis中允许Lua脚本时，有一个内置变量redis，并且具备两个函数：</p>
+<blockquote>
+<p>redis.call(&quot;命令名称&quot;, 参数1， 参数2 ...) : 执行指定的redis命令，执行遇到错误会直接返回错误</p>
+<p>redis.pcall(&quot;命令名称&quot;, 参数1， 参数2 ...) : 执行指定的redis命令，执行遇到错误会错误以Lua表的形式返回</p>
+</blockquote>
+<p>例如：</p>
+<p>这行Lua脚本的含义就是执行Redis命令：</p>
+<p>不过，我们编写脚本时并不希望把set后面的key和value写死，而是可以由调用脚本的人来指定，把key 和value作为参数传入脚本中执行。</p>
+<p>还记得redis中的EVAL命令吗？</p>
+<p>EVAL执行脚本时可以接受参数，key和arg，并且会用两个内置变量（数组格式）来接受用户传入的key和</p>
+<p>arg参数：</p>
+<blockquote>
+<p>KEYS：用来存放key参数</p>
+<p>ARGV：用来存放除Key以外的参数</p>
+</blockquote>
+<p>我们在脚本中，可以从数组中根据角标（Lua中数组角标时从1开始）取出用户传入的参数，像这样：</p>
+<p>而后，我们在执行脚本时可以动态指定key及需要存放的value值：</p>
+<p><img src="../../../../images/media/image21.png" alt>{width=”6.136999125109361in” height=”1.6149989063867016in”}</p>
+<h4 id="3-4-3-编写分布式锁的Lua脚本"><a href="#3-4-3-编写分布式锁的Lua脚本" class="headerlink" title="3.4.3.编写分布式锁的Lua脚本"></a>3.4.3.编写分布式锁的Lua脚本</h4><p>接下来，我们就可以将上面的分布式锁思路用Lua脚本来实现了。</p>
+<h5 id="1）普通互斥锁"><a href="#1）普通互斥锁" class="headerlink" title="1）普通互斥锁"></a>1）普通互斥锁</h5><p>先看版本2的实现：</p>
+<blockquote>
+<p>获取锁：直接使用客户端的set nx ex 命令即可，无需脚本</p>
+<p>释放锁：因为要判断锁中的标识是否时自己的，因此需要脚本，如下：</p>
+</blockquote>
+<p>参数的含义说明：</p>
+<blockquote>
+<p>KEYS[1]： 就 是 锁 的 key， 比 如 &quot;lock&quot; ARGV[1]：就是线程的唯一标识，可以时随机字符串</p>
+</blockquote>
+<h5 id="2）可重入锁："><a href="#2）可重入锁：" class="headerlink" title="2）可重入锁："></a>2）可重入锁：</h5><p>首先是获取锁：</p>
+<p>然后是释放锁：</p>
+<h3 id="3-5-Redis客户端调用Lua"><a href="#3-5-Redis客户端调用Lua" class="headerlink" title="3.5.Redis客户端调用Lua"></a>3.5.Redis客户端调用Lua</h3><p>脚本编写完成，还需要通过客户端来调用lua脚本，封装一个获取锁和释放锁的工具。 首先我们创建一个工程：</p>
+<p><img src="../../../../images/media/image22.png" alt>{width=”6.12042104111986in” height=”4.25in”}</p>
+<p>填写信息：</p>
+<p><img src="../../../../images/media/image23.png" alt>{width=”6.12041447944007in” height=”4.25in”}</p>
+<p>选择依赖：</p>
+<p><img src="../../../../images/media/image24.png" alt>{width=”6.117843394575678in” height=”3.625in”}</p>
+<p>在配置文件中引入Redis的地址信息：</p>
+<h4 id="3-5-1-锁接口"><a href="#3-5-1-锁接口" class="headerlink" title="3.5.1.锁接口"></a>3.5.1.锁接口</h4><p>首先定义一个锁接口，定义锁中的方法：</p>
+<h4 id="3-5-2-实现类"><a href="#3-5-2-实现类" class="headerlink" title="3.5.2.实现类"></a>3.5.2.实现类</h4><p>我们通过Spring提供的RedisTemplate来操作lua脚本， 脚本：</p>
+<p>中提供了一个方法，用来执行Lua</p>
+<p><img src="../../../../images/media/image25.jpeg" alt>{width=”6.12090113735783in” height=”1.5795833333333333in”}</p>
+<p>包含3个参数：</p>
+<blockquote>
+<p>RedisScript&lt;T&gt; script ：封装了Lua脚本的对象</p>
+<p>List&lt;K&gt; keys ：脚本中的key的值</p>
+<p>Object ... args ：脚本中的参数的值</p>
+</blockquote>
+<p>因此，要执行Lua脚本，我们需要先把脚本封装到象：</p>
+<ol>
+<li>通过RedisScript中的静态方法：</li>
+</ol>
+<p>对象中，有两种方式来构建 对</p>
+<p><img src="../../../../images/media/image26.jpeg" alt>{width=”6.161678696412948in” height=”2.835in”}</p>
+<p>这个方法接受两个参数：</p>
+<blockquote>
+<p>返回值类型</p>
+</blockquote>
+<p>需要把脚本内容写到代码中，作为参数传递，不够优雅。</p>
+<ol start="2">
+<li>自己创建DefaultRedisScript</li>
+</ol>
+<p>另一种方式，就是自己去创建</p>
+<p>的实现类</p>
+<p>的对象：</p>
+<p><img src="../../../../images/media/image27.jpeg" alt>{width=”6.1378707349081365in” height=”1.0420833333333333in”}</p>
+<blockquote>
+<p>可以把脚本文件写到classpath下的某个位置，然后通过加载这个文件来获取脚本内容，并设置给 实例。</p>
+</blockquote>
+<p>此处我们选择方式二，方便后期对脚本文件的维护。首先在classpath中编写两个Lua脚本文件： <img src="../../../../images/media/image28.png" alt>{width=”0.1667432195975503in” height=”0.1667432195975503in”}1556162696842</p>
+<p>然后编写一个新的RedisLock实现：ReentrantRedisLock，利用静态代码块来加载脚本并初始化：</p>
+<p><img src="../../../../images/media/image29.jpeg" alt>{width=”3.46875in” height=”2.6145833333333335in”}</p>
+<p>其中，加载脚本文件的代码如下：</p>
+<p>然后实现RedisLock接口，实现其中的抽象方法，完整代码如下：</p>
+<blockquote>
+<p>/**</p>
+<p>* 存入的线程信息的前缀，防止与其它JVM中线程信息冲突</p>
+<p>*/</p>
+<p>private final String ID_PREFIX = UUID.randomUUID().toString();</p>
+<p>public ReentrantRedisLock(StringRedisTemplate redisTemplate, String key) { this.redisTemplate = redisTemplate;</p>
+<p>this.key = key;</p>
+<p>}</p>
+<p>private static final DefaultRedisScript&lt;Long&gt; LOCK_SCRIPT; private static final DefaultRedisScript&lt;Object&gt; UNLOCK_SCRIPT; static {</p>
+<p>// 加载释放锁的脚本</p>
+<p>LOCK_SCRIPT = new DefaultRedisScript&lt;&gt;(); LOCK_SCRIPT.setScriptSource(new ResourceScriptSource(new</p>
+<p>ClassPathResource(&quot;lock.lua&quot;))); LOCK_SCRIPT.setResultType(Long.class);</p>
+<p>// 加载释放锁的脚本</p>
+<p>UNLOCK_SCRIPT = new DefaultRedisScript&lt;&gt;(); UNLOCK_SCRIPT.setScriptSource(new ResourceScriptSource(new</p>
+<p>ClassPathResource(&quot;unlock.lua&quot;)));</p>
+<p>}</p>
+<p>// 锁释放时间</p>
+<p>private String releaseTime;</p>
+<p>@Override</p>
+<p>public boolean tryLock(long releaseTime) {</p>
+<p>// 记录释放时间</p>
+<p>this.releaseTime = String.valueOf(releaseTime);</p>
+<p>// 执行脚本</p>
+<p>Long result = redisTemplate.execute( LOCK_SCRIPT,</p>
+<p>Collections.singletonList(key),</p>
+<p>ID_PREFIX + Thread.currentThread().getId(), this.releaseTime);</p>
+<p>// 判断结果</p>
+<p>return result != null &amp;&amp; result.intValue() == 1;</p>
+<p>}</p>
+<p>@Override</p>
+<p>public void unlock() {</p>
+<p>// 执行脚本</p>
+<p>redisTemplate.execute(</p>
+<p>UNLOCK_SCRIPT,</p>
+<p>Collections.singletonList(key),</p>
+<p>ID_PREFIX + Thread.currentThread().getId(), this.releaseTime);</p>
+<p>}</p>
+<p>}</p>
+</blockquote>
+<h4 id="3-5-3-获取锁的工厂"><a href="#3-5-3-获取锁的工厂" class="headerlink" title="3.5.3.获取锁的工厂"></a>3.5.3.获取锁的工厂</h4><p>定义一个工厂，用来生成锁对象：</p>
+<h4 id="3-5-4-测试"><a href="#3-5-4-测试" class="headerlink" title="3.5.4.测试"></a>3.5.4.测试</h4><p>我们定义一个定时任务，模拟清理订单的任务：</p>
+<p>接下来，我们给任务加锁：</p>
+<p>将启动项复制2份（或多分），测试锁是否能生效：</p>
+<p><img src="../../../../images/media/image30.png" alt>{width=”2.3854155730533684in” height=”1.59375in”}</p>
+<p>修改第二个启动项的端口，避免冲突</p>
+<p><img src="../../../../images/media/image31.png" alt>{width=”6.144573490813649in” height=”2.096874453193351in”}</p>
+<p><img src="../../../../images/media/image32.jpeg" alt>{width=”6.098069772528434in” height=”1.1906244531933508in”}同时启动2个启动项，查看日志： 第一个服务：</p>
+<p>第二个服务：</p>
+<p><img src="../../../../images/media/image33.jpeg" alt>{width=”6.074061679790026in” height=”1.1549989063867017in”}</p>
+<p>可以看到：</p>
+<blockquote>
+<p>在13:39:50秒时，8081服务获取锁失败，而8082服务获取锁成功在13:40:00秒时，8082服务获取锁失败，而8081服务获取锁成功</p>
+</blockquote>
+<h3 id="3-6-Redis锁的其它特性"><a href="#3-6-Redis锁的其它特性" class="headerlink" title="3.6.Redis锁的其它特性"></a>3.6.Redis锁的其它特性</h3><p>在一开始介绍分布式锁时，我们聊到分布式锁要满足的一些特性：</p>
+<blockquote>
+<p><strong>多进程可见</strong>：多进程可见，否则就无法实现分布式效果</p>
+<p><strong>互斥</strong>：同一时刻，只能有一个进程获得锁，执行任务后释放锁可重入（可选）：同一个任务再次获取改锁不会被死锁</p>
+<p>阻塞锁（可选）：获取失败时，具备重试机制，尝试再次获取锁性能好（可选）：效率高，应对高并发场景</p>
+<p>高可用：避免锁服务宕机或处理好宕机的补救措施</p>
+<p>目前在Redis中我们已经实现了： 多进程可见</p>
+<p>互斥</p>
+<p>可重入</p>
+</blockquote>
+<p>剩下的几个特性也并非不能满足，例如：</p>
+<h4 id="1）阻塞"><a href="#1）阻塞" class="headerlink" title="1）阻塞"></a>1）阻塞</h4><p>我们现在的代码中获取锁失败就立即结束，可以修改代码为失败后不断重试，直到某个指定的超时时间 后才结束。</p>
+<p>// 订阅频道，等待锁被释放通知</p>
+<p>countdownlauch while(true){</p>
+<blockquote>
+<p>// 获取锁，如果超过一定时间，break;</p>
+</blockquote>
+<p>}</p>
+<p>pubsub 发布订阅，</p>
+<h4 id="2）性能好"><a href="#2）性能好" class="headerlink" title="2）性能好"></a>2）性能好</h4><p>Redis一向以出色的读写并发能力著称，因此这一点没有问题</p>
+<h4 id="3）高可用"><a href="#3）高可用" class="headerlink" title="3）高可用"></a>3）高可用</h4><p>单点的redis无法保证高可用，因此一般我们都会给redis搭建主从集群。但是，主从集群无法保证分布式 锁的高可用特性。</p>
+<p>在Redis官网上，也对这种单点故障做了说明：</p>
+<p>因此，Redis的作者又给出了一种新的算法来解决整个高可用问题，即Redlock算法，摘抄了算法的介绍 如下：</p>
+<p>不过，这种方式并不能完全保证锁的安全性，因为我们给锁设置了自动释放时间，因此某些极端特例 下，依然会导致锁的失败，例如下面的情况：</p>
+<p><img src="../../../../images/media/image34.jpeg" alt>{width=”6.139452099737532in” height=”2.376561679790026in”}</p>
+<blockquote>
+<p>如果Client 1 在持有锁的时候，发生了一次很长时间的FGC 超过了锁的过期时间。锁就被释放了。这个时候Client 2 又获得了一把锁，提交数据。</p>
+<p>这个时候Client 1 从FGC 中苏醒过来了，又一次提交数据。冲突发生了</p>
+</blockquote>
+<p>还有一种情况也是因为锁的超时释放问题，例如：</p>
+<blockquote>
+<p>Client 1 从A、B、D、E五个节点中，获取了A、B、C三个节点获取到锁，我们认为他持有了锁这个时候，由于B 的系统时间比别的系统走得快，B就会先于其他两个节点优先释放锁。</p>
+<p>Clinet 2 可以从B、D、E三个节点获取到锁。在整个分布式系统就造成两个Client 同时持有锁了。</p>
+</blockquote>
+<p>不过，这种因为时钟偏移造成的问题，我们可以通过延续超时时间、调整系统时间减少时间偏移等方式 来解决。Redis作者也对超时问题给出了自己的意见：</p>
+<p>简单来说就是在获取锁成功后，监视锁的失效时间，如果即将到期，可以再次去申请续约，延长锁的有 效期。</p>
+<p>我们可以采用看门狗（watch dog)解决锁超时问题，/开启一个任务，这个任务在 获取锁之后10秒后，重新向redis发起请求，重置有效期，重新执行expire</p>
+<h3 id="3-7-Redission"><a href="#3-7-Redission" class="headerlink" title="3.7.Redission"></a>3.7.Redission</h3><p>如果按照Redlock算法来实现分布式锁，加上各种安全控制，代码会比较复杂。而开源的Redission框架 就帮我们实现了各种基于Redis的分布式锁，包括Redlock锁。</p>
+<blockquote>
+<p><img src="../../../../images/media/image35.png" alt>{width=”5.679721128608924in” height=”0.8232983377077865in”}Redisson是一个在Redis的基础上实现的Java驻内存数据网格（In-Memory Data Grid）。它不仅提供了一系列的分布式的Java常用对象，还提供了许多分布式服务。其中包括( BitSet , Set , Multimap , SortedSet , Map , List , Queue , BlockingQueue , Deque , BlockingDeque , Semaphore , Lock , AtomicLong , CountDownLatch , Publish / Subscribe , Bloom filter , Remote service , Spring cache , Executor service , Live Object service , Scheduler service ) Redisson提供了使用Redis的最简单和最便捷的方法。Redisson的宗旨是促进使用者对Redis的关注分离（Separation of Concern），从而让使用者能够将精力更集中地放在处理业务逻辑上。</p>
+<p><a href="https://redisson.org/" target="_blank" rel="noopener"><strong>[官网地址]{.underline}</strong></a>： <a href="https://redisson.org/" target="_blank" rel="noopener"><strong>[https://redisson.or]{.underline}g/</strong></a></p>
+<p><a href="https://github.com/redisson/redisson" target="_blank" rel="noopener"><strong>[GitHub地址]{.underline}</strong></a>： <a href="https://github.com/redisson/redisson" target="_blank" rel="noopener"><strong>[https://]{.underline}gi[thub.com/redisson/redisson]{.underline}</strong></a></p>
+</blockquote>
+<p>看看Redission能实现的功能：</p>
+<p><img src="../../../../images/media/image36.png" alt>{width=”5.541665573053368in” height=”2.7916666666666665in”}</p>
+<h4 id="3-7-1-快速入门"><a href="#3-7-1-快速入门" class="headerlink" title="3.7.1.快速入门"></a>3.7.1.快速入门</h4><h5 id="1）依赖"><a href="#1）依赖" class="headerlink" title="1）依赖"></a>1）依赖</h5><p>使用起来非常方便，首先引入依赖：</p>
+<h5 id="2）配置"><a href="#2）配置" class="headerlink" title="2）配置"></a>2）配置</h5><p>然后通过Java配置的方式，设置Redis的地址，构建RedissionClient客户端：</p>
+<h5 id="3）常用API介绍："><a href="#3）常用API介绍：" class="headerlink" title="3）常用API介绍："></a>3）常用API介绍：</h5><p>RedissClient中定义了常见的锁：</p>
+<p><img src="../../../../images/media/image37.jpeg" alt>{width=”5.541666666666667in” height=”2.0208333333333335in”}</p>
+<p>获取锁对象后，可以通过 方法获取锁：</p>
+<p><img src="../../../../images/media/image38.jpeg" alt>{width=”6.109687226596676in” height=”1.28625in”}</p>
+<p>有3个重载的方法，可以控制锁是否需要重试来获取：</p>
+<blockquote>
+<p>三个参数：获取锁，设置锁等待时间</p>
+<p>、释放时间</p>
+<p>，时间单位 。</p>
+<p>如果获取锁失败后，会在</p>
+<p>然获取失败，则认为获取锁失败；</p>
+<p>减去获取锁用时的剩余时间段内继续尝试获取锁，如果依</p>
+<p>获取锁后，如果超过 leaseTime 未释放，为避免死锁会自动释放。</p>
+<p>两个参数：获取锁，设置锁等待时间 time 、时间单位</p>
+<p>。释放时间</p>
+<p>按照默认的30s</p>
+<p>空参：获取锁，</p>
+<p>默认0s，即获取锁失败不重试，</p>
+<p>默认30s</p>
+</blockquote>
+<p>任务执行完毕，使用 方法释放锁：</p>
+<p><img src="../../../../images/media/image39.jpeg" alt>{width=”3.302082239720035in” height=”1.03125in”}</p>
+<h5 id="4）完整案例"><a href="#4）完整案例" class="headerlink" title="4）完整案例"></a>4）完整案例</h5><p>使用Redission来代替我们之前自定义锁的测试案例：</p>
+<p><img src="../../../../images/media/image40.jpeg" alt>{width=”6.154997812773403in” height=”4.420311679790026in”}</p>
+<p>代码如下：</p>
+<h4 id="3-7-2-Redisson实现细节"><a href="#3-7-2-Redisson实现细节" class="headerlink" title="3.7.2.Redisson实现细节"></a>3.7.2.Redisson实现细节</h4><p>首先看空参获取lock的方法：</p>
+<p>这里的核心有两部分：</p>
+<blockquote>
+<p>一个是获取锁的方法：tryLockInnerAsync</p>
+<p>一个是自动续期（看门狗）的方法：scheduleExpirationRenewal</p>
+</blockquote>
+<h5 id="1）获取锁"><a href="#1）获取锁" class="headerlink" title="1）获取锁"></a>1）获取锁</h5><p>首先看tryLockInnerAsync，这个方法是获取锁的方法：</p>
+<p>这里的核心就是这段Lua脚本，看看与我们写的是不是基本类似呢，区别是最后返回了这个key的剩余有 效期。</p>
+<h5 id="2）锁的自动续期"><a href="#2）锁的自动续期" class="headerlink" title="2）锁的自动续期"></a>2）锁的自动续期</h5><p>锁如果在执行任务时自动过期，就会引起各种问题， 因此我们需要在锁过期前自动申请续期，这个被称为watch dog，看门狗。</p>
+<p>刷新时间的代码：</p>
+<p>刷新过期时间的代码：</p>
+<h5 id="3）带阻塞的获取锁"><a href="#3）带阻塞的获取锁" class="headerlink" title="3）带阻塞的获取锁"></a>3）带阻塞的获取锁</h5><p>阻塞获取锁，会在获取失败以后重试，不过会设置失败超时时间。</p>
+<blockquote>
+<p>waitTime：获取锁重试的最大超时时间，默认为0</p>
+<p>leaseTime：释放锁的最大时间，默认时30秒unit：时间单位</p>
+</blockquote>
+<p>代码如下：</p>
+<blockquote>
+<p>});</p>
+<p>}</p>
+<p>acquireFailed(threadId); return false;</p>
+<p>}</p>
+<p>// 如果获取到订阅消息，说明锁已经释放，可以重试</p>
+<p>try {</p>
+<p>time -= System.currentTimeMillis() - current; if (time &lt;= 0) {</p>
+<p>acquireFailed(threadId); return false;</p>
+<p>}</p>
+<p>// 循环重试获取锁</p>
+<p>while (true) {</p>
+<p>long currentTime = System.currentTimeMillis(); ttl = tryAcquire(leaseTime, unit, threadId);</p>
+<p>// lock acquired if (ttl == null) {</p>
+<p>return true;</p>
+<p>}</p>
+<p>time -= System.currentTimeMillis() - currentTime; if (time &lt;= 0) {</p>
+<p>acquireFailed(threadId); return false;</p>
+<p>}</p>
+<p>// waiting for message</p>
+<p>currentTime = System.currentTimeMillis(); if (ttl &gt;= 0 &amp;&amp; ttl &lt; time) {</p>
+<p>getEntry(threadId).getLatch().tryAcquire(ttl, TimeUnit.MILLISECONDS);</p>
+<p>} else {</p>
+<p>getEntry(threadId).getLatch().tryAcquire(time, TimeUnit.MILLISECONDS);</p>
+<p>}</p>
+<p>time -= System.currentTimeMillis() - currentTime; if (time &lt;= 0) {</p>
+<p>acquireFailed(threadId); return false;</p>
+<p>}</p>
+<p>}</p>
+<p>} finally {</p>
+<p>unsubscribe(subscribeFuture, threadId);</p>
+<p>}</p>
+<p>}</p>
+</blockquote>
+<p>获取锁失败，会通过Redis的pubsub功能订阅一个频道，如果释放锁会通知自己，然后再重试获取锁。</p>
+<h5 id="4）释放锁"><a href="#4）释放锁" class="headerlink" title="4）释放锁"></a>4）释放锁</h5><p>释放锁代码基本一致：</p>
+<p>下面跟到unlockAsync方法：</p>
+<p>然后关键是释放锁的代码：</p>
+<p>代码基本一致，就是再最后释放成功后，通过</p>
+<p>知锁已经释放，那些再等待的其它线程，就可以获取锁了。</p>
+<p>发布了一条消息，通</p>
+<h3 id="3-8-总结"><a href="#3-8-总结" class="headerlink" title="3.8.总结"></a>3.8.总结</h3><p>总结来看，Redis实现分布式锁，具备下列优缺点：</p>
+<blockquote>
+<p>优点：实现简单，性能好，并发能力强，如果对并发能力有要求，推荐使用</p>
+<p>缺点：可靠性有争议，极端情况会出现锁失效问题，如果对安全要求较高，不建议使用</p>
+</blockquote>
+<h2 id="zookeeper实现分布式锁"><a href="#zookeeper实现分布式锁" class="headerlink" title="zookeeper实现分布式锁"></a>zookeeper实现分布式锁</h2><p>Zookeeper是一种提供配置管理、分布式协同以及命名的中心化服务。</p>
+<p>zk的模型是这样的：zk包含一系列的节点，叫做znode，就好像文件系统一样每个znode表示一个目录， 然后znode有一些特性：</p>
+<blockquote>
+<p><strong>有序节点</strong>：假如当前有一个父节点为 ，我们可以在这个父节点下面创建子节点；</p>
+<p>zookeeper提供了一个可选的有序特性，例如我们可以创建子节点”/lock/node-“并且指明有序，那 么zookeeper在生成子节点时会根据当前的子节点数量自动添加整数序号</p>
+<p>也就是说，如果是第一个创建的子节点，那么生成的子节点为 ，下一个节</p>
+<p>点则为 ，依次类推。</p>
+<p><strong>临时节点</strong>：客户端可以建立一个临时节点，在会话结束或者会话超时后，zookeeper会自动删除该 节点。</p>
+<p><strong>事件监听</strong>：在读取数据时，我们可以同时对节点设置事件监听，当节点数据或结构变化时，</p>
+<p>zookeeper会通知客户端。当前zookeeper有如下四种事件：</p>
+<p>节点创建节点删除</p>
+<p>节点数据修改子节点变更</p>
+</blockquote>
+<p>基于以上的一些zk的特性，我们很容易得出使用zk实现分布式锁的落地方案：</p>
+<ol>
+<li><p>使用zk的临时节点和有序节点，每个线程获取锁就是在zk创建一个临时有序的节点，比如在/lock/ 目录下。</p>
+</li>
+<li><p>创建节点成功后，获取/lock目录下的所有临时节点，再判断当前线程创建的节点是否是所有的节 点的序号最小的节点</p>
+</li>
+<li><p>如果当前线程创建的节点是所有节点序号最小的节点，则认为获取锁成功。</p>
+</li>
+<li><p>如果当前线程创建的节点不是所有节点序号最小的节点，则对节点序号的前一个节点添加一个事 件监听。</p>
+</li>
+</ol>
+<p>比如当前线程获取到的节点序号为</p>
+<p>,则对</p>
+<blockquote>
+<p>,然后所有的节点列表为</p>
+<p>这个节点添加一个事件监听器。</p>
+</blockquote>
+<p>如果锁释放了，会唤醒下一个序号的节点，然后重新执行第3步，判断是否自己的节点序号是最小。</p>
+<p>比如 释放了，</p>
+<p>监听到时间，此时节点集合为</p>
+<p>,则 为最</p>
+<p>小序号节点，获取到锁。</p>
+<p>Curator是一个zookeeper的开源客户端，也提供了分布式锁的实现。 来看看锁的一些特性Zookeeper是否满足：</p>
+<blockquote>
+<p>互斥：因为只有一个最小节点，满足互斥特性</p>
+<p>锁释放：使用Zookeeper可以有效的解决锁无法释放的问题，因为在创建锁的时候，客户端会在ZK 中创建一个临时节点，一旦客户端获取到锁之后突然挂掉（Session连接断开），那么这个临时节 点就会自动删除掉。其他客户端就可以再次获得锁。</p>
+<p>阻塞锁：使用Zookeeper可以实现阻塞的锁，客户端可以通过在ZK中创建顺序节点，并且在节点上 绑定监听器，一旦节点有变化，Zookeeper会通知客户端，客户端可以检查自己创建的节点是不是 当前所有节点中序号最小的，如果是，那么自己就获取到锁，便可以执行业务逻辑了。</p>
+<p>可重入：使用Zookeeper也可以有效的解决不可重入的问题，客户端在创建节点的时候，把当前客 户端的主机信息和线程信息直接写入到节点中，下次想要获取锁的时候和当前最小的节点中的数据 比对一下就可以了。如果和自己的信息一样，那么自己直接获取到锁，如果不一样就再创建一个临 时的顺序节点，参与排队。</p>
+<p>高可用：使用Zookeeper可以有效的解决单点问题，ZK是集群部署的，只要集群中有半数以上的机 器存活，就可以对外提供服务。</p>
+<p>高性能：Zookeeper集群是满足强一致性的，因此就会牺牲一定的性能，与Redis相比略显不足</p>
+</blockquote>
+<p>总结：</p>
+<blockquote>
+<p>优点：使用非常简单，不用操心释放问题、阻塞获取问题缺点：性能比Redis稍差一些</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>分布式锁释放方式多种多样，每种方式都有自己的优缺点，我们应该根据业务的具体需求，先择合适的 实现。</p>
+<p>Redis实现：实现比较简单，性能最高，但是可靠性难以维护</p>
+<p>Zookeeper实现：实现最简单，可靠性最高，性能比redis略低</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag">#^_^#Redis</a>
+          
+            <a href="/tags/分布式锁/" rel="tag">#^_^#分布式锁</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/23/solr-tomcat/" rel="next" title="solr-tomcat集成">
+                <i class="fa fa-chevron-left"></i> solr-tomcat集成
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#收藏：Redis实现分布式锁"><span class="nav-text">收藏：Redis实现分布式锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-前提准备"><span class="nav-text">1.前提准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-学习目标"><span class="nav-text">1.1.学习目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-知识准备"><span class="nav-text">1.2.知识准备</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-什么是分布式锁"><span class="nav-text">2.什么是分布式锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-业务场景"><span class="nav-text">2.1.业务场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-为什么需要分布式锁"><span class="nav-text">2.2.为什么需要分布式锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-线程锁"><span class="nav-text">2.2.1.线程锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-分布式锁"><span class="nav-text">2.2.2.分布式锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Redis实现分布式锁"><span class="nav-text">3.Redis实现分布式锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-版本1-基本实现"><span class="nav-text">3.1.版本1-基本实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-版本2-互斥性"><span class="nav-text">3.2.版本2-互斥性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-版本3-重入性"><span class="nav-text">3.3.版本3-重入性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-重入锁"><span class="nav-text">3.3.1.重入锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-流程图"><span class="nav-text">3.4.2.流程图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-Lua脚本"><span class="nav-text">3.4.Lua脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-Redis中如何执行Lua脚本"><span class="nav-text">3.4.1.Redis中如何执行Lua脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-Lua脚本的基本语法"><span class="nav-text">3.4.2.Lua脚本的基本语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-3-编写分布式锁的Lua脚本"><span class="nav-text">3.4.3.编写分布式锁的Lua脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）普通互斥锁"><span class="nav-text">1）普通互斥锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）可重入锁："><span class="nav-text">2）可重入锁：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-Redis客户端调用Lua"><span class="nav-text">3.5.Redis客户端调用Lua</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-1-锁接口"><span class="nav-text">3.5.1.锁接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-实现类"><span class="nav-text">3.5.2.实现类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-3-获取锁的工厂"><span class="nav-text">3.5.3.获取锁的工厂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-4-测试"><span class="nav-text">3.5.4.测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-Redis锁的其它特性"><span class="nav-text">3.6.Redis锁的其它特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1）阻塞"><span class="nav-text">1）阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2）性能好"><span class="nav-text">2）性能好</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3）高可用"><span class="nav-text">3）高可用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-Redission"><span class="nav-text">3.7.Redission</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-1-快速入门"><span class="nav-text">3.7.1.快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）依赖"><span class="nav-text">1）依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）配置"><span class="nav-text">2）配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）常用API介绍："><span class="nav-text">3）常用API介绍：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4）完整案例"><span class="nav-text">4）完整案例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-Redisson实现细节"><span class="nav-text">3.7.2.Redisson实现细节</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）获取锁"><span class="nav-text">1）获取锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）锁的自动续期"><span class="nav-text">2）锁的自动续期</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）带阻塞的获取锁"><span class="nav-text">3）带阻塞的获取锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4）释放锁"><span class="nav-text">4）释放锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-总结"><span class="nav-text">3.8.总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zookeeper实现分布式锁"><span class="nav-text">zookeeper实现分布式锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1566555842000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+
+<!--音乐播放器
+<link rel="stylesheet" href="/APlayer/APlayer.min.css">
+<div  id="aplayer"></div>
+<script type="text/javascript" src="/APlayer/APlayer.min.js"></script>
+<script type="text/javascript" src="/APlayer/music.js"></script>
+ -->
+ 
+</body>
+</html>
