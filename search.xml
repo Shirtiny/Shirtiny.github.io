@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[solr-tomcat集成]]></title>
+    <url>%2F2019%2F08%2F23%2Fsolr-tomcat%2F</url>
+    <content type="text"><![CDATA[将solr从Jetty转到Tomcat 复制一份tomcat，然后再solr根目录的同级目录新建一个文件夹用于存放集成后的solr，自定义名字solr_home 修改apache-tomcat-8.5.37\conf\server.xml，修改tomcat涉及的端口号，这里可以都加1 123&lt;Server port="8006" shutdown="SHUTDOWN"&gt;&lt;Connector connectionTimeout="20000" port="8081" protocol="HTTP/1.1" redirectPort="8443"/&gt; &lt;Connector port="8010" protocol="AJP/1.3" redirectPort="8443"/&gt; 若已经配置了tomcat的环境变量，需要编辑bin/startup.bat，将if not “%CATALINA_HOME%” == “” goto gotHome注释掉( 前面加rem是注释)： 1REM if not "%CATALINA_HOME%" == "" goto gotHome 参考： 默认启动其他tomcat的问题 Rem注释 在solr_home文件夹下，新建logs文件夹，然后修改Tomcat\bin下的catalina.bat，增加solr.log.dir系统变量，指定solr日志记录存放地址。 在set “JAVA_OPTS=%JAVA_OPTS% %JSSE_OPTS%”这句下，新增： 1set "JAVA_OPTS=%JAVA_OPTS% -Dsolr.log.dir=D:\SolrRepo\solr_home\logs" solr.log.dir的值为刚刚新建的logs文件夹的绝对路径。 把solr-8.0.0目录下的server/solr-webapp/webapps放置到tomcat/webapp的目录下，重命名为solr。 将solr-8.0.0\server\lib\ext下的所有jar包拷贝到tomcat里的webapps\solr\WEB-INF\lib 将solr-8.0.0\server\lib下 除jetty以外的jar拷贝到tomcat里的webapps\solr\WEB-INF\lib 将solr-8.0.0\dist下 jar包也拷贝到tomcat里的webapps\solr\WEB-INF\lib 在tomcat里的webapps\solr\WEB-INF下创建classes文件夹，将solr/server/resources下的配置文件拷贝到新建的classes文件夹里 把solr-8.0.0 里面的solr文件夹下全部的内容放入solr_home文件夹内（相当于复制一份solr文件夹，然后改名为solr_home ） 把solr-8.0.0下contrib和dist文件夹也拷贝至solr_home目录下 在solr_home目录下新建new_core文件夹；并拷贝solr-8.0.0\server\solr\configsets\_default目录下conf文件夹至SolrHome\new_core下。 修改solr-home\new_core\conf\solrconfig.xml文件下的对应内容为：(改一下相对路径) 12345678910111213&lt;lib dir="$&#123;solr.install.dir:../&#125;/contrib/extraction/lib" regex=".*\.jar" /&gt; &lt;lib dir="$&#123;solr.install.dir:../&#125;/dist/" regex="solr-cell-\d.*\.jar" /&gt; &lt;lib dir="$&#123;solr.install.dir:../&#125;/contrib/clustering/lib/" regex=".*\.jar" /&gt; &lt;lib dir="$&#123;solr.install.dir:../&#125;/dist/" regex="solr-clustering-\d.*\.jar" /&gt; &lt;lib dir="$&#123;solr.install.dir:../&#125;/contrib/langid/lib/" regex=".*\.jar" /&gt; &lt;lib dir="$&#123;solr.install.dir:../&#125;/dist/" regex="solr-langid-\d.*\.jar" /&gt; &lt;lib dir="$&#123;solr.install.dir:../&#125;/contrib/velocity/lib" regex=".*\.jar" /&gt; &lt;lib dir="$&#123;solr.install.dir:../&#125;/dist/" regex="solr-velocity-\d.*\.jar" /&gt; &lt;lib dir="$&#123;solr.install.dir:../&#125;/dist/" regex="ojdbc\d.*\.jar" /&gt; &lt;lib dir="$&#123;solr.install.dir:../&#125;/dist/" regex="solr-dataimporthandler\d.*\.jar" /&gt; 最后solr_home的文件夹内容： 配置tomcat→webApp→solr→WEB_INF下的web.xml，添加配置（指定solr数据源的位置）： 123456&lt;env-entry&gt; &lt;env-entry-name&gt;solr/home&lt;/env-entry-name&gt; &lt;!--这里填你建的solr_home文件夹的绝对路径 --&gt; &lt;env-entry-value&gt;D:\SolrRepo\solr_home&lt;/env-entry-value&gt; &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt; &lt;/env-entry&gt; 然后把 &lt;1security-constraint&gt;整个注释掉,目的是防止tomcat 403问题 1234567891011121314151617 &lt;!-- &lt;security-constraint&gt; &lt;web-resource-collection&gt; &lt;web-resource-name&gt;Disable TRACE&lt;/web-resource-name&gt; &lt;url-pattern&gt;/&lt;/url-pattern&gt; &lt;http-method&gt;TRACE&lt;/http-method&gt; &lt;/web-resource-collection&gt; &lt;auth-constraint/&gt; &lt;/security-constraint&gt; &lt;security-constraint&gt; &lt;web-resource-collection&gt; &lt;web-resource-name&gt;Enable everything but TRACE&lt;/web-resource-name&gt; &lt;url-pattern&gt;/&lt;/url-pattern&gt; &lt;http-method-omission&gt;TRACE&lt;/http-method-omission&gt; &lt;/web-resource-collection&gt; &lt;/security-constraint&gt;--&gt; 添加ik中文分词器ik分词器jar包 将下载好的jar包放入Tomcat 8.5/webapps/solr/WEB-INF/lib目录中 打开solr_home/new_core/conf目录中的managed-schema文件，添加如下代码： 1234567891011&lt;!-- ik分词器 --&gt; &lt;fieldType name="text_ik" class="solr.TextField"&gt; &lt;analyzer type="index"&gt; &lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory" useSmart="false" conf="ik.conf"/&gt; &lt;filter class="solr.LowerCaseFilterFactory"/&gt; &lt;/analyzer&gt; &lt;analyzer type="query"&gt; &lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory" useSmart="true" conf="ik.conf"/&gt; &lt;filter class="solr.LowerCaseFilterFactory"/&gt; &lt;/analyzer&gt; &lt;/fieldType&gt; 在界面Analysis的Analyse Fieldname / FieldType:中选text_ik即可使用。 参考文章： https://blog.csdn.net/weixin_42613538/article/details/89516198 https://blog.csdn.net/ailian_f/article/details/89407754 https://blog.csdn.net/l1336037686/article/details/80723636]]></content>
+      <categories>
+        <category>学习经验</category>
+      </categories>
+      <tags>
+        <tag>solr</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[solr]]></title>
+    <url>%2F2019%2F08%2F23%2Fsolr%2F</url>
+    <content type="text"><![CDATA[Solr专栏https://space.bilibili.com/437629430/article 01. 02. 03. 04. 05. 06 07 08 09]]></content>
+      <categories>
+        <category>收藏</category>
+      </categories>
+      <tags>
+        <tag>solr</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[千 与 千寻的神隐]]></title>
     <url>%2F2019%2F08%2F22%2F%E5%8D%83%E4%B8%8E%E5%8D%83%E5%AF%BB%E7%9A%84%E7%A5%9E%E9%9A%90%2F</url>
-    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-WDPPcYyP"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://45.77.226.194/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
+    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-iSuipRAw"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://45.77.226.194/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
       <categories>
         <category>闲谈</category>
       </categories>
@@ -26,7 +48,7 @@
   <entry>
     <title><![CDATA[Vue基础]]></title>
     <url>%2F2019%2F08%2F19%2FVue2%2F</url>
-    <content type="text"><![CDATA[Vue Vue生命周期&amp;Hook回调函数 beforeCreate、Created等是钩子回调的函数，通过这些函数，我们可以指定在Vue生命周期的某一阶段做一些事情。 回调函数示例 1234567891011121314const app =new Vue(&#123; el:'#id', data:obj, methods:&#123;...&#125;, //回调函数 beforeCreate:function()&#123;...&#125;, mounted:function()&#123;...&#125; ...&#125;) //其中，data的obj对象为。data可以是对象。 const obj=&#123; count:0, i:'haha' &#125; 指令 v-once：执行一次后，内容不再随数据的变化再改变。 v-html：对内容进行html解析渲染 v-pre：不对内容进行任何解析 v-cloak：斗篷，vuejs生效前保留v-cloak，vuejs生效后删除所有v-cloak属性，可以用css控制v-cloak来达成我们的目的，比如当vuejs延迟加载的时候，不让用户看到未被vuejs渲染的源码内容。 v-text：如v-text=”message”，把message数据作为字符串显示，会覆盖掉原本的内容 v-one:如v-on:click=”message”，监听某个事件 V-bind动态的绑定特殊意义的属性，如a标签的href，img标签的src，还有class等，动态绑定数据。 简写为：:，是语法糖。 静态实例1234567891011121314151617181920212223&lt;div id="app"&gt; &lt;h1&gt;v-bind指令&lt;/h1&gt; &lt;a v-bind:href="aURL"&gt;blog&lt;/a&gt; &lt;img v-bind:src="imgURL"&gt;&lt;br&gt; v-bind简写:&lt;img :src="imgURL"&gt;&lt;/div&gt; &lt;script&gt; //url对象 const url=&#123; aURL:"http://shirtiny.cn",imgURL:"https://file.moetu.org/images/2019/08/20/b46b2347f21fd46f60baf163a57da47c2b17554146847392.png" &#125;; const app=new Vue(&#123; el:'#app',//挂载 data:url//数据对象 &#125;) &lt;/script&gt; 绑定class的实例对象： 12345678910111213141516171819202122232425262728293031323334&lt;style&gt; .red&#123; color: red; &#125; .line&#123; text-decoration: underline; &#125;&lt;/style&gt;&lt;div id="app"&gt; &lt;!--&lt;h1 class="class" v-bind:class="&#123;key1:value,key2:value&#125;"&gt;v-bind指令&lt;/h1&gt;--&gt; &lt;p class="class" v-bind:class="&#123;red:isRed,line:isLine&#125;"&gt;v-bind指令&lt;/p&gt;&lt;br&gt; &lt;!-- 原class与v-bind:class可以共存，它们会在被渲染时合并（2+1=3）不会覆盖 --&gt; &lt;button v-on:click="changeRed"&gt;切换颜色&lt;/button&gt; &lt;button v-on:click="changeLine"&gt;下划线&lt;/button&gt;&lt;/div&gt; &lt;script&gt; const app=new Vue(&#123; el:'#app',//挂载 data:&#123;//class状态 isRed:true, isLine:false &#125;, methods:&#123; changeRed:function () &#123; this.isRed=!this.isRed//在true和false之间切换 &#125;, changeLine:function () &#123; this.isLine=!this.isLine &#125; &#125; &#125;) &lt;/script&gt; 对象用｛｝括起来，是key：value的形式，{key1:value,key2:value} 原class与v-bind:class可以共存，它们会在被渲染时合并（2+1=3）不会覆盖]]></content>
+    <content type="text"><![CDATA[Vue Vue生命周期&amp;Hook回调函数 beforeCreate、Created等是钩子回调的函数，通过这些函数，我们可以指定在Vue生命周期的某一阶段做一些事情。 回调函数示例 1234567891011121314const app =new Vue(&#123; el:'#id', data:obj, methods:&#123;...&#125;, //回调函数 beforeCreate:function()&#123;...&#125;, mounted:function()&#123;...&#125; ...&#125;) //其中，data的obj对象为。data可以是对象。 const obj=&#123; count:0, i:'haha' &#125; 指令 v-once：执行一次后，内容不再随数据的变化再改变。 v-html：对内容进行html解析渲染 v-pre：不对内容进行任何解析 v-cloak：斗篷，vuejs生效前保留v-cloak，vuejs生效后删除所有v-cloak属性，可以用css控制v-cloak来达成我们的目的，比如当vuejs延迟加载的时候，不让用户看到未被vuejs渲染的源码内容。 v-text：如v-text=”message”，把message数据作为字符串显示，会覆盖掉原本的内容 v-one:如v-on:click=”message”，监听某个事件 V-bind动态的绑定特殊意义的属性，如a标签的href，img标签的src，还有class等，动态绑定数据。 简写为：:，是语法糖。 静态实例1234567891011121314151617181920212223&lt;div id="app"&gt; &lt;h1&gt;v-bind指令&lt;/h1&gt; &lt;a v-bind:href="aURL"&gt;blog&lt;/a&gt; &lt;img v-bind:src="imgURL"&gt;&lt;br&gt; v-bind简写:&lt;img :src="imgURL"&gt;&lt;/div&gt; &lt;script&gt; //url对象 const url=&#123; aURL:"http://shirtiny.cn",imgURL:"https://file.moetu.org/images/2019/08/20/b46b2347f21fd46f60baf163a57da47c2b17554146847392.png" &#125;; const app=new Vue(&#123; el:'#app',//挂载 data:url//数据对象 &#125;) &lt;/script&gt; 如绑定class、style的实例对象： 1234567891011121314151617181920212223242526272829303132333435363738394041424344&lt;style&gt; .red&#123; color: red; &#125; .line&#123; text-decoration: underline; &#125;&lt;/style&gt;&lt;div id="app"&gt; &lt;!--&lt;h1 class="class" v-bind:class="&#123;key1:value,key2:value&#125;"&gt;v-bind指令&lt;/h1&gt;--&gt; &lt;p class="class" v-bind:class="&#123;red:isRed,line:isLine&#125;"&gt;v-bind指令&lt;/p&gt;&lt;br&gt; &lt;!-- 原class与v-bind:class可以共存，它们会在被渲染时合并（2+1=3）不会覆盖 --&gt; &lt;button v-on:click="changeRed"&gt;切换颜色&lt;/button&gt; &lt;button v-on:click="changeLine"&gt;下划线&lt;/button&gt; &lt;!--或者 --&gt; &lt;p v-bind:class="getClass()"&gt;v-bind指令&lt;/p&gt;&lt;br&gt; &lt;!-- style也一样的--&gt; &lt;p :style="&#123;color:'red',fontSize:'50px'&#125;"&gt;v-bind指令&lt;/p&gt;&lt;br&gt; &lt;/div&gt; &lt;script&gt; const app=new Vue(&#123; el:'#app',//挂载 data:&#123;//class状态 isRed:true, isLine:false &#125;, methods:&#123; changeRed:function () &#123; this.isRed=!this.isRed//在true和false之间切换 &#125;, changeLine:function () &#123; this.isLine=!this.isLine &#125;, getClass:function () &#123; return &#123;red: this.isRed,line: this.isLine&#125;; &#125; &#125; &#125;) &lt;/script&gt; 对象用｛｝括起来，是key：value的形式，{key1:value,key2:value} 原class与v-bind:class可以共存，它们会在被渲染时合并（2+1=3）不会覆盖 数组： 12345678910111213141516171819202122232425&lt;div id="app"&gt; &lt;p v-bind:class="[isRed,isLine]"&gt;v-bind指令&lt;/p&gt;&lt;br&gt; &lt;!--或--&gt; &lt;p v-bind:class="getClass()"&gt;v-bind指令&lt;/p&gt;&lt;br&gt; &lt;!-- style也一样，数组里放对象，或放键值对都行--&gt; &lt;p :style="[hahaColor,hahaLine]"&gt;v-bind指令&lt;/p&gt;&lt;br&gt;&lt;/div&gt; &lt;script&gt; const app=new Vue(&#123; el:'#app',//挂载 data:&#123;//class状态 isRed:"red", isLine:"line", hahaColor:&#123;color:'red',fontSize:'50px'&#125;,//对象 hahaLine:&#123;'text-decoration':'underline'&#125;//对象 &#125;, methods:&#123; getClass:function () &#123; return [this.isRed,this.isLine]; &#125; &#125; &#125;) &lt;/script&gt;]]></content>
       <categories>
         <category>休闲</category>
       </categories>
@@ -123,7 +145,7 @@
   <entry>
     <title><![CDATA[新增视频播放插件]]></title>
     <url>%2F2019%2F08%2F06%2F%E6%96%B0%E5%A2%9E%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%8F%92%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://45.77.226.194/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-STkQpLWa"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://45.77.226.194/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
+    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://45.77.226.194/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-TpYLdxzF"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://45.77.226.194/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
       <categories>
         <category>系统维护</category>
       </categories>
@@ -202,9 +224,9 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
         <tag>IntelliJ IDEA</tag>
+        <tag>java</tag>
         <tag>Lombok插件</tag>
       </tags>
   </entry>
@@ -241,8 +263,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>Maven聚合工程</tag>
+        <tag>java</tag>
         <tag>SSM</tag>
         <tag>用户关系管理项目</tag>
         <tag>Spring-security</tag>
@@ -257,8 +279,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
+        <tag>java</tag>
         <tag>SSM</tag>
       </tags>
   </entry>
@@ -270,8 +292,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -282,8 +304,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
+        <tag>java</tag>
         <tag>mybatis分页插件</tag>
         <tag>数据分页</tag>
       </tags>
