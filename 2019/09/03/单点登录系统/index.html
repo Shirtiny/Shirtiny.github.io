@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="单点登录系统搭建单点登录Single Sign On，简称SSO，即单点登录。在单点登录系统中，用户只需登录一次，便可访问所有相互信任的系统。 因为多个系统之间相互独立，可又需要共享用户信息，此时就要Session共享。">
+<meta name="keywords" content="java,cookies">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单点登录系统">
+<meta property="og:url" content="http://Shirtiny.cn/2019/09/03/单点登录系统/index.html">
+<meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:description" content="单点登录系统搭建单点登录Single Sign On，简称SSO，即单点登录。在单点登录系统中，用户只需登录一次，便可访问所有相互信任的系统。 因为多个系统之间相互独立，可又需要共享用户信息，此时就要Session共享。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-03T14:42:49.055Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="单点登录系统">
+<meta name="twitter:description" content="单点登录系统搭建单点登录Single Sign On，简称SSO，即单点登录。在单点登录系统中，用户只需登录一次，便可访问所有相互信任的系统。 因为多个系统之间相互独立，可又需要共享用户信息，此时就要Session共享。">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/09/03/单点登录系统/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>单点登录系统 | ☘(๑•̀ㅂ•́)و✧</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘(๑•̀ㅂ•́)و✧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-放映厅">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/video/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>放映厅</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/09/03/单点登录系统/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">单点登录系统
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-03 22:30:58 / 修改时间：22:42:49" itemprop="dateCreated datePublished" datetime="2019-09-03T22:30:58+08:00">2019-09-03</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习经验/" itemprop="url" rel="index"><span itemprop="name">学习经验</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="单点登录系统搭建"><a href="#单点登录系统搭建" class="headerlink" title="单点登录系统搭建"></a>单点登录系统搭建</h1><h3 id="单点登录"><a href="#单点登录" class="headerlink" title="单点登录"></a><strong>单点登录</strong></h3><p>Single Sign On，简称<strong>SSO</strong>，即单点登录。在单点登录系统中，用户只需登录一次，便可访问所有相互信任的系统。</p>
+<p>因为多个系统之间相互独立，可又需要共享用户信息，此时就要Session共享。</p>
+<a id="more"></a>
+
+<h3 id="Session共享"><a href="#Session共享" class="headerlink" title="Session共享"></a><strong>Session共享</strong></h3><ul>
+<li>在小规模项目中，或许可以考虑配置tomcat的session共享、配置tomcat集群，不停的向集群中广播session信息，用这种方式做session同步会消耗很多的性能，也不能解决分布式项目的session共享。</li>
+<li>我们可以选择把用户信息、其他系统之间需要共享的信息，放入<strong>Redis缓存</strong>中，将对应Key写入Cookie，这样访问速度快，也可以设过期时间，不会有多节点的session复制问题。</li>
+</ul>
+<h3 id="Cookie共享"><a href="#Cookie共享" class="headerlink" title="Cookie共享"></a>Cookie共享</h3><p>1、Domain：必须是相同的。</p>
+<p>例如有多个域名：</p>
+<p><a href="http://www.xx.com" target="_blank" rel="noopener">www.xx.com</a></p>
+<p>sso.xx.com</p>
+<p>sea.xx.com</p>
+<p>需要设置domain为:.xx.com，即将Cookie的域设置为顶域。</p>
+<p>2、设置path：/</p>
+<p><strong>Cookies工具类</strong></p>
+<p>如果是localhost不要设置domain。直接设置path就可以了。如果cookie中的value中有特殊符号，比如@，取出来的cookie值是用双引号括起来的，用.replace(/“/g, “”)，取掉双引号</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span><br><span class="line"><span class="keyword">import</span> java.net.URLDecoder;</span><br><span class="line"><span class="keyword">import</span> java.net.URLEncoder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.Cookie;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * Cookie 工具类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">CookieUtils</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 得到Cookie的值, 不编码</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> cookieName</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCookieValue</span><span class="params">(HttpServletRequest request, String cookieName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getCookieValue(request, cookieName, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 得到Cookie的值,</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> cookieName</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCookieValue</span><span class="params">(HttpServletRequest request, String cookieName, <span class="keyword">boolean</span> isDecoder)</span> </span>&#123;</span><br><span class="line">        Cookie[] cookieList = request.getCookies();</span><br><span class="line">        <span class="keyword">if</span> (cookieList == <span class="keyword">null</span> || cookieName == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        String retValue = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cookieList.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookieList[i].getName().equals(cookieName)) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (isDecoder) &#123;</span><br><span class="line">                        retValue = URLDecoder.decode(cookieList[i].getValue(), <span class="string">"UTF-8"</span>);</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        retValue = cookieList[i].getValue();</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> retValue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 得到Cookie的值,</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> cookieName</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCookieValue</span><span class="params">(HttpServletRequest request, String cookieName, String encodeString)</span> </span>&#123;</span><br><span class="line">        Cookie[] cookieList = request.getCookies();</span><br><span class="line">        <span class="keyword">if</span> (cookieList == <span class="keyword">null</span> || cookieName == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        String retValue = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cookieList.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookieList[i].getName().equals(cookieName)) &#123;</span><br><span class="line">                    retValue = URLDecoder.decode(cookieList[i].getValue(), encodeString);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">        	 e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> retValue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置Cookie的值 不设置生效时间默认浏览器关闭即失效,也不编码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCookie</span><span class="params">(HttpServletRequest request, HttpServletResponse response, String cookieName,</span></span></span><br><span class="line"><span class="function"><span class="params">            String cookieValue)</span> </span>&#123;</span><br><span class="line">        setCookie(request, response, cookieName, cookieValue, -<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置Cookie的值 在指定时间内生效,但不编码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCookie</span><span class="params">(HttpServletRequest request, HttpServletResponse response, String cookieName,</span></span></span><br><span class="line"><span class="function"><span class="params">            String cookieValue, <span class="keyword">int</span> cookieMaxage)</span> </span>&#123;</span><br><span class="line">        setCookie(request, response, cookieName, cookieValue, cookieMaxage, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置Cookie的值 不设置生效时间,但编码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCookie</span><span class="params">(HttpServletRequest request, HttpServletResponse response, String cookieName,</span></span></span><br><span class="line"><span class="function"><span class="params">            String cookieValue, <span class="keyword">boolean</span> isEncode)</span> </span>&#123;</span><br><span class="line">        setCookie(request, response, cookieName, cookieValue, -<span class="number">1</span>, isEncode);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置Cookie的值 在指定时间内生效, 编码参数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCookie</span><span class="params">(HttpServletRequest request, HttpServletResponse response, String cookieName,</span></span></span><br><span class="line"><span class="function"><span class="params">            String cookieValue, <span class="keyword">int</span> cookieMaxage, <span class="keyword">boolean</span> isEncode)</span> </span>&#123;</span><br><span class="line">        doSetCookie(request, response, cookieName, cookieValue, cookieMaxage, isEncode);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置Cookie的值 在指定时间内生效, 编码参数(指定编码)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCookie</span><span class="params">(HttpServletRequest request, HttpServletResponse response, String cookieName,</span></span></span><br><span class="line"><span class="function"><span class="params">            String cookieValue, <span class="keyword">int</span> cookieMaxage, String encodeString)</span> </span>&#123;</span><br><span class="line">        doSetCookie(request, response, cookieName, cookieValue, cookieMaxage, encodeString);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 删除Cookie带cookie域名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">deleteCookie</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">            String cookieName)</span> </span>&#123;</span><br><span class="line">        doSetCookie(request, response, cookieName, <span class="string">""</span>, -<span class="number">1</span>, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置Cookie的值，并使其在指定时间内生效</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> cookieMaxage cookie生效的最大秒数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">doSetCookie</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">            String cookieName, String cookieValue, <span class="keyword">int</span> cookieMaxage, <span class="keyword">boolean</span> isEncode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (cookieValue == <span class="keyword">null</span>) &#123;</span><br><span class="line">                cookieValue = <span class="string">""</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isEncode) &#123;</span><br><span class="line">                cookieValue = URLEncoder.encode(cookieValue, <span class="string">"utf-8"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            Cookie cookie = <span class="keyword">new</span> Cookie(cookieName, cookieValue);</span><br><span class="line">            <span class="keyword">if</span> (cookieMaxage &gt; <span class="number">0</span>)</span><br><span class="line">                cookie.setMaxAge(cookieMaxage);</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != request) &#123;<span class="comment">// 设置域名的cookie</span></span><br><span class="line">            	String domainName = getDomainName(request);</span><br><span class="line">            	System.out.println(domainName);</span><br><span class="line">                <span class="keyword">if</span> (!<span class="string">"localhost"</span>.equals(domainName)) &#123;</span><br><span class="line">                	cookie.setDomain(domainName);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            cookie.setPath(<span class="string">"/"</span>);</span><br><span class="line">            response.addCookie(cookie);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        	 e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置Cookie的值，并使其在指定时间内生效</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> cookieMaxage cookie生效的最大秒数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">doSetCookie</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">            String cookieName, String cookieValue, <span class="keyword">int</span> cookieMaxage, String encodeString)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (cookieValue == <span class="keyword">null</span>) &#123;</span><br><span class="line">                cookieValue = <span class="string">""</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cookieValue = URLEncoder.encode(cookieValue, encodeString);</span><br><span class="line">            &#125;</span><br><span class="line">            Cookie cookie = <span class="keyword">new</span> Cookie(cookieName, cookieValue);</span><br><span class="line">            <span class="keyword">if</span> (cookieMaxage &gt; <span class="number">0</span>)</span><br><span class="line">                cookie.setMaxAge(cookieMaxage);</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != request) &#123;<span class="comment">// 设置域名的cookie</span></span><br><span class="line">            	String domainName = getDomainName(request);</span><br><span class="line">            	System.out.println(domainName);</span><br><span class="line">                <span class="keyword">if</span> (!<span class="string">"localhost"</span>.equals(domainName)) &#123;</span><br><span class="line">                	cookie.setDomain(domainName);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            cookie.setPath(<span class="string">"/"</span>);</span><br><span class="line">            response.addCookie(cookie);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        	 e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 得到cookie的域名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String <span class="title">getDomainName</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        String domainName = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        String serverName = request.getRequestURL().toString();</span><br><span class="line">        <span class="keyword">if</span> (serverName == <span class="keyword">null</span> || serverName.equals(<span class="string">""</span>)) &#123;</span><br><span class="line">            domainName = <span class="string">""</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            serverName = serverName.toLowerCase();</span><br><span class="line">            serverName = serverName.substring(<span class="number">7</span>);</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> end = serverName.indexOf(<span class="string">"/"</span>);</span><br><span class="line">            serverName = serverName.substring(<span class="number">0</span>, end);</span><br><span class="line">            <span class="keyword">final</span> String[] domains = serverName.split(<span class="string">"\\."</span>);</span><br><span class="line">            <span class="keyword">int</span> len = domains.length;</span><br><span class="line">            <span class="keyword">if</span> (len &gt; <span class="number">3</span>) &#123;</span><br><span class="line">                <span class="comment">// www.xxx.com.cn</span></span><br><span class="line">                domainName = <span class="string">"."</span> + domains[len - <span class="number">3</span>] + <span class="string">"."</span> + domains[len - <span class="number">2</span>] + <span class="string">"."</span> + domains[len - <span class="number">1</span>];</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (len &lt;= <span class="number">3</span> &amp;&amp; len &gt; <span class="number">1</span>) &#123;</span><br><span class="line">                <span class="comment">// xxx.com or xxx.cn</span></span><br><span class="line">                domainName = <span class="string">"."</span> + domains[len - <span class="number">2</span>] + <span class="string">"."</span> + domains[len - <span class="number">1</span>];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                domainName = serverName;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (domainName != <span class="keyword">null</span> &amp;&amp; domainName.indexOf(<span class="string">":"</span>) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            String[] ary = domainName.split(<span class="string">"\\:"</span>);</span><br><span class="line">            domainName = ary[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> domainName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>tips：</p>
+<p><a href="https://www.iteye.com/blog/tianhandigeng-1035618" target="_blank" rel="noopener">Cookie的MaxAge属性及其使用</a></p>
+<p><strong>js取cookie，参考</strong></p>
+<p>也可以在后端取cookie</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"/js/jquery-1.6.4.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"/js/jquery.cookie.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> TT = ToTo = &#123;</span><br><span class="line">	checkLogin : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> _ticket = $.cookie(<span class="string">"TT_TOKEN"</span>);</span><br><span class="line">		<span class="keyword">if</span>(!_ticket)&#123;</span><br><span class="line">			<span class="keyword">return</span> ;</span><br><span class="line">		&#125;</span><br><span class="line">		$.ajax(&#123;</span><br><span class="line">			url : <span class="string">"http://localhost:8082/rest/token/"</span> + _ticket,</span><br><span class="line">			dataType : <span class="string">"jsonp"</span>,</span><br><span class="line">			type : <span class="string">"GET"</span>,</span><br><span class="line">			success : <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">				<span class="keyword">if</span>(data.status == <span class="number">200</span>)&#123;</span><br><span class="line">					<span class="keyword">var</span> username = data.data.username;</span><br><span class="line">					<span class="keyword">var</span> html = username + <span class="string">"，欢迎！&lt;a href=\"http://localhost:8082/rest/logout.html\" class=\"link-logout\"&gt;[退出]&lt;/a&gt;"</span>;</span><br><span class="line">					$(<span class="string">"#loginbar"</span>).html(html);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">// 查看是否已经登录，如果已经登录查询登录信息</span></span><br><span class="line">	TT.checkLogin();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>主要service</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">selectOne</span><span class="params">(TbUser user, HttpServletRequest request,HttpServletResponse response)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        TbUserExample example=<span class="keyword">new</span> TbUserExample();</span><br><span class="line">        TbUserExample.Criteria criteria = example.createCriteria();</span><br><span class="line">        criteria.andUsernameEqualTo(user.getUsername());</span><br><span class="line">        List&lt;TbUser&gt; tbUsers = userMapper.selectByExample(example);</span><br><span class="line">        <span class="keyword">if</span> (tbUsers==<span class="keyword">null</span>||tbUsers.size()==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        TbUser tbUser = tbUsers.get(<span class="number">0</span>);</span><br><span class="line">        String json = JsonUtils.objectToJson(tbUser);</span><br><span class="line">        String uuid = UUID.randomUUID().toString();<span class="comment">//随机uuid</span></span><br><span class="line">        <span class="comment">//存入redis</span></span><br><span class="line">        String token=UserSessionKey+uuid;</span><br><span class="line">        jedisDao.set(token,json);</span><br><span class="line">        jedisDao.expire(token,<span class="number">360</span>);<span class="comment">//设置过期时间，单位秒</span></span><br><span class="line">        <span class="comment">//写入cookie，cookie名为userSessionKey,直接写cookie值，相同cookie名会覆盖</span></span><br><span class="line">        CookieUtils.setCookie(request,response,cookieName,uuid);<span class="comment">//没设过期时间，关闭浏览器会清空</span></span><br><span class="line">        System.out.println(<span class="string">"redis session key:"</span>+uuid+<span class="string">"，值为"</span>+jedisDao.get(token));</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="拦截URL强制登录"><a href="#拦截URL强制登录" class="headerlink" title="拦截URL强制登录"></a>拦截URL强制登录</h3><h4 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h4><p>拦截器实现了<code>HandlerInterceptor</code>接口：</p>
+<ul>
+<li>preHandle：在Handler执行之前处理</li>
+<li>postHandle：handler执行之后，返回ModelAndView之前</li>
+<li>afterCompletion：返回ModelAndView之后</li>
+</ul>
+<p>注意拦截器应该在门户系统中使用，才能拦截门户请求，而且需要先被springMVC拦截。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UserService userService;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//取用户token</span></span><br><span class="line">		String token = CookieUtils.getCookieValue(request, <span class="string">"TT_TOKEN"</span>);</span><br><span class="line">		<span class="comment">//判断是否为空</span></span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isBlank(token)) &#123;</span><br><span class="line">			<span class="comment">//如果为空就是未登录状态</span></span><br><span class="line">			<span class="comment">//跳转到登录页面</span></span><br><span class="line">			response.sendRedirect(userService.getLoginUrl() + <span class="string">"?redirect="</span> + getBaseURL(request));</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">//如果能取到token说明用户可能已经登录</span></span><br><span class="line">			<span class="comment">//从sso中取用户信息，判断用户是否登录</span></span><br><span class="line">			TbUser user = userService.getUserByToken(token);</span><br><span class="line">			<span class="comment">//判断用户是否过期</span></span><br><span class="line">			<span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="comment">//跳转到登录页面</span></span><br><span class="line">				response.sendRedirect(userService.getLoginUrl() + <span class="string">"?redirect="</span> + getBaseURL(request));</span><br><span class="line">				<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="comment">//用户已经登录，把用户信息放到request中</span></span><br><span class="line">				request.setAttribute(<span class="string">"user"</span>, user);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//放行</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="function"><span class="params">			ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> String <span class="title">getBaseURL</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">		String url = request.getScheme() </span><br><span class="line">					+ <span class="string">"://"</span> </span><br><span class="line">					+ request.getServerName() </span><br><span class="line">					+ <span class="string">":"</span></span><br><span class="line">					+ request.getServerPort() </span><br><span class="line">					+ request.getContextPath() </span><br><span class="line">					+ request.getRequestURI();</span><br><span class="line">		<span class="keyword">return</span> url;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> UserServiceImpl userService;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//在Handler执行之前处理</span></span><br><span class="line">		<span class="comment">//判断用户是否登录</span></span><br><span class="line">		<span class="comment">//从cookie中取token</span></span><br><span class="line">		String token = CookieUtils.getCookieValue(request, <span class="string">"TT_TOKEN"</span>);</span><br><span class="line">		<span class="comment">//根据token换取用户信息，调用sso系统的接口。</span></span><br><span class="line">		TbUser user = userService.getUserByToken(token);</span><br><span class="line">		<span class="comment">//取不到用户信息</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">null</span> == user) &#123;</span><br><span class="line">			<span class="comment">//跳转到登录页面，把用户请求的url作为参数传递给登录页面。</span></span><br><span class="line">			response.sendRedirect(userService.SSO_BASE_URL + userService.SSO_PAGE_LOGIN </span><br><span class="line">					+ <span class="string">"?redirect="</span> + request.getRequestURL());</span><br><span class="line">			<span class="comment">//返回false</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//取到用户信息，放行</span></span><br><span class="line">		<span class="comment">//返回值决定handler是否执行。true：执行，false：不执行。</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler,</span></span></span><br><span class="line"><span class="function"><span class="params">			ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// handler执行之后，返回ModelAndView之前</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 返回ModelAndView之后。</span></span><br><span class="line">		<span class="comment">//响应用户之后。</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="URL回调"><a href="#URL回调" class="headerlink" title="URL回调"></a>URL回调</h4><div class="note primary">
+            <p>拦截器拦截用户请求时，将用户请求的URL通过一个参数传递给显示登录页面的Controller，设参数名为：<code>redirect</code>。</p><p>然后再让Controller把<code>redirect</code>传递给jsp页面。当登录成功后，js的逻辑中判断是否有回调的rul，如果有就跳转到此url，如果没有就跳转到商城首页。</p>
+          </div>
+
+<p><strong>回调Controller</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ResquestMapping</span>(<span class="string">"/login"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">showLogin</span><span class="params">(String redirect, Model model)</span></span>&#123;</span><br><span class="line">    <span class="comment">//判断是否有需要回调的URL</span></span><br><span class="line">    <span class="keyword">if</span>(!StringUtils.isBlank(redirect))&#123;</span><br><span class="line">    model.addAttribute(<span class="string">"redirect"</span>,redirect);</span><br><span class="line">    	&#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"login"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>登录页面js</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">	<span class="keyword">var</span> redirectUrl = <span class="string">"$&#123;redirect&#125;"</span>;</span><br><span class="line">	<span class="keyword">var</span> LOGIN = &#123;</span><br><span class="line">			checkInput:<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">				<span class="keyword">if</span> ($(<span class="string">"#loginname"</span>).val() == <span class="string">""</span>) &#123;</span><br><span class="line">					alert(<span class="string">"用户名不能为空"</span>);</span><br><span class="line">					$(<span class="string">"#loginname"</span>).focus();</span><br><span class="line">					<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> ($(<span class="string">"#nloginpwd"</span>).val() == <span class="string">""</span>) &#123;</span><br><span class="line">					alert(<span class="string">"密码不能为空"</span>);</span><br><span class="line">					$(<span class="string">"#nloginpwd"</span>).focus();</span><br><span class="line">					<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">			&#125;,</span><br><span class="line">			doLogin:<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">				$.post(<span class="string">"/user/login"</span>, $(<span class="string">"#formlogin"</span>).serialize(),<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">					<span class="keyword">if</span> (data.status == <span class="number">200</span>) &#123;</span><br><span class="line">						alert(<span class="string">"登录成功！"</span>);</span><br><span class="line">						<span class="keyword">if</span> (redirectUrl == <span class="string">""</span>) &#123;</span><br><span class="line">							location.href = <span class="string">"http://localhost:8082"</span>;</span><br><span class="line">						&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">							location.href = redirectUrl;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						alert(<span class="string">"登录失败，原因是："</span> + data.msg);</span><br><span class="line">						$(<span class="string">"#loginname"</span>).select();</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;);</span><br><span class="line">			&#125;,</span><br><span class="line">			login:<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">				<span class="keyword">if</span> (<span class="keyword">this</span>.checkInput()) &#123;</span><br><span class="line">					<span class="keyword">this</span>.doLogin();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;;</span><br><span class="line">	$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		$(<span class="string">"#loginsubmit"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			LOGIN.login();</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#^_^#java</a>
+          
+            <a href="/tags/cookies/" rel="tag">#^_^#cookies</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/03/Solr-Error-solrj-beans-BindingException/" rel="next" title="Solr-Error">
+                <i class="fa fa-chevron-left"></i> Solr-Error
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#单点登录系统搭建"><span class="nav-text">单点登录系统搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单点登录"><span class="nav-text">单点登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Session共享"><span class="nav-text">Session共享</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie共享"><span class="nav-text">Cookie共享</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拦截URL强制登录"><span class="nav-text">拦截URL强制登录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拦截器"><span class="nav-text">拦截器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#URL回调"><span class="nav-text">URL回调</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1567521058000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+
+<!--音乐播放器
+<link rel="stylesheet" href="/APlayer/APlayer.min.css">
+<div  id="aplayer"></div>
+<script type="text/javascript" src="/APlayer/APlayer.min.js"></script>
+<script type="text/javascript" src="/APlayer/music.js"></script>
+ -->
+ 
+</body>
+</html>

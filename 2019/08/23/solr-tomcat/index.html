@@ -96,20 +96,20 @@
 
 
 
-  <meta name="description" content="将solr从Jetty转到Tomcat 复制一份tomcat，然后再solr根目录的同级目录新建一个文件夹用于存放集成后的solr，自定义名字solr_home">
+  <meta name="description" content="将solr从Jetty转到Tomcat、ik分词、数据库索引 复制一份tomcat，然后再solr根目录的同级目录新建一个文件夹用于存放集成后的solr，自定义名字solr_home">
 <meta name="keywords" content="solr">
 <meta property="og:type" content="article">
 <meta property="og:title" content="solr-tomcat集成">
 <meta property="og:url" content="http://Shirtiny.cn/2019/08/23/solr-tomcat/index.html">
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
-<meta property="og:description" content="将solr从Jetty转到Tomcat 复制一份tomcat，然后再solr根目录的同级目录新建一个文件夹用于存放集成后的solr，自定义名字solr_home">
+<meta property="og:description" content="将solr从Jetty转到Tomcat、ik分词、数据库索引 复制一份tomcat，然后再solr根目录的同级目录新建一个文件夹用于存放集成后的solr，自定义名字solr_home">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/23/4365a7c53a5290bf76295fbee90ef28e6d004ed5ec61acd2.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/23/ed4dea174cb43001c0b95e96583c3acc0da2a3a3d21cdbe7.png">
-<meta property="og:updated_time" content="2019-08-23T10:38:18.844Z">
+<meta property="og:updated_time" content="2019-08-24T14:19:57.502Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="solr-tomcat集成">
-<meta name="twitter:description" content="将solr从Jetty转到Tomcat 复制一份tomcat，然后再solr根目录的同级目录新建一个文件夹用于存放集成后的solr，自定义名字solr_home">
+<meta name="twitter:description" content="将solr从Jetty转到Tomcat、ik分词、数据库索引 复制一份tomcat，然后再solr根目录的同级目录新建一个文件夹用于存放集成后的solr，自定义名字solr_home">
 <meta name="twitter:image" content="https://file.moetu.org/images/2019/08/23/4365a7c53a5290bf76295fbee90ef28e6d004ed5ec61acd2.png">
 
 
@@ -466,12 +466,24 @@
                 
               
 
-              <time title="创建时间：2019-08-23 11:30:20 / 修改时间：18:38:18" itemprop="dateCreated datePublished" datetime="2019-08-23T11:30:20+08:00">2019-08-23</time>
+              <time title="创建时间：2019-08-23 11:30:20" itemprop="dateCreated datePublished" datetime="2019-08-23T11:30:20+08:00">2019-08-23</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-24 22:19:57" itemprop="dateModified" datetime="2019-08-24T22:19:57+08:00">2019-08-24</time>
               
             
           </span>
@@ -523,7 +535,7 @@
       
 
       
-        <h1 id="将solr从Jetty转到Tomcat"><a href="#将solr从Jetty转到Tomcat" class="headerlink" title="将solr从Jetty转到Tomcat"></a>将solr从Jetty转到Tomcat</h1><ul>
+        <h1 id="将solr从Jetty转到Tomcat、ik分词、数据库索引"><a href="#将solr从Jetty转到Tomcat、ik分词、数据库索引" class="headerlink" title="将solr从Jetty转到Tomcat、ik分词、数据库索引"></a>将solr从Jetty转到Tomcat、ik分词、数据库索引</h1><ul>
 <li>复制一份tomcat，然后再solr根目录的同级目录新建一个文件夹用于存放集成后的solr，自定义名字solr_home</li>
 </ul>
 <p><img src="https://file.moetu.org/images/2019/08/23/4365a7c53a5290bf76295fbee90ef28e6d004ed5ec61acd2.png" alt></p>
@@ -548,26 +560,22 @@
 
 <p>solr.log.dir的值为刚刚新建的logs文件夹的绝对路径。</p>
 <ul>
-<li><p>把solr-8.0.0目录下的server/solr-webapp/webapps放置到tomcat/webapp的目录下，重命名为solr。</p>
-</li>
-<li><p>将solr-8.0.0\server\lib\ext下的所有jar包拷贝到tomcat里的webapps\solr\WEB-INF\lib</p>
-</li>
-<li><p>将solr-8.0.0\server\lib下 除jetty以外的jar拷贝到tomcat里的webapps\solr\WEB-INF\lib</p>
-</li>
-<li><p>将solr-8.0.0\dist下 jar包也拷贝到tomcat里的webapps\solr\WEB-INF\lib</p>
-</li>
-<li><p>在tomcat里的webapps\solr\WEB-INF下创建classes文件夹，将solr/server/resources下的配置文件拷贝到新建的classes文件夹里</p>
-</li>
+<li>把solr-8.0.0目录下的server/solr-webapp/webapps放置到tomcat/webapp的目录下，重命名为solr。</li>
+<li>将solr-8.0.0\server\lib\ext下的所有jar包拷贝到tomcat里的webapps\solr\WEB-INF\lib</li>
+<li>将solr-8.0.0\server\lib下 除jetty以外的jar拷贝到tomcat里的webapps\solr\WEB-INF\lib</li>
+<li>将solr-8.0.0\dist下 jar包也拷贝到tomcat里的webapps\solr\WEB-INF\lib</li>
+<li>放数据库连接驱动的jar包，如mysql-connector-java.jar到webapps\solr\WEB-INF\lib，顺便往solr-8.2.0\dist文件夹下也放一份数据库连接驱动的jar包。</li>
+<li>在tomcat里的webapps\solr\WEB-INF下创建classes文件夹，将solr/server/resources下的配置文件拷贝到新建的classes文件夹里</li>
 </ul>
 <ul>
 <li><p>把solr-8.0.0 里面的solr文件夹下全部的内容放入solr_home文件夹内（相当于复制一份solr文件夹，然后改名为solr_home ）</p>
 </li>
 <li><p>把solr-8.0.0下contrib和dist文件夹也拷贝至solr_home目录下</p>
 </li>
-<li><p>在solr_home目录下新建new_core文件夹；并拷贝solr-8.0.0\server\solr\configsets\_default目录下conf文件夹至SolrHome\new_core下。</p>
+<li><p>在solr_home目录下新建new_core文件夹；并拷贝solr-8.0.0\example\example-DIH\solr\db目录下所有文件至SolrHome\new_core下。</p>
 </li>
-<li><p>修改solr-home\new_core\conf\solrconfig.xml文件下的对应内容为：(改一下相对路径)</p>
- <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/contrib/extraction/lib"</span> <span class="attr">regex</span>=<span class="string">".*\.jar"</span> /&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-cell-\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line">   </span><br><span class="line">   <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/contrib/clustering/lib/"</span> <span class="attr">regex</span>=<span class="string">".*\.jar"</span> /&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-clustering-\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line">   </span><br><span class="line">   <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/contrib/langid/lib/"</span> <span class="attr">regex</span>=<span class="string">".*\.jar"</span> /&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-langid-\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line">   </span><br><span class="line">   <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/contrib/velocity/lib"</span> <span class="attr">regex</span>=<span class="string">".*\.jar"</span> /&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-velocity-\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"ojdbc\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line">   <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-dataimporthandler\d.*\.jar"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<li><p>修改solr-home\new_core\conf\solrconfig.xml文件下的对应内容为：(改一下相对路径，加个mysql的连接驱动)</p>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/contrib/extraction/lib"</span> <span class="attr">regex</span>=<span class="string">".*\.jar"</span> /&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-cell-\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/contrib/clustering/lib/"</span> <span class="attr">regex</span>=<span class="string">".*\.jar"</span> /&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-clustering-\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/contrib/langid/lib/"</span> <span class="attr">regex</span>=<span class="string">".*\.jar"</span> /&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-langid-\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/contrib/velocity/lib"</span> <span class="attr">regex</span>=<span class="string">".*\.jar"</span> /&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-velocity-\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"ojdbc\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"solr-dataimporthandler\d.*\.jar"</span> /&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">lib</span> <span class="attr">dir</span>=<span class="string">"$&#123;solr.install.dir:../&#125;/dist/"</span> <span class="attr">regex</span>=<span class="string">"mysql-connector-java-*\.jar"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 
 
 </li>
@@ -594,6 +602,39 @@
 <ul>
 <li>在界面Analysis的Analyse Fieldname / FieldType:中选text_ik即可使用。</li>
 </ul>
+<h2 id="添加数据库索引"><a href="#添加数据库索引" class="headerlink" title="添加数据库索引"></a>添加数据库索引</h2><ul>
+<li>在solr_home\你的核心\conf下的managed-schema，配置域信息，用来接收数据库数据的对应字段</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  <span class="comment">&lt;!--solr需要数据有个固定的主键id，而那个id是由solr配置好的，名为id的域。所以应该把数据库表的主键id绑定到solr自带的名为id的域上，所以不需要再自定一个其他名称的id &lt;field name="solr_id" type="plong" stored="true" required="true" indexed="false" /&gt; --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_title"</span> <span class="attr">type</span>=<span class="string">"text_ik"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">required</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_sell_point"</span> <span class="attr">type</span>=<span class="string">"text_ik"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">required</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_price"</span> <span class="attr">type</span>=<span class="string">"plong"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">required</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_num"</span> <span class="attr">type</span>=<span class="string">"pint"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">required</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_barcode"</span> <span class="attr">type</span>=<span class="string">"string"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"false"</span> <span class="attr">required</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_image"</span> <span class="attr">type</span>=<span class="string">"string"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"false"</span> <span class="attr">required</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_cid"</span> <span class="attr">type</span>=<span class="string">"plong"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"false"</span> <span class="attr">required</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!--注意，数据库中tinyInt的数据类型，在solr默认提供的数据类型中，是找不到对应类型的。 --&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_status"</span> <span class="attr">type</span>=<span class="string">"pint"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">required</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_created"</span> <span class="attr">type</span>=<span class="string">"pdate"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"false"</span> <span class="attr">required</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"solr_updated"</span> <span class="attr">type</span>=<span class="string">"pdate"</span> <span class="attr">stored</span>=<span class="string">"true"</span> <span class="attr">indexed</span>=<span class="string">"false"</span> <span class="attr">required</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">&lt;!-- 复制域只是用来搜索便利，提高搜索的性能，要有多值、分词、可被索引、但不存储、无类型 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"tao_keywords"</span> <span class="attr">type</span>=<span class="string">"text_ik"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"false"</span> <span class="attr">multiValued</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">copyField</span> <span class="attr">source</span>=<span class="string">"solr_title"</span> <span class="attr">dest</span>=<span class="string">"tao_keywords"</span>  /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">copyField</span> <span class="attr">source</span>=<span class="string">"solr_sell_point"</span> <span class="attr">dest</span>=<span class="string">"tao_keywords"</span>  /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">copyField</span> <span class="attr">source</span>=<span class="string">"solr_price"</span> <span class="attr">dest</span>=<span class="string">"tao_keywords"</span>  /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">copyField</span> <span class="attr">source</span>=<span class="string">"solr_num"</span> <span class="attr">dest</span>=<span class="string">"tao_keywords"</span>  /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">copyField</span> <span class="attr">source</span>=<span class="string">"solr_status"</span> <span class="attr">dest</span>=<span class="string">"tao_keywords"</span>  /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>在solr_home\你的核心\conf下的db-data-config.xml配置数据库数据信息，&amp;符号需要使用<code>&amp;amp;</code>来替换，如果数据库表中有tinyInt的数据类型，需要设置tinyInt1isBit=false或true，详情：</p>
+<p><a href="https://blog.csdn.net/ldr1109/article/details/94674805" target="_blank" rel="noopener">solr中tinyInt1isBit的设置</a></p>
+<p><a href="https://www.bbsmax.com/A/x9J2x8VNd6/" target="_blank" rel="noopener">solr中tinyInt转boolean</a></p>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dataConfig</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"JdbcDataSource"</span> <span class="attr">driver</span>=<span class="string">"com.mysql.jdbc.Driver"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">url</span>=<span class="string">"jdbc:mysql://localhost:3306/taotao?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;useSSL=false&amp;amp;tinyInt1isBit=false"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">user</span>=<span class="string">"root"</span> <span class="attr">password</span>=<span class="string">"123456"</span></span></span><br><span class="line"><span class="tag">     /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">document</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--自定义的实体名，查询语句。根据返回结果，将数据库表的字段名与solr域名绑定 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">entity</span> <span class="attr">name</span>=<span class="string">"taoDB"</span> <span class="attr">query</span>=<span class="string">"SELECT * from tb_item"</span> &gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">name</span>=<span class="string">"id"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"title"</span> <span class="attr">name</span>=<span class="string">"solr_title"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"sell_point"</span> <span class="attr">name</span>=<span class="string">"solr_sell_point"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"price"</span> <span class="attr">name</span>=<span class="string">"solr_price"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"num"</span> <span class="attr">name</span>=<span class="string">"solr_num"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"barcode"</span> <span class="attr">name</span>=<span class="string">"solr_barcode"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"image"</span> <span class="attr">name</span>=<span class="string">"solr_image"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"cid"</span> <span class="attr">name</span>=<span class="string">"solr_cid"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">name</span>=<span class="string">"solr_status"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"created"</span> <span class="attr">name</span>=<span class="string">"solr_created"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">field</span> <span class="attr">column</span>=<span class="string">"updated"</span> <span class="attr">name</span>=<span class="string">"solr_updated"</span> /&gt;</span></span><br><span class="line">    </span><br><span class="line">        <span class="tag">&lt;/<span class="name">entity</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">document</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dataConfig</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>tips：</strong></p>
+<p><strong>在xml的sql语句中，不能直接用大于号、小于号要用转义字符</strong></p>
+<p><strong>解决方式：</strong></p>
+<p>转义字符：</p>
+<ul>
+<li><p><code>&amp;lt;</code>是&lt;，小于号</p>
+</li>
+<li><p><code>&amp;gt;</code>是&gt;，大于号</p>
+</li>
+<li><p><code>&amp;amp;</code>是&amp;，和</p>
+</li>
+<li><p><code>&amp;apos;</code>是’，单引号</p>
+</li>
+<li><p><code>&amp;quot;</code>是”，双引号</p>
+</li>
+</ul>
+<p>或</p>
+<p><strong>使用<code>&lt;![CDATA[]]&gt;</code>标记</strong>：</p>
+<p><code>&lt;![CDATA[ state &lt;= 3 ]]&gt;</code></p>
+<p>不过要注意，<code>&lt;![CDATA[ ]]&gt;</code>标记的sql语句中的<code>&lt;where&gt; &lt;if&gt;</code>等标签不会被解析</p>
 <p>参考文章：</p>
 <p><a href="https://blog.csdn.net/weixin_42613538/article/details/89516198" target="_blank" rel="noopener">https://blog.csdn.net/weixin_42613538/article/details/89516198</a></p>
 <p><a href="https://blog.csdn.net/ailian_f/article/details/89407754" target="_blank" rel="noopener">https://blog.csdn.net/ailian_f/article/details/89407754</a></p>
@@ -724,7 +765,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -864,7 +905,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">46</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -928,7 +973,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#将solr从Jetty转到Tomcat"><span class="nav-text">将solr从Jetty转到Tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加ik中文分词器"><span class="nav-text">添加ik中文分词器</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#将solr从Jetty转到Tomcat、ik分词、数据库索引"><span class="nav-text">将solr从Jetty转到Tomcat、ik分词、数据库索引</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加ik中文分词器"><span class="nav-text">添加ik中文分词器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加数据库索引"><span class="nav-text">添加数据库索引</span></a></li></ol></li></ol></div>
             
 
           </div>
