@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Nginx反向代理、负载均衡、高可用反向代理什么是反向代理 客户端向代理服务器发送请求，代理服务器根据这个请求去选择实际能提供相关服务的http服务器，然后把资源通过代理服务器交给客户端。此时，客户端只能知道代理服务器的地址，无法知道实际提供服务的http服务器地址。 与之对应的，是前向代理。前向代理中，客户端通过一个代理客户端来发送请求，此时服务器只知道代理客户端的地址，不知道真实客户端的地址，">
+<meta name="keywords" content="nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx反向代理、负载均衡">
+<meta property="og:url" content="http://Shirtiny.cn/2019/09/04/nginx反向代理、负载均衡/index.html">
+<meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:description" content="Nginx反向代理、负载均衡、高可用反向代理什么是反向代理 客户端向代理服务器发送请求，代理服务器根据这个请求去选择实际能提供相关服务的http服务器，然后把资源通过代理服务器交给客户端。此时，客户端只能知道代理服务器的地址，无法知道实际提供服务的http服务器地址。 与之对应的，是前向代理。前向代理中，客户端通过一个代理客户端来发送请求，此时服务器只知道代理客户端的地址，不知道真实客户端的地址，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-04T14:56:11.862Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nginx反向代理、负载均衡">
+<meta name="twitter:description" content="Nginx反向代理、负载均衡、高可用反向代理什么是反向代理 客户端向代理服务器发送请求，代理服务器根据这个请求去选择实际能提供相关服务的http服务器，然后把资源通过代理服务器交给客户端。此时，客户端只能知道代理服务器的地址，无法知道实际提供服务的http服务器地址。 与之对应的，是前向代理。前向代理中，客户端通过一个代理客户端来发送请求，此时服务器只知道代理客户端的地址，不知道真实客户端的地址，">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/09/04/nginx反向代理、负载均衡/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>nginx反向代理、负载均衡 | ☘(๑•̀ㅂ•́)و✧</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘(๑•̀ㅂ•́)و✧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-放映厅">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/video/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>放映厅</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/09/04/nginx反向代理、负载均衡/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">nginx反向代理、负载均衡
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-04 18:43:55 / 修改时间：22:56:11" itemprop="dateCreated datePublished" datetime="2019-09-04T18:43:55+08:00">2019-09-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习经验/" itemprop="url" rel="index"><span itemprop="name">学习经验</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Nginx反向代理、负载均衡、高可用"><a href="#Nginx反向代理、负载均衡、高可用" class="headerlink" title="Nginx反向代理、负载均衡、高可用"></a>Nginx反向代理、负载均衡、高可用</h1><h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><p><strong>什么是反向代理</strong></p>
+<p>客户端向<code>代理服务器</code>发送请求，<code>代理服务器</code>根据这个请求去选择实际能提供相关服务的<code>http服务器</code>，然后把资源通过<code>代理服务器</code>交给客户端。此时，客户端只能知道<code>代理服务器</code>的地址，无法知道实际提供服务的<code>http服务器</code>地址。</p>
+<p>与之对应的，是<strong>前向代理</strong>。前向代理中，客户端通过一个<code>代理客户端</code>来发送请求，此时<code>服务器</code>只知道<code>代理客户端</code>的地址，不知道真实客户端的地址，如VPN。</p>
+<p>要注意的是，文中的<code>代理服务器</code>与<code>代理客户端</code>的说法是为了方便理解，实际上两者都是服务器，只是代理的对象不同，有点像学生代表、或明星的经济人？</p>
+<a id="more"></a>
+
+<p><strong>Nginx如何做反向代理</strong></p>
+<p>只需要在nginx的conf配置文件中，增加server代码块，修改对应的server_name、location、upstream。</p>
+<p>也可以用这种方法做虚拟主机，这样可以两个域名指向同一台nginx服务器，用户访问不同的域名显示不同的网页内容，因为多个域名可以对应一个ip地址，最好是根据域名区分，ip或端口也行。</p>
+<p><strong>先看基于域名的虚拟主机配置</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">虚拟主机1</span></span><br><span class="line">server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  s1.shirtiny.cn;</span><br><span class="line">        </span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html-s1;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">  </span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">虚拟主机2  </span></span><br><span class="line">server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  s2.shirtiny.cn;</span><br><span class="line">        </span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html-s2;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;      </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>反向代理配置</strong></p>
+<p>除了upstream外，还要注意location的变化，proxy_pass。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">http服务器</span></span><br><span class="line">upstream tomcat_server1 &#123;</span><br><span class="line">            server 192.168.101.5:8080;</span><br><span class="line">        &#125;</span><br><span class="line">upstream tomcat_server2 &#123;</span><br><span class="line">            server 192.168.101.6:8080;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">配置虚拟主机1</span></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name aaa.test.com;</span><br><span class="line">        location / &#123;</span><br><span class="line">				#域名aaa.test.com的请求全部转发到tomcat_server1即tomcat1服务上</span><br><span class="line">                proxy_pass http://tomcat_server1;</span><br><span class="line">				#欢迎页面，按照从左到右的顺序查找页面</span><br><span class="line">                index index.jsp index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">配置虚拟主机2</span></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name bbb.test.com;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">				 #域名bbb.test.com的请求全部转发到tomcat_server2即tomcat2服务上</span><br><span class="line">                  proxy_pass http://tomcat_server2;</span><br><span class="line">                  index index.jsp index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://www.cnblogs.com/ysocean/p/9392908.html" target="_blank" rel="noopener">详细参考</a></li>
+</ul>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>Load Balance，同种服务有多个http服务器时，nginx根据http服务器被分配的权重，把请求轮换分配给某个http服务器。</p>
+<p>只需要在<code>upstream</code>对服务器进行权重分配，weight默认为1。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">upstream tomcat_server_pool&#123;</span><br><span class="line">        server 192.168.101.5:8080 weight=3;</span><br><span class="line">        server 192.168.101.6:8080 weight=1;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">详细说明</span></span><br><span class="line"><span class="meta">#</span><span class="bash">定义负载均衡设备的 Ip及设备状态 </span></span><br><span class="line">upstream myServer &#123;   </span><br><span class="line"></span><br><span class="line">    server 127.0.0.1:9090 down; </span><br><span class="line">    server 127.0.0.1:8080 weight=2; </span><br><span class="line">    server 127.0.0.1:6060; </span><br><span class="line">    server 127.0.0.1:7070 backup; </span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">upstream 每个设备的状态:</span></span><br><span class="line"><span class="meta">#</span><span class="bash">down 表示单前的server暂时不参与负载 </span></span><br><span class="line"><span class="meta">#</span><span class="bash">weight  默认为1.weight越大，负载的权重就越大。 </span></span><br><span class="line"><span class="meta">#</span><span class="bash">max_fails ：允许请求失败的次数默认为1.当超过最大次数时，返回proxy_next_upstream 模块定义的错误 </span></span><br><span class="line"><span class="meta">#</span><span class="bash">fail_timeout:max_fails 次失败后，暂停的时间。 </span></span><br><span class="line"><span class="meta">#</span><span class="bash">backup： 其它所有的非backup机器down或者忙的时候，请求backup机器。所以这台机器压力会最轻。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">在需要使用负载的Server节点下添加</span></span><br><span class="line"><span class="meta">#</span><span class="bash">proxy_pass http://myServer;</span></span><br><span class="line"> server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name aaa.test.com;</span><br><span class="line">        location / &#123;</span><br><span class="line">                 proxy_pass http://myServer;</span><br><span class="line">                 index index.jsp index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h2><p>准备两台Nginx服务器，一主一备。都装keepalived做健康检查，两个keepalived会保持通讯，主服务器拿到虚拟ip（vip）运行中，当主Nginx服务器上的keepalived失去响应时，备用服务器上的keepalived会启动备用的Nginx，拿到主Nginx的虚拟ip（vip），代替主服务器工作。</p>
+<h3 id="keepalived的安装"><a href="#keepalived的安装" class="headerlink" title="keepalived的安装"></a>keepalived的安装</h3><h4 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">su - root</span><br><span class="line">yum -y install kernel-devel*</span><br><span class="line">yum -y install openssl-*</span><br><span class="line">yum -y install popt-devel</span><br><span class="line">yum -y install lrzsz</span><br><span class="line">yum -y install openssh-clients</span><br><span class="line">yum -y install libnl libnl-devel popt</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装keepalived"><a href="#安装keepalived" class="headerlink" title="安装keepalived"></a>安装keepalived</h4><p>将keepalived-1.2.15.tar.gz上传到服务器/usr/local/下。</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">tar -zxvf keepalived-1.2.15.tar.gz</span><br><span class="line">cd keepalived-1.2.15</span><br><span class="line"><span class="meta">#</span><span class="bash">执行配置命令</span></span><br><span class="line">./configure --prefix=/usr/local/keepalived</span><br><span class="line"><span class="meta">#</span><span class="bash">编译</span></span><br><span class="line">make</span><br><span class="line"><span class="meta">#</span><span class="bash">安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>至此安装完成。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">拷贝执行文件</span></span><br><span class="line">cp /usr/local/keepalived/sbin/keepalived /usr/sbin/</span><br><span class="line"><span class="meta">#</span><span class="bash">将init.d文件拷贝到etc下,加入开机启动项</span></span><br><span class="line">cp /usr/local/keepalived/etc/rc.d/init.d/keepalived /etc/init.d/keepalived</span><br><span class="line"><span class="meta">#</span><span class="bash">将keepalived文件拷贝到etc下，加入网卡配置</span></span><br><span class="line">cp /usr/local/keepalived/etc/sysconfig/keepalived /etc/sysconfig/ </span><br><span class="line"><span class="meta">#</span><span class="bash">创建keepalived文件夹</span></span><br><span class="line">mkdir -p /etc/keepalived</span><br><span class="line"><span class="meta">#</span><span class="bash">将keepalived配置文件拷贝到etc下</span></span><br><span class="line">cp /usr/local/keepalived/etc/keepalived/keepalived.conf /etc/keepalived/keepalived.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">添加可执行权限</span></span><br><span class="line">chmod +x /etc/init.d/keepalived</span><br></pre></td></tr></table></figure>
+
+<h4 id="加入开机启动"><a href="#加入开机启动" class="headerlink" title="加入开机启动"></a>加入开机启动</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --add keepalived	#添加时必须保证/etc/init.d/keepalived存在</span><br><span class="line">chkconfig keepalived on</span><br></pre></td></tr></table></figure>
+
+<p>添加完可查询系统服务是否存在：<code>chkconfig --list</code></p>
+<h4 id="启动keepalived"><a href="#启动keepalived" class="headerlink" title="启动keepalived"></a>启动keepalived</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">启动：service keepalived start</span><br><span class="line">停止：service keepalived stop</span><br><span class="line">重启：service keepalived restart</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置日志文件"><a href="#配置日志文件" class="headerlink" title="配置日志文件"></a>配置日志文件</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">将keepalived日志输出到local0：</span></span><br><span class="line">vi /etc/sysconfig/keepalived</span><br><span class="line">KEEPALIVED_OPTIONS="-D -d -S 0"</span><br><span class="line"><span class="meta">#</span><span class="bash">在/etc/rsyslog.conf里添加:</span></span><br><span class="line">local0.*  /var/log/keepalived.log</span><br><span class="line"><span class="meta">#</span><span class="bash">重新启动keepalived和rsyslog服务：</span></span><br><span class="line">service rsyslog restart </span><br><span class="line">service keepalived restart</span><br></pre></td></tr></table></figure>
+
+<h4 id="打开防火墙的通讯地址"><a href="#打开防火墙的通讯地址" class="headerlink" title="打开防火墙的通讯地址"></a>打开防火墙的通讯地址</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -d 224.0.0.18 -j ACCEPT</span><br><span class="line">/etc/rc.d/init.d/iptables save</span><br></pre></td></tr></table></figure>
+
+<h3 id="主Nginx"><a href="#主Nginx" class="headerlink" title="主Nginx"></a>主Nginx</h3><p>修改主nginx下/etc/keepalived/keepalived.conf文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">! Configuration File for keepalived</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">全局配置</span></span><br><span class="line">global_defs &#123;</span><br><span class="line">   notification_email &#123;  #指定keepalived在发生切换时需要发送email到的对象，一行一个</span><br><span class="line">     XXX@XXX.com</span><br><span class="line">   &#125;</span><br><span class="line">   notification_email_from XXX@XXX.com  #指定发件人</span><br><span class="line"><span class="meta">   #</span><span class="bash">smtp_server XXX.smtp.com                             <span class="comment">#指定smtp服务器地址</span></span></span><br><span class="line"><span class="meta">   #</span><span class="bash">smtp_connect_timeout 30                               <span class="comment">#指定smtp连接超时时间</span></span></span><br><span class="line">   router_id LVS_DEVEL                                    #运行keepalived机器的一个标识</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123; </span><br><span class="line">    state MASTER           #标示状态为MASTER 备份机为BACKUP</span><br><span class="line">    interface eth0         #设置实例绑定的网卡</span><br><span class="line">    virtual_router_id 51   #同一实例下virtual_router_id必须相同</span><br><span class="line">    priority 100           #MASTER权重要高于BACKUP 比如BACKUP为99  </span><br><span class="line">    advert_int 1           #MASTER与BACKUP负载均衡器之间同步检查的时间间隔，单位是秒</span><br><span class="line">    authentication &#123;       #设置认证</span><br><span class="line">        auth_type PASS     #主从服务器验证方式</span><br><span class="line">        auth_pass 8888</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;    #设置vip</span><br><span class="line">        192.168.101.100       #可以多个虚拟IP，换行即可</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="备Nginx"><a href="#备Nginx" class="headerlink" title="备Nginx"></a>备Nginx</h3><p>修改备nginx下/etc/keepalived/keepalived.conf文件</p>
+<p>配置备nginx时需要注意：需要修改state为BACKUP , priority比MASTER低，virtual_router_id和master的值一致</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">! Configuration File for keepalived</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">全局配置</span></span><br><span class="line">global_defs &#123;</span><br><span class="line">   notification_email &#123;  #指定keepalived在发生切换时需要发送email到的对象，一行一个</span><br><span class="line">    XXX@XXX.com</span><br><span class="line">   &#125;</span><br><span class="line">   notification_email_from XXX@XXX.com  				#指定发件人</span><br><span class="line"><span class="meta">   #</span><span class="bash">smtp_server XXX.smtp.com                             	<span class="comment">#指定smtp服务器地址</span></span></span><br><span class="line"><span class="meta">   #</span><span class="bash">smtp_connect_timeout 30                               <span class="comment">#指定smtp连接超时时间</span></span></span><br><span class="line">   router_id LVS_DEVEL                                    #运行keepalived机器的一个标识</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123; </span><br><span class="line">    state BACKUP           #标示状态为MASTER 备份机为BACKUP</span><br><span class="line">    interface eth0         #设置实例绑定的网卡</span><br><span class="line">    virtual_router_id 51   #同一实例下virtual_router_id必须相同</span><br><span class="line">    priority 99            #MASTER权重要高于BACKUP 比如BACKUP为99  </span><br><span class="line">    advert_int 1           #MASTER与BACKUP负载均衡器之间同步检查的时间间隔，单位是秒</span><br><span class="line">    authentication &#123;       #设置认证</span><br><span class="line">        auth_type PASS     #主从服务器验证方式</span><br><span class="line">        auth_pass 8888</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;    #设置vip</span><br><span class="line">        192.168.101.100       #可以多个虚拟IP，换行即可</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>tips：</strong></p>
+<p>因为备份服务器的启动，是依据主服务器上的keepalived的响应状况判断的，所以当主服务器的keepalived意外停止，或者当nginx进程停止时，keepalived没有按计划停止，就无法启动备份服务器。</p>
+<h3 id="nginx进程检测脚本"><a href="#nginx进程检测脚本" class="headerlink" title="nginx进程检测脚本"></a>nginx进程检测脚本</h3><p>为了解决nginx进程和keepalived不同时存在的问题，需要在主服务器上编写Nginx进程检测脚本<code>check_nginx.sh</code>，判断nginx进程是否存在，如果nginx不存在就将keepalived进程杀掉。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 如果进程中没有nginx则将keepalived进程kill掉</span></span><br><span class="line">A=`ps -C nginx --no-header |wc -l`      <span class="comment">## 查看是否有 nginx进程 把值赋给变量A </span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$A</span> -eq 0 ];<span class="keyword">then</span>                    <span class="comment">## 如果没有进程值得为 零</span></span><br><span class="line">       service keepalived stop          <span class="comment">## 则结束 keepalived 进程</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>脚本运行测试</li>
+</ul>
+<p>将check_nginx.sh拷贝至/etc/keepalived下，</p>
+<p>将nginx停止，将keepalived启动，执行脚本：sh /etc/keepalived/check_nginx.sh，若keepalived进程被顺利杀死，即成功。</p>
+<ul>
+<li>修改主nginx的keepalived.conf，添加脚本定义检测：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">全局配置</span></span><br><span class="line">global_defs &#123;</span><br><span class="line">   notification_email &#123;  #指定keepalived在发生切换时需要发送email到的对象，一行一个</span><br><span class="line">     XXX@XXX.com</span><br><span class="line">   &#125;</span><br><span class="line">   notification_email_from miaoruntu@itcast.cn  #指定发件人</span><br><span class="line"><span class="meta">   #</span><span class="bash">smtp_server XXX.smtp.com                             <span class="comment">#指定smtp服务器地址</span></span></span><br><span class="line"><span class="meta">   #</span><span class="bash">smtp_connect_timeout 30                               <span class="comment">#指定smtp连接超时时间</span></span></span><br><span class="line">   router_id LVS_DEVEL                                    #运行keepalived机器的一个标识</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta"> #</span><span class="bash"><span class="comment">#监控脚本</span></span></span><br><span class="line">vrrp_script check_nginx &#123;</span><br><span class="line">    script "/etc/keepalived/check_nginx.sh"         ##监控脚本</span><br><span class="line">    interval 2                                      ##时间间隔，2秒</span><br><span class="line">    weight 2                                        ##权重</span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER           #标示状态为MASTER 备份机为BACKUP</span><br><span class="line">    interface eth0         #设置实例绑定的网卡</span><br><span class="line">    virtual_router_id 51   #同一实例下virtual_router_id必须相同</span><br><span class="line">    priority 100           #MASTER权重要高于BACKUP 比如BACKUP为99</span><br><span class="line">    advert_int 1           #MASTER与BACKUP负载均衡器之间同步检查的时间间隔，单位是秒</span><br><span class="line">    authentication &#123;       #设置认证</span><br><span class="line">        auth_type PASS     #主从服务器验证方式</span><br><span class="line">        auth_pass 8888</span><br><span class="line">    &#125;</span><br><span class="line">    #监控脚本</span><br><span class="line">   track_script &#123;</span><br><span class="line">        check_nginx        #监控脚本</span><br><span class="line">   &#125;</span><br><span class="line">    virtual_ipaddress &#123;    #设置vip</span><br><span class="line">        192.168.101.100       #可以多个虚拟IP，换行即可</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash">修改后重启keepalived</span></span><br><span class="line"><span class="meta">#</span><span class="bash">观察keepalived日志：</span></span><br><span class="line"><span class="meta">#</span><span class="bash">tail -f /var/<span class="built_in">log</span>/keepalived.log</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/nginx/" rel="tag">#^_^#nginx</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/03/硬盘阵亡/" rel="next" title="今日硬盘阵亡">
+                <i class="fa fa-chevron-left"></i> 今日硬盘阵亡
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">37</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">50</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx反向代理、负载均衡、高可用"><span class="nav-text">Nginx反向代理、负载均衡、高可用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#反向代理"><span class="nav-text">反向代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#负载均衡"><span class="nav-text">负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高可用"><span class="nav-text">高可用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#keepalived的安装"><span class="nav-text">keepalived的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装环境"><span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装keepalived"><span class="nav-text">安装keepalived</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加入开机启动"><span class="nav-text">加入开机启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动keepalived"><span class="nav-text">启动keepalived</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置日志文件"><span class="nav-text">配置日志文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打开防火墙的通讯地址"><span class="nav-text">打开防火墙的通讯地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主Nginx"><span class="nav-text">主Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备Nginx"><span class="nav-text">备Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx进程检测脚本"><span class="nav-text">nginx进程检测脚本</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1567593835000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+
+<!--音乐播放器
+<link rel="stylesheet" href="/APlayer/APlayer.min.css">
+<div  id="aplayer"></div>
+<script type="text/javascript" src="/APlayer/APlayer.min.js"></script>
+<script type="text/javascript" src="/APlayer/music.js"></script>
+ -->
+ 
+</body>
+</html>
