@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
 <meta property="og:description" content="SolrJSolrJ是Solr的java客户端实现，通过java代码连接solr服务器，并使用。 依赖12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.apache.solr&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;solr-solrj&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;8.2.0&amp;">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-03T14:43:07.152Z">
+<meta property="og:updated_time" content="2019-09-05T11:13:56.461Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SolrJ">
 <meta name="twitter:description" content="SolrJSolrJ是Solr的java客户端实现，通过java代码连接solr服务器，并使用。 依赖12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.apache.solr&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;solr-solrj&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;8.2.0&amp;">
@@ -463,12 +463,24 @@
                 
               
 
-              <time title="创建时间：2019-09-03 22:07:03 / 修改时间：22:43:07" itemprop="dateCreated datePublished" datetime="2019-09-03T22:07:03+08:00">2019-09-03</time>
+              <time title="创建时间：2019-09-03 22:07:03" itemprop="dateCreated datePublished" datetime="2019-09-03T22:07:03+08:00">2019-09-03</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-05 19:13:56" itemprop="dateModified" datetime="2019-09-05T19:13:56+08:00">2019-09-05</time>
               
             
           </span>
@@ -528,7 +540,7 @@
 <h2 id="对象绑定"><a href="#对象绑定" class="headerlink" title="对象绑定"></a>对象绑定</h2><p>@field注解，注解中的值为，该字段对应的solr域的名称</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solr_pojo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(<span class="string">"id"</span>)</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(<span class="string">"solr_title"</span>)</span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(<span class="string">"solr_sell_point"</span>)</span><br><span class="line">    <span class="keyword">private</span> String sellPoint;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Field</span>(<span class="string">"solr_price"</span>)</span><br><span class="line">    <span class="keyword">private</span> Long price;</span><br><span class="line">	...</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//setter&amp;getter</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="HttpSolrClient"><a href="#HttpSolrClient" class="headerlink" title="HttpSolrClient"></a>HttpSolrClient</h2><h3 id="URL和SolrClient"><a href="#URL和SolrClient" class="headerlink" title="URL和SolrClient"></a>URL和SolrClient</h3><p>注意上下两个<code>URL</code>的区别</p>
+<h2 id="单机模式"><a href="#单机模式" class="headerlink" title="单机模式"></a>单机模式</h2><h3 id="URL和HttpSolrClient"><a href="#URL和HttpSolrClient" class="headerlink" title="URL和HttpSolrClient"></a>URL和HttpSolrClient</h3><p>注意上下两个<code>URL</code>的区别</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//直接指定solr的URL和core1，只能查询或更新core1内容</span></span><br><span class="line">String URL=<span class="string">"http://my-solr-server:8983/solr/core1"</span>;</span><br><span class="line">SolrClient client = <span class="keyword">new</span> HttpSolrClient(URL);</span><br><span class="line">QueryResponse resp = client.query(<span class="keyword">new</span> SolrQuery(<span class="string">"*:*"</span>));</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//指定solr的URL，查询或更新时要指定core</span></span><br><span class="line">String URL=<span class="string">"http://my-solr-server:8983/solr"</span>;</span><br><span class="line">SolrClient client = <span class="keyword">new</span> HttpSolrClient(URL);</span><br><span class="line">QueryResponse resp = client.query(<span class="string">"core1"</span>, <span class="keyword">new</span> SolrQuery(<span class="string">"*:*"</span>));</span><br></pre></td></tr></table></figure>
@@ -616,6 +628,9 @@
 <li>高亮域替换查询结果</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Solr_pojo&gt; solrPojos=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       <span class="comment">//拿到高亮区域</span></span><br><span class="line">       Map&lt;String, Map&lt;String, List&lt;String&gt;&gt;&gt; highlighting = response.getHighlighting();</span><br><span class="line">       <span class="keyword">for</span> (SolrDocument result:results)&#123;</span><br><span class="line"></span><br><span class="line">           String id =(String) result.get(<span class="string">"id"</span>);<span class="comment">//从result拿到id</span></span><br><span class="line">           Map&lt;String, List&lt;String&gt;&gt; listMap = highlighting.get(id);<span class="comment">//因为高亮区域与结果中的id是相同的，所以可以通过上述id取到高亮区域的&lt;高亮域名，value数组&gt;的集合</span></span><br><span class="line">           List&lt;String&gt; solr_titles = listMap.get(<span class="string">"solr_title"</span>);<span class="comment">//通过高亮域名，拿到高亮值value的数组</span></span><br><span class="line">           String title = solr_titles.get(<span class="number">0</span>);<span class="comment">//list里只有1个值，index的0号位置，便是高亮的值了</span></span><br><span class="line">           System.out.println(id+<span class="string">"\t"</span>+title);</span><br><span class="line">           Solr_pojo solrPojo=<span class="keyword">new</span> Solr_pojo(id,title);</span><br><span class="line">           solrPojos.add(solrPojo);</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">       System.out.println(solrPojos);</span><br></pre></td></tr></table></figure>
+
+<h2 id="集群模式"><a href="#集群模式" class="headerlink" title="集群模式"></a>集群模式</h2><p>使用的SolrClient，由HttpSolrClient，变为CloudSolrClient，然后要记得设置默认索引集合，其他与单机模式一样。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CloudSolrClient client=<span class="keyword">new</span> CloudSolrClient(<span class="string">"192.168.249.131:2181,192.168.249.131:2182,192.168.249.131:2183"</span>);</span><br><span class="line"></span><br><span class="line">client.setDefaultCollection(<span class="string">"collection1"</span>);</span><br></pre></td></tr></table></figure>
 
 
       
@@ -745,7 +760,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">38</span>
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -895,7 +910,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">51</span>
+                      
+                    
+                    <span class="site-state-item-count">52</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -959,7 +976,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SolrJ"><span class="nav-text">SolrJ</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖"><span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象绑定"><span class="nav-text">对象绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HttpSolrClient"><span class="nav-text">HttpSolrClient</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#URL和SolrClient"><span class="nav-text">URL和SolrClient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新增和更新"><span class="nav-text">新增和更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-text">删除</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ById"><span class="nav-text">ById:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ByQuery"><span class="nav-text">ByQuery:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本查询"><span class="nav-text">基本查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果筛选"><span class="nav-text">结果筛选</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果排序"><span class="nav-text">结果排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果分页"><span class="nav-text">结果分页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果回显"><span class="nav-text">结果回显</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字高亮"><span class="nav-text">关键字高亮</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#响应集合"><span class="nav-text">响应集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#响应头"><span class="nav-text">响应头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Results结果集、结果属性"><span class="nav-text">Results结果集、结果属性</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SolrJ"><span class="nav-text">SolrJ</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖"><span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象绑定"><span class="nav-text">对象绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单机模式"><span class="nav-text">单机模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#URL和HttpSolrClient"><span class="nav-text">URL和HttpSolrClient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新增和更新"><span class="nav-text">新增和更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-text">删除</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ById"><span class="nav-text">ById:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ByQuery"><span class="nav-text">ByQuery:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本查询"><span class="nav-text">基本查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果筛选"><span class="nav-text">结果筛选</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果排序"><span class="nav-text">结果排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果分页"><span class="nav-text">结果分页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果回显"><span class="nav-text">结果回显</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字高亮"><span class="nav-text">关键字高亮</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#响应集合"><span class="nav-text">响应集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#响应头"><span class="nav-text">响应头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Results结果集、结果属性"><span class="nav-text">Results结果集、结果属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群模式"><span class="nav-text">集群模式</span></a></li></ol></div>
             
 
           </div>
