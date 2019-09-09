@@ -96,18 +96,24 @@
 
 
 
-  <meta name="description" content="Github第三方授权登录https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/ https://github.com/settings/applications/1131169 https://blog.csdn.net/u013651026/article/details/79738059 在g">
+  <meta name="description" content="Github第三方授权登录创建一个OAuth App 登录Github，在用户头像的位置，依次进入： -&amp;gt; Settings/ Developer settings /OAuth Apps 点击New OAuth App">
 <meta name="keywords" content="Github">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Github授权登录">
 <meta property="og:url" content="http://Shirtiny.cn/2019/09/08/github授权登录/index.html">
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
-<meta property="og:description" content="Github第三方授权登录https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/ https://github.com/settings/applications/1131169 https://blog.csdn.net/u013651026/article/details/79738059 在g">
+<meta property="og:description" content="Github第三方授权登录创建一个OAuth App 登录Github，在用户头像的位置，依次进入： -&amp;gt; Settings/ Developer settings /OAuth Apps 点击New OAuth App">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-08T16:02:07.459Z">
+<meta property="og:image" content="https://file.moetu.org/images/2019/09/09/901360f7de54a3d67cd5a93d1ca7f954b49a9337329487cf.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/09/09/3fa417f774aa8082e98427ab4d4d6c3b66b1ac7732aa2be3.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/09/09/d19314e2a19101f8a3fa0231aeccd9ac87cd9c77c9b8eb0c.png">
+<meta property="og:image" content="c:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1568023712397.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/09/09/b0f1fe44eb7e8d4d586d0604235656c025752054cc2e51ee.png">
+<meta property="og:updated_time" content="2019-09-09T11:25:01.465Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Github授权登录">
-<meta name="twitter:description" content="Github第三方授权登录https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/ https://github.com/settings/applications/1131169 https://blog.csdn.net/u013651026/article/details/79738059 在g">
+<meta name="twitter:description" content="Github第三方授权登录创建一个OAuth App 登录Github，在用户头像的位置，依次进入： -&amp;gt; Settings/ Developer settings /OAuth Apps 点击New OAuth App">
+<meta name="twitter:image" content="https://file.moetu.org/images/2019/09/09/901360f7de54a3d67cd5a93d1ca7f954b49a9337329487cf.png">
 
 
 
@@ -480,7 +486,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-09 00:02:07" itemprop="dateModified" datetime="2019-09-09T00:02:07+08:00">2019-09-09</time>
+                <time title="修改时间：2019-09-09 19:25:01" itemprop="dateModified" datetime="2019-09-09T19:25:01+08:00">2019-09-09</time>
               
             
           </span>
@@ -532,18 +538,85 @@
       
 
       
-        <h1 id="Github第三方授权登录"><a href="#Github第三方授权登录" class="headerlink" title="Github第三方授权登录"></a>Github第三方授权登录</h1><p><a href="https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/" target="_blank" rel="noopener">https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/</a></p>
-<p><a href="https://github.com/settings/applications/1131169" target="_blank" rel="noopener">https://github.com/settings/applications/1131169</a></p>
-<p><a href="https://blog.csdn.net/u013651026/article/details/79738059" target="_blank" rel="noopener">https://blog.csdn.net/u013651026/article/details/79738059</a></p>
-<p>在github创建个OAth app</p>
-<p><a href="http://localhost:8888/github/codeCallback" target="_blank" rel="noopener">http://localhost:8888/github/codeCallback</a></p>
-<p>调用github授权的api，传递自己的id、scope（是需要的信息，比如user）、回调url，用OkHttp发送请求</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET https://github.com/login/oauth/authorize?client_id=67b3d0b385ad39b6320d&amp;scope=user rep&amp;redirect_uri=http://localhost:8888/github/codeCallback&amp;state=自定义shirtiny2011054984anro</span><br></pre></td></tr></table></figure>
+        <h1 id="Github第三方授权登录"><a href="#Github第三方授权登录" class="headerlink" title="Github第三方授权登录"></a>Github第三方授权登录</h1><h2 id="创建一个OAuth-App"><a href="#创建一个OAuth-App" class="headerlink" title="创建一个OAuth App"></a>创建一个OAuth App</h2><ul>
+<li><p>登录<strong>Github</strong>，在用户头像的位置，依次进入：</p>
+<p>-&gt; <code>Settings</code>/ <code>Developer settings</code> /<code>OAuth Apps</code></p>
+<p>点击<code>New OAuth App</code></p>
+</li>
+</ul>
+<a id="more"></a>
 
-<p>github响应code和state，使用OkHttp处理响应</p>
-<p><a href="http://localhost:8888/github/codeCallback?code=d367eeabc1e0614c3a58&amp;state=shirtiny2011054984anro" target="_blank" rel="noopener">http://localhost:8888/github/codeCallback?code=d367eeabc1e0614c3a58&amp;state=shirtiny2011054984anro</a></p>
-<p>将拿到的code和state传给github的user api，拿到响应后的用户信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST https://github.com/login/oauth/access_token</span><br></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2019/09/09/901360f7de54a3d67cd5a93d1ca7f954b49a9337329487cf.png" alt></p>
+<ul>
+<li><p>新建<strong>OAuth App</strong></p>
+<ul>
+<li>Application name，自定义的名字</li>
+<li>Homepage URL，随便写个</li>
+<li>Application description，描述，自定义写</li>
+<li>Authorization callback URL，请求github后回调的url，认真写个，不过以后能改</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/09/09/3fa417f774aa8082e98427ab4d4d6c3b66b1ac7732aa2be3.png" alt></p>
+</li>
+<li><p>编辑<strong>OAuth App</strong>信息</p>
+<ul>
+<li>这是你的客户端id和密钥</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/09/09/d19314e2a19101f8a3fa0231aeccd9ac87cd9c77c9b8eb0c.png" alt></p>
+<ul>
+<li><ul>
+<li>这是头像和信息，我这里回调地址写的本地地址，项目上线后再改成公网地址</li>
+</ul>
+</li>
+</ul>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1568023712397.png" alt></p>
+<blockquote>
+<p>我的回调地址：<a href="http://localhost:8888/github/codeCallback" target="_blank" rel="noopener">http://localhost:8888/github/codeCallback</a></p>
+</blockquote>
+<h2 id="授权流程"><a href="#授权流程" class="headerlink" title="授权流程"></a>授权流程</h2><h3 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h3><p><img src="https://file.moetu.org/images/2019/09/09/b0f1fe44eb7e8d4d586d0604235656c025752054cc2e51ee.png" alt></p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><ul>
+<li>①调用github授权的api，传递自己的id、scope（是需要的信息，比如user），用controller跳转或直接写在页面的a标签里。</li>
+</ul>
+<div class="note info">
+            <p><strong>GET方式，api</strong>： <code>https://github.com/login/oauth/authorize</code><br><strong>必带参数</strong>：<code>client_id</code>：客户端id<br><code>scope</code>：需要请求的信息，user repo<br><strong>返回值</strong>：<code>code</code>：用于下一步请求access_token<br><code>state</code>：这一步请求时的可选参数，是自己定义的一串字符串<br><strong>返回值实例</strong>：<code>http://localhost:8888/github/codeCallback?code=d367eeabc1e0614c3a58&amp;state=shirtiny2011054984anro</code></p><p>更多参数详情，参照官方文档。</p>
+          </div>
+
+<p><strong>Controller</strong>（或直接写在页面里）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value</span>(<span class="string">"$&#123;Github_Oauth_Authorize_FullUrl&#125;"</span>)</span><br><span class="line"><span class="keyword">private</span> String Authorize_URL;</span><br><span class="line"></span><br><span class="line"><span class="comment">//请求Github登录授权</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/github/loginWithGithub"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">loginWithGithub</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">       <span class="comment">//发送请求</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"redirect:"</span>+Authorize_URL;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>②处理github响应的code、state，传给github的access_token api，拿到响应后的令牌</li>
+</ul>
+<div class="note primary">
+            <p><strong>POST方式，api：</strong><br><code>https://github.com/login/oauth/access_token</code></p><p><strong>必带参数：</strong><br><code>client_id</code>：客户端id<br><code>client_secret</code>：客户端密钥<br><code>code</code>：上一步github返回的code<br><code>state</code>：上一步github返回的state，如果有的话<br><strong>返回值：</strong><br><code>access_token</code>：用于下一步请求用户信息<br><code>token_type</code>：令牌类型<br><strong>返回值实例：</strong><br><code>access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&amp;token_type=bearer</code></p>
+          </div>
+
+<p><strong>服务</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAccessToken</span><span class="params">(String code, String state)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        OkHttpClient httpClient = <span class="keyword">new</span> OkHttpClient();</span><br><span class="line">        <span class="comment">//json MediaType</span></span><br><span class="line">        <span class="keyword">final</span> MediaType MediaType_JSON= MediaType.get(<span class="string">"application/json; charset=utf-8"</span>);</span><br><span class="line">        <span class="comment">//需要实体类对象 然后转成json字符串</span></span><br><span class="line">        githubOauth.setCode(code);</span><br><span class="line">        githubOauth.setState(state);</span><br><span class="line"><span class="comment">//        githubOauth.setRedirect_uri("http://localhost:8888/github/codeCallback");</span></span><br><span class="line">        String json = JSON.toJSONString(githubOauth);</span><br><span class="line">        <span class="comment">//创建请求体</span></span><br><span class="line">        RequestBody requestBody = RequestBody.create(MediaType_JSON, json);</span><br><span class="line">        <span class="comment">//建立请求，post方式调用</span></span><br><span class="line">        Request request= <span class="keyword">new</span> Request.Builder().url(url_AccessToken).post(requestBody).build();</span><br><span class="line">        <span class="comment">//执行请求</span></span><br><span class="line">        Response response = httpClient.newCall(request).execute();</span><br><span class="line">        <span class="comment">//拿到响应结果</span></span><br><span class="line">        String tokenAndType = response.body().string();</span><br><span class="line">        System.out.println(<span class="string">"得到通关令牌和令牌类型："</span>+tokenAndType);</span><br><span class="line">        <span class="keyword">return</span> tokenAndType;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>③将响应的令牌传给github的user api，获取用户信息</li>
+</ul>
+<div class="note success">
+            <p><strong>GET方式，api</strong>：<code>https://api.github.com/user</code><br><strong>必带参数：</strong><br><code>access_token</code>：上一步github返回的access_token<br><strong>返回值：</strong><br>用户信息，一个json格式的字符串，建议建一个实体类，方便存储这些信息。</p>
+          </div>
+
+<p><strong>服务</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUserInfoJson</span><span class="params">(String access_token)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">//根据github回调code取用户信息，需要post请求</span></span><br><span class="line">        OkHttpClient httpClient = <span class="keyword">new</span> OkHttpClient();</span><br><span class="line">        Request request = <span class="keyword">new</span> Request.Builder().url(url_User+<span class="string">"?access_token="</span>+access_token).build();</span><br><span class="line">        Response response = httpClient.newCall(request).execute();</span><br><span class="line">        <span class="comment">//得到响应的json字符串</span></span><br><span class="line">        String userInfoJson = response.body().string();</span><br><span class="line">        System.out.println(<span class="string">"用令牌调用github的user_api，得到github用户信息："</span>+userInfoJson);</span><br><span class="line">        <span class="keyword">return</span> userInfoJson;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>完整Controller</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Controller;</span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IGithubService githubService;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;Github_Oauth_Authorize_FullUrl&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String Authorize_URL;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//请求Github登录授权</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/github/loginWithGithub"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">loginWithGithub</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">       <span class="comment">//发送请求</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"redirect:"</span>+Authorize_URL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//github那边处理完登录、注册、授权，之后会回调设置的url，我设置的回调地址是：http://localhost:8888/github/codeCallback</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/github/codeCallback"</span>)<span class="comment">//接收github返回的参数值，样例：http://callbackurl?code=...&amp;state=...</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String  <span class="title">githubCodeCallback</span><span class="params">(String code,String state</span></span></span><br><span class="line"><span class="function"><span class="params">            , HttpServletRequest httpServletRequest)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        String tokenAndType = githubService.getAccessToken(code, state);<span class="comment">//tokenAndType样例access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&amp;token_type=bearer</span></span><br><span class="line">        <span class="comment">//把tokenAndType根据&amp;号分割，取第一个，再根据=号分割，取第二个，得到token</span></span><br><span class="line">        String accessToken= tokenAndType.split(<span class="string">"&amp;"</span>)[<span class="number">0</span>].split(<span class="string">"="</span>)[<span class="number">1</span>];</span><br><span class="line">        String userInfoJson = githubService.getUserInfoJson(accessToken);</span><br><span class="line">        GithubUserInfo userInfo = JSON.parseObject(userInfoJson, GithubUserInfo.class);</span><br><span class="line">        System.out.println(userInfo);</span><br><span class="line">        httpServletRequest.getSession().setAttribute(<span class="string">"userinfo"</span>,userInfo);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"redirect:/index"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>属性配置文件</strong></p>
+<p><code>*</code>为保密信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Github_Oauth_Authorize_Url=https://github.com/login/oauth/authorize</span><br><span class="line">Github_Oauth_Client_Id=***********</span><br><span class="line">Github_Oauth_Client_Secret=***********</span><br><span class="line">Github_Oauth_Scope=user</span><br><span class="line">Github_Oauth_State=**********</span><br><span class="line">Github_Oauth_AccessToken_Url=https://github.com/login/oauth/access_token</span><br><span class="line">Github_Oauth_Authorize_FullUrl=https://github.com/login/oauth/authorize?client_id=*********&amp;scope=user&amp;state=***********</span><br><span class="line">Github_Oauth_User_Url=https://api.github.com/user</span><br></pre></td></tr></table></figure>
+
+<p><strong>首页页面</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 右下拉框--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"nav navbar-nav navbar-right"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- if判断 标签内有效--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/github/loginWithGithub"</span> <span class="attr">th:if</span>=<span class="string">"$&#123;session.userinfo==null&#125;"</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"dropdown"</span> <span class="attr">th:if</span>=<span class="string">"$&#123;session.userinfo!=null&#125;"</span> &gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"dropdown-toggle"</span> <span class="attr">data-toggle</span>=<span class="string">"dropdown"</span> <span class="attr">role</span>=<span class="string">"button"</span> <span class="attr">aria-haspopup</span>=<span class="string">"true"</span> <span class="attr">aria-expanded</span>=<span class="string">"false"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">th:text</span>=<span class="string">"$&#123;session.userinfo.getLogin()&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span>个人中心 <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"caret"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"dropdown-menu"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Action<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Another action<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Something else here<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">li</span> <span class="attr">role</span>=<span class="string">"separator"</span> <span class="attr">class</span>=<span class="string">"divider"</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Separated link<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/" target="_blank" rel="noopener">官方文档</a></p>
+
       
     </div>
 
@@ -883,7 +956,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Github第三方授权登录"><span class="nav-text">Github第三方授权登录</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Github第三方授权登录"><span class="nav-text">Github第三方授权登录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个OAuth-App"><span class="nav-text">创建一个OAuth App</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#授权流程"><span class="nav-text">授权流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流程图："><span class="nav-text">流程图：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-text">实现</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

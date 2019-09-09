@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[Github授权登录]]></title>
     <url>%2F2019%2F09%2F08%2Fgithub%E6%8E%88%E6%9D%83%E7%99%BB%E5%BD%95%2F</url>
-    <content type="text"><![CDATA[Github第三方授权登录https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/ https://github.com/settings/applications/1131169 https://blog.csdn.net/u013651026/article/details/79738059 在github创建个OAth app http://localhost:8888/github/codeCallback 调用github授权的api，传递自己的id、scope（是需要的信息，比如user）、回调url，用OkHttp发送请求 1GET https://github.com/login/oauth/authorize?client_id=67b3d0b385ad39b6320d&amp;scope=user rep&amp;redirect_uri=http://localhost:8888/github/codeCallback&amp;state=自定义shirtiny2011054984anro github响应code和state，使用OkHttp处理响应 http://localhost:8888/github/codeCallback?code=d367eeabc1e0614c3a58&amp;state=shirtiny2011054984anro 将拿到的code和state传给github的user api，拿到响应后的用户信息 1POST https://github.com/login/oauth/access_token]]></content>
+    <content type="text"><![CDATA[Github第三方授权登录创建一个OAuth App 登录Github，在用户头像的位置，依次进入： -&gt; Settings/ Developer settings /OAuth Apps 点击New OAuth App 新建OAuth App Application name，自定义的名字 Homepage URL，随便写个 Application description，描述，自定义写 Authorization callback URL，请求github后回调的url，认真写个，不过以后能改 编辑OAuth App信息 这是你的客户端id和密钥 这是头像和信息，我这里回调地址写的本地地址，项目上线后再改成公网地址 我的回调地址：http://localhost:8888/github/codeCallback 授权流程流程图： 实现 ①调用github授权的api，传递自己的id、scope（是需要的信息，比如user），用controller跳转或直接写在页面的a标签里。 GET方式，api： https://github.com/login/oauth/authorize必带参数：client_id：客户端idscope：需要请求的信息，user repo返回值：code：用于下一步请求access_tokenstate：这一步请求时的可选参数，是自己定义的一串字符串返回值实例：http://localhost:8888/github/codeCallback?code=d367eeabc1e0614c3a58&amp;state=shirtiny2011054984anro更多参数详情，参照官方文档。 Controller（或直接写在页面里） 123456789@Value("$&#123;Github_Oauth_Authorize_FullUrl&#125;")private String Authorize_URL;//请求Github登录授权 @GetMapping(value = "/github/loginWithGithub") public String loginWithGithub() throws IOException &#123; //发送请求 return "redirect:"+Authorize_URL; &#125; ②处理github响应的code、state，传给github的access_token api，拿到响应后的令牌 POST方式，api：https://github.com/login/oauth/access_token必带参数：client_id：客户端idclient_secret：客户端密钥code：上一步github返回的codestate：上一步github返回的state，如果有的话返回值：access_token：用于下一步请求用户信息token_type：令牌类型返回值实例：access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&amp;token_type=bearer 服务 12345678910111213141516171819202122 @Override public String getAccessToken(String code, String state) throws IOException &#123; OkHttpClient httpClient = new OkHttpClient(); //json MediaType final MediaType MediaType_JSON= MediaType.get("application/json; charset=utf-8"); //需要实体类对象 然后转成json字符串 githubOauth.setCode(code); githubOauth.setState(state);// githubOauth.setRedirect_uri("http://localhost:8888/github/codeCallback"); String json = JSON.toJSONString(githubOauth); //创建请求体 RequestBody requestBody = RequestBody.create(MediaType_JSON, json); //建立请求，post方式调用 Request request= new Request.Builder().url(url_AccessToken).post(requestBody).build(); //执行请求 Response response = httpClient.newCall(request).execute(); //拿到响应结果 String tokenAndType = response.body().string(); System.out.println("得到通关令牌和令牌类型："+tokenAndType); return tokenAndType; &#125; ③将响应的令牌传给github的user api，获取用户信息 GET方式，api：https://api.github.com/user必带参数：access_token：上一步github返回的access_token返回值：用户信息，一个json格式的字符串，建议建一个实体类，方便存储这些信息。 服务 1234567891011@Override public String getUserInfoJson(String access_token) throws IOException &#123; //根据github回调code取用户信息，需要post请求 OkHttpClient httpClient = new OkHttpClient(); Request request = new Request.Builder().url(url_User+"?access_token="+access_token).build(); Response response = httpClient.newCall(request).execute(); //得到响应的json字符串 String userInfoJson = response.body().string(); System.out.println("用令牌调用github的user_api，得到github用户信息："+userInfoJson); return userInfoJson; &#125; 完整Controller 123456789101112131415161718192021222324252627282930313233package cn.shirtiny.community.SHcommunity.Controller;import ...@Controllerpublic class LoginController &#123; @Autowired private IGithubService githubService; @Value("$&#123;Github_Oauth_Authorize_FullUrl&#125;") private String Authorize_URL; //请求Github登录授权 @GetMapping(value = "/github/loginWithGithub") public String loginWithGithub() throws IOException &#123; //发送请求 return "redirect:"+Authorize_URL; &#125; //github那边处理完登录、注册、授权，之后会回调设置的url，我设置的回调地址是：http://localhost:8888/github/codeCallback @GetMapping(value = "/github/codeCallback")//接收github返回的参数值，样例：http://callbackurl?code=...&amp;state=... public String githubCodeCallback(String code,String state , HttpServletRequest httpServletRequest) throws IOException &#123; String tokenAndType = githubService.getAccessToken(code, state);//tokenAndType样例access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&amp;token_type=bearer //把tokenAndType根据&amp;号分割，取第一个，再根据=号分割，取第二个，得到token String accessToken= tokenAndType.split("&amp;")[0].split("=")[1]; String userInfoJson = githubService.getUserInfoJson(accessToken); GithubUserInfo userInfo = JSON.parseObject(userInfoJson, GithubUserInfo.class); System.out.println(userInfo); httpServletRequest.getSession().setAttribute("userinfo",userInfo); return "redirect:/index"; &#125;&#125; 属性配置文件 *为保密信息 12345678Github_Oauth_Authorize_Url=https://github.com/login/oauth/authorizeGithub_Oauth_Client_Id=***********Github_Oauth_Client_Secret=***********Github_Oauth_Scope=userGithub_Oauth_State=**********Github_Oauth_AccessToken_Url=https://github.com/login/oauth/access_tokenGithub_Oauth_Authorize_FullUrl=https://github.com/login/oauth/authorize?client_id=*********&amp;scope=user&amp;state=***********Github_Oauth_User_Url=https://api.github.com/user 首页页面 123456789101112131415&lt;!-- 右下拉框--&gt; &lt;ul class="nav navbar-nav navbar-right"&gt;&lt;!-- if判断 标签内有效--&gt; &lt;li&gt;&lt;a href="/github/loginWithGithub" th:if="$&#123;session.userinfo==null&#125;"&gt;登录&lt;/a&gt;&lt;/li&gt; &lt;li class="dropdown" th:if="$&#123;session.userinfo!=null&#125;" &gt; &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"&gt;&lt;span th:text="$&#123;session.userinfo.getLogin()&#125;"&gt;&lt;/span&gt;个人中心 &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt; &lt;ul class="dropdown-menu"&gt; &lt;li&gt;&lt;a href="#"&gt;Action&lt;/a&gt;&lt;/li&gt; &lt;li&gt;&lt;a href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt; &lt;li&gt;&lt;a href="#"&gt;Something else here&lt;/a&gt;&lt;/li&gt; &lt;li role="separator" class="divider"&gt;&lt;/li&gt; &lt;li&gt;&lt;a href="#"&gt;Separated link&lt;/a&gt;&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; 官方文档]]></content>
       <categories>
         <category>学习经验</category>
       </categories>
@@ -48,7 +48,7 @@
   <entry>
     <title><![CDATA[今日硬盘阵亡]]></title>
     <url>%2F2019%2F09%2F03%2F%E7%A1%AC%E7%9B%98%E9%98%B5%E4%BA%A1%2F</url>
-    <content type="text"><![CDATA[今日1T机械硬盘君阵亡察觉硬盘运行声响不正常，还好当时觉得不妙，便把博客备份传到群文件了。传完不久，机械硬盘阵亡，电脑死机，内存内的程序还在运行。下午在固态硬盘上装了个盗版win10系统，临时使用。 从零开始的环境搭建由于数据全部丢失，硬盘维修状况尚不可知，在临时系统里，准备必要的学习环境 安装必要驱动 卸除所有不需要的软件 firefox浏览器安装开发者版本，因为账号似乎与普通版区分，需要用来账号同步，账号依然是我qq邮箱同步完成后，收藏与记录的表单就有了，主题皮肤还在，只是布局要自己改谷歌以后有需要时再装 因为博客有备份，先恢复博客安装nodejs、git、hexo安装nodejs时遇到2503错误，是windows权限问题，需要使用msiexec命令cd 到软件所在目录msiexec /package 你的.msi软件大概是这样，记得不是很清楚，详情去百度。安装hexo时遇到问题可查看hexo迁移使用hexo命令需要把D:\hexoBlog\ShirtinyBlog\node_modules\.bin配置到path全局环境变量 安装Typora用来写md文章。 输入法依然按照我的习惯来在系统设置里，语言选项，增加英语（美国），这样将设win+空格，将纯英文环境与中英文环境分开分开中文输入法依然用手心输入法，将微软拼音从设置中删除。 QQ装上，方便在手机与电脑间传点小东西 百度云用的下载器，超级会员太坑，用speedPan或pandownload来下载百度云资源 Xshell、Xftp，在博客找。VMwear虚拟机暂不装，硬盘空间不够，只能先租服务器了。 解压软件，Bandizip，百度到官网下载。 视频播放器Potplayer IntelliJ IDEA 【8qhm】或寻找新的破解版此版本安装方式，适用于jetbrains公司的工具破解管理员身份运行idea安装包，选系统位数，然后完成安装修改host，在末尾加：0.0.0.0 account.jetbrains.com0.0.0.0 www.jetbrains.com在激活界面，选Activation code，然后复制注册码即可在其安装目录的lib文件夹下，把resources_cn.jar复制过来，可以汉化（虽然不用汉化）代码样式用 Visual Studio 2013 百度jdk1.8去Oracle下jdk，需要Oracle账号 doc文档暂用WPS VScode，因为要经常看乱七八糟后缀名的文件 Maven，官网下个，然后解压，环境变量是MAVEN_HOME、解压的文件夹目录，path是%MAVEN_HOME%\bin，环境变量好像都一个配法。 WebStorm，改host，然后当时用的注册码]]></content>
+    <content type="text"><![CDATA[今日1T机械硬盘君阵亡察觉硬盘运行声响不正常，还好当时觉得不妙，便把博客备份传到群文件了。传完不久，机械硬盘阵亡，电脑死机，内存内的程序还在运行。下午在固态硬盘上装了个盗版win10系统，临时使用。 从零开始的环境搭建由于数据全部丢失，硬盘维修状况尚不可知，在临时系统里，准备必要的学习环境 安装必要驱动 卸除所有不需要的软件 firefox浏览器安装开发者版本，因为账号似乎与普通版区分，需要用来账号同步，账号依然是我qq邮箱同步完成后，收藏与记录的表单就有了，主题皮肤还在，只是布局要自己改谷歌以后有需要时再装 因为博客有备份，先恢复博客安装nodejs、git、hexo安装nodejs时遇到2503错误，是windows权限问题，需要使用msiexec命令cd 到软件所在目录msiexec /package 你的.msi软件大概是这样，记得不是很清楚，详情去百度。安装hexo时遇到问题可查看hexo迁移使用hexo命令需要把D:\hexoBlog\ShirtinyBlog\node_modules\.bin配置到path全局环境变量 安装Typora用来写md文章。 输入法依然按照我的习惯来在系统设置里，语言选项，增加英语（美国），这样将设win+空格，将纯英文环境与中英文环境分开分开中文输入法依然用手心输入法，将微软拼音从设置中删除。 QQ装上，方便在手机与电脑间传点小东西 百度云用的下载器，超级会员太坑，用speedPan或pandownload来下载百度云资源 Xshell、Xftp，在博客找。VMwear虚拟机暂不装，硬盘空间不够，只能先租服务器了。 解压软件，Bandizip，百度到官网下载。 视频播放器Potplayer IntelliJ IDEA 【8qhm】或寻找新的破解版此版本安装方式，适用于jetbrains公司的工具破解管理员身份运行idea安装包，选系统位数，然后完成安装修改host，在末尾加：0.0.0.0 account.jetbrains.com0.0.0.0 www.jetbrains.com在激活界面，选Activation code，然后复制注册码即可在其安装目录的lib文件夹下，把resources_cn.jar复制过来，可以汉化（虽然不用汉化）代码样式用 Visual Studio 2013 百度jdk1.8去Oracle下jdk，需要Oracle账号 doc文档暂用WPS，国产垃圾广告 VScode，因为要经常看乱七八糟后缀名的文件 Maven，官网下个，然后解压，环境变量是MAVEN_HOME、解压的文件夹目录，path是%MAVEN_HOME%\bin，环境变量好像都一个配法。 WebStorm，改host，然后当时用的注册码]]></content>
       <categories>
         <category>系统维护</category>
       </categories>
@@ -133,7 +133,7 @@
   <entry>
     <title><![CDATA[千 与 千寻的神隐]]></title>
     <url>%2F2019%2F08%2F22%2F%E5%8D%83%E4%B8%8E%E5%8D%83%E5%AF%BB%E7%9A%84%E7%A5%9E%E9%9A%90%2F</url>
-    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-iMnhYpkq"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
+    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-KANcUjFS"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
       <categories>
         <category>闲谈</category>
       </categories>
@@ -175,8 +175,8 @@
       <tags>
         <tag>java</tag>
         <tag>Redis</tag>
-        <tag>Jedis</tag>
         <tag>SSM</tag>
+        <tag>Jedis</tag>
       </tags>
   </entry>
   <entry>
@@ -253,7 +253,7 @@
   <entry>
     <title><![CDATA[新增视频播放插件]]></title>
     <url>%2F2019%2F08%2F06%2F%E6%96%B0%E5%A2%9E%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%8F%92%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-UZtkjCim"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
+    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-KfuczLAw"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
       <categories>
         <category>系统维护</category>
       </categories>
@@ -332,9 +332,9 @@
         <category>学习经验</category>
       </categories>
       <tags>
+        <tag>java</tag>
         <tag>开发知识</tag>
         <tag>IntelliJ IDEA</tag>
-        <tag>java</tag>
         <tag>Lombok插件</tag>
       </tags>
   </entry>
@@ -371,8 +371,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>Maven聚合工程</tag>
         <tag>java</tag>
+        <tag>Maven聚合工程</tag>
         <tag>SSM</tag>
         <tag>用户关系管理项目</tag>
         <tag>Spring-security</tag>
@@ -387,8 +387,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>开发知识</tag>
         <tag>java</tag>
+        <tag>开发知识</tag>
         <tag>SSM</tag>
       </tags>
   </entry>
@@ -400,8 +400,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>开发知识</tag>
         <tag>java</tag>
+        <tag>开发知识</tag>
       </tags>
   </entry>
   <entry>
@@ -412,8 +412,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>开发知识</tag>
         <tag>java</tag>
+        <tag>开发知识</tag>
         <tag>mybatis分页插件</tag>
         <tag>数据分页</tag>
       </tags>
