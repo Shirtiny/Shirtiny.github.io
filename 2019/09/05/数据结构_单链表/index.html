@@ -110,8 +110,8 @@
 <meta property="og:image" content="https://file.moetu.org/images/2019/09/08/133357038_2_201805180348116919bd4703208e64a06.jpg">
 <meta property="og:image" content="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3580183791,371730492&fm=26&gp=0.jpg">
 <meta property="og:image" content="https://file.moetu.org/images/2019/09/11/c4a09501fbf1c36e42ff59f960d03437f678d77a8774de89.png">
-<meta property="og:image" content="c:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1568176904403.png">
-<meta property="og:updated_time" content="2019-09-11T08:03:54.113Z">
+<meta property="og:image" content="https://file.moetu.org/images/2019/09/11/77ef2c1535ae9bc2dbdad721dcd4de7d311edef1f9e1d088.png">
+<meta property="og:updated_time" content="2019-09-11T08:11:30.922Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单链表、双向链表、单向环形链表">
 <meta name="twitter:description" content="数据结构与算法链表LinkedList 链表是有序列表，但其在内存中并非有序存储，如单链表：  以节点的方式，链式存储。按实际需求，也有无头节点的链表。">
@@ -488,7 +488,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-11 16:03:54" itemprop="dateModified" datetime="2019-09-11T16:03:54+08:00">2019-09-11</time>
+                <time title="修改时间：2019-09-11 16:11:30" itemprop="dateModified" datetime="2019-09-11T16:11:30+08:00">2019-09-11</time>
               
             
           </span>
@@ -605,7 +605,7 @@
 
 <h4 id="约瑟夫置换"><a href="#约瑟夫置换" class="headerlink" title="约瑟夫置换"></a>约瑟夫置换</h4><p>单向链表的实际应用中，约瑟夫问题是非常经典的。下面使用单向环形链表易懂的解决约瑟夫问题，及其变体。</p>
 <h5 id="百度百科——约瑟夫问题"><a href="#百度百科——约瑟夫问题" class="headerlink" title="百度百科——约瑟夫问题"></a>百度百科——约瑟夫问题</h5><p><img src="https://file.moetu.org/images/2019/09/11/c4a09501fbf1c36e42ff59f960d03437f678d77a8774de89.png" alt></p>
-<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1568176904403.png" alt></p>
+<p><img src="https://file.moetu.org/images/2019/09/11/77ef2c1535ae9bc2dbdad721dcd4de7d311edef1f9e1d088.png" alt></p>
 <p><strong>分析</strong></p>
 <div class="note primary">
             <ul><li>这里我们依然使用<code>Node</code>节点类，不再新建。</li><li>需要把<code>N</code>个节点加入链表，并且自动编号</li><li>从<code>1</code>位置开始计数，<code>temp</code>每后移<code>1</code>次，计数变量<code>i</code>的值就<code>+1</code></li><li>删除条件：当计数变量<code>i==m</code>时，删除当前<code>temp</code>指向的节点<ul><li>要注意，要想删除<code>temp</code>，就需要找到<code>temp.pre</code>，但是单向链表的节点只有<code>next</code></li><li>在<code>i==m-1</code>时，<code>temp.next</code>就是<code>i==m</code>时的要删除的<code>temp</code>。所以只需要在<code>i==m-1</code>时把<code>temp.next</code>删除即可</li></ul></li><li>遍历结束条件：链表中只剩一个节点时，即<code>temp.next==tem</code></li></ul>
