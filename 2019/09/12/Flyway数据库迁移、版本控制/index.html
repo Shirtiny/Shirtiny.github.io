@@ -97,7 +97,7 @@
 
 
   <meta name="description" content="使用Flyway进行数据库迁移、版本控制flyway官网 快速上手很简单，flyway配置极少，以约定为主。 简单的使用介绍，更多详细信息会持续更新。">
-<meta name="keywords" content="Flyway,数据库">
+<meta name="keywords" content="数据库,Flyway">
 <meta property="og:type" content="article">
 <meta property="og:title" content="flyway数据库迁移、版本控制">
 <meta property="og:url" content="http://Shirtiny.cn/2019/09/12/Flyway数据库迁移、版本控制/index.html">
@@ -107,7 +107,7 @@
 <meta property="og:image" content="https://file.moetu.org/images/2019/09/12/59c996366ba7c3909265bb06977a3016c7d3a812b4259683.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/09/12/bcd0ad2edd56b667e71f5bce19a77c3f1b1999a789923656.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/09/12/4a799d50836bbdc3f854263e21139db6711d2e0c4da9621d.png">
-<meta property="og:updated_time" content="2019-09-12T11:15:31.423Z">
+<meta property="og:updated_time" content="2019-09-12T11:23:10.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="flyway数据库迁移、版本控制">
 <meta name="twitter:description" content="使用Flyway进行数据库迁移、版本控制flyway官网 快速上手很简单，flyway配置极少，以约定为主。 简单的使用介绍，更多详细信息会持续更新。">
@@ -467,7 +467,7 @@
                 
               
 
-              <time title="创建时间：2019-09-12 15:22:15 / 修改时间：19:15:31" itemprop="dateCreated datePublished" datetime="2019-09-12T15:22:15+08:00">2019-09-12</time>
+              <time title="创建时间：2019-09-12 15:22:15 / 修改时间：19:23:10" itemprop="dateCreated datePublished" datetime="2019-09-12T15:22:15+08:00">2019-09-12</time>
             
 
             
@@ -570,6 +570,13 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn flyway:repair</span><br></pre></td></tr></table></figure>
 
 <p>删除失败的迁移项，并且重新对齐迁移校验，修复SCHEMA_VERSION</p>
+<ul>
+<li>V1__两个下划线，这个前缀代表版本1，后面的名字是自定义名，比如：</li>
+</ul>
+<div class="note info">
+            <p><code>V1__Create_User_Table</code>表示<code>Create_User_Table</code>的版本1，那么，</p><p><code>V2__Create_User_Table</code>表示<code>Create_User_Table</code>的版本2，另外，</p><p>如果要写其他的操作，如<code>Alter_User_Table</code>，要从<code>V1__</code>版本1开始，否则会因找不该操作的V1而报错，不会执行sql。</p>
+          </div>
+
 
       
     </div>
@@ -593,9 +600,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Flyway/" rel="tag">#^_^#Flyway</a>
-          
             <a href="/tags/数据库/" rel="tag">#^_^#数据库</a>
+          
+            <a href="/tags/Flyway/" rel="tag">#^_^#Flyway</a>
           
         </div>
       
