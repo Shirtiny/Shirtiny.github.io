@@ -1,0 +1,26 @@
+https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key
+上面是生成SSH密钥的引导，生成后，放在
+C:\Users\Administrator\.ssh目录下。id_rsa文件是私钥，id_rsa.pub文件是公钥，github上粘贴公钥
+
+git init
+
+编辑.git目录下的config文件，添加：
+[user]
+	name=shirtiny
+	email=1849468240@qq.com
+这样不会与其他人混淆，或用错名字
+
+
+git add .
+git commit -m "first commit"
+
+git remote add origin git@github.com:Shirtiny/JavaDataStructure.git 绑定仓库
+git push -u origin master 推到主干
+
+git log  查看日志，q退出
+
+git commit --amend --no-edit 含义：amend追加，no-edit无需 改文案
+
+git pull --rebase origin master 这条指令的意思是把远程库中的更新合并到本地库中，–rebase的作用是取消掉本地库中刚刚的commit，并把他们接到更新后的版本库之中。
+
+git checkout master 选择到主分支

@@ -105,7 +105,8 @@
 <meta property="og:description" content="MyBatis-Plus快速上手MyBatis-Plus是针对MyBatis的增强方案，别人造好的车轮，我们甚至SQL语句都不用写了，分页也是自动完成的。 官宣图：  话说这些技术有各种动物，还挺有趣的。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mp.baomidou.com/img/relationship-with-mybatis.png">
-<meta property="og:updated_time" content="2019-09-16T11:06:48.907Z">
+<meta property="og:image" content="https://file.moetu.org/images/2019/09/23/1c42cdaf71101e7889bca7e380ce49be6e4c943b7972deb3.png">
+<meta property="og:updated_time" content="2019-09-23T07:55:40.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mybatis-plus">
 <meta name="twitter:description" content="MyBatis-Plus快速上手MyBatis-Plus是针对MyBatis的增强方案，别人造好的车轮，我们甚至SQL语句都不用写了，分页也是自动完成的。 官宣图：  话说这些技术有各种动物，还挺有趣的。">
@@ -465,12 +466,24 @@
                 
               
 
-              <time title="创建时间：2019-09-16 18:00:00 / 修改时间：19:06:48" itemprop="dateCreated datePublished" datetime="2019-09-16T18:00:00+08:00">2019-09-16</time>
+              <time title="创建时间：2019-09-16 18:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T18:00:00+08:00">2019-09-16</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-23 15:55:40" itemprop="dateModified" datetime="2019-09-23T15:55:40+08:00">2019-09-23</time>
               
             
           </span>
@@ -582,6 +595,12 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//分页展示首页的帖子</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toIndexByPage</span><span class="params">(@RequestParam(value = <span class="string">"curPage"</span>,defaultValue = <span class="string">"1"</span>)</span> <span class="keyword">long</span> curPage ,Model model)</span>&#123;<span class="comment">//前往首页并分页</span></span><br><span class="line">        Page&lt;Invitation&gt; page=<span class="keyword">new</span> Page&lt;&gt;();</span><br><span class="line">        page.setCurrent(curPage);</span><br><span class="line">        IPage&lt;Invitation&gt; pageInfo = invitationService.selectBypage(page);</span><br><span class="line">        model.addAttribute(<span class="string">"pageInfo"</span>,pageInfo);</span><br><span class="line">        <span class="comment">//总页数</span></span><br><span class="line">        <span class="keyword">long</span> pages = pageInfo.getPages();</span><br><span class="line">        <span class="comment">//若当前页大于总页数</span></span><br><span class="line">        <span class="keyword">if</span> (curPage&gt;pages)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"redirect:/?curPage="</span>+pages;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//若已到最后一页</span></span><br><span class="line">        <span class="keyword">if</span> (curPage==pages)&#123;</span><br><span class="line">            model.addAttribute(<span class="string">"pageError"</span>,<span class="string">"已经到最后一页喽~，后面的页数是装饰品O(∩_∩)O"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//控制的打印前端标签</span></span><br><span class="line">        <span class="keyword">long</span>[] pageNumArray=<span class="keyword">new</span> <span class="keyword">long</span>[<span class="number">7</span>];</span><br><span class="line">        <span class="keyword">long</span> pageNum=curPage-<span class="number">3</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;curPage+<span class="number">4</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (i&gt;=pageNumArray.length)&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            pageNumArray[i]=pageNum;</span><br><span class="line">            pageNum++;</span><br><span class="line">        &#125;</span><br><span class="line">        model.addAttribute(<span class="string">"pageNumArray"</span>,pageNumArray);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="string">"index"</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
+<h3 id="自定义分页"><a href="#自定义分页" class="headerlink" title="自定义分页"></a>自定义分页</h3><p>有时候我们需要自定sql语句，还想要分页，这方面的需求也是常有的。</p>
+<p>其实很简单，你只需要在方法形参传入<code>Page</code>，返回<code>Ipage</code>即可，mybatis-plus自动帮你分页，比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Mapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">InvitationMapper</span> <span class="keyword">extends</span> <span class="title">BaseMapper</span>&lt;<span class="title">Invitation</span>&gt; </span>&#123;</span><br><span class="line">	<span class="comment">//自定义的分页方法</span></span><br><span class="line">    <span class="meta">@Select</span>(<span class="string">"select * from USER u join INVITATION i on u.ID=i.AUTHOR_ID"</span>)</span><br><span class="line">    <span class="function">IPage&lt;InvitationDTO&gt; <span class="title">selectDtoByPage</span><span class="params">(Page&lt;InvitationDTO&gt; page)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>官方的描述：</strong></p>
+<p><img src="https://file.moetu.org/images/2019/09/23/1c42cdaf71101e7889bca7e380ce49be6e4c943b7972deb3.png" alt></p>
 
       
     </div>
@@ -710,7 +729,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">45</span>
+                    <span class="site-state-item-count">46</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -878,7 +897,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">60</span>
+                      
+                    
+                    <span class="site-state-item-count">61</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -942,7 +963,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MyBatis-Plus快速上手"><span class="nav-text">MyBatis-Plus快速上手</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关依赖"><span class="nav-text">相关依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础配置"><span class="nav-text">基础配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何分页"><span class="nav-text">如何分页</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MyBatis-Plus快速上手"><span class="nav-text">MyBatis-Plus快速上手</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关依赖"><span class="nav-text">相关依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础配置"><span class="nav-text">基础配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何分页"><span class="nav-text">如何分页</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义分页"><span class="nav-text">自定义分页</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
