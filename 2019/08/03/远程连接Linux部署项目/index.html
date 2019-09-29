@@ -121,7 +121,7 @@
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/04/fd52ce16b5d1c6bc402f938d51aebdb6bc115668b71f8702.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/04/2eb763dbe97de3fa4c7c17a980af1d473a25d8d3bd02e4db.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/04/ae7510d73b276d4e98fc8e3838dc085da26df6b37a396232.png">
-<meta property="og:updated_time" content="2019-09-07T09:26:52.268Z">
+<meta property="og:updated_time" content="2019-09-28T06:51:39.343Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="远程连接Linux搭建环境">
 <meta name="twitter:description" content="远程连接、Linux环境搭建1. 安装工具环境准备： 各种安装包：Xshell Plus 6|Xshell 6、Xftp 5、linux版本的jdk、Linux版本的MySQL、Linux版本的Nginx 现在下载jdk需要登录Oracle：Oracle账号分享  我当时用的账号 用户名：nicabeta@email-wizard.com 密码：MQEemoh3pOsRAn2c4tjh  注册机：">
@@ -498,7 +498,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-07 17:26:52" itemprop="dateModified" datetime="2019-09-07T17:26:52+08:00">2019-09-07</time>
+                <time title="修改时间：2019-09-28 14:51:39" itemprop="dateModified" datetime="2019-09-28T14:51:39+08:00">2019-09-28</time>
               
             
           </span>
@@ -648,7 +648,91 @@
 <p>正常的结果：</p>
 <p><img src="https://file.moetu.org/images/2019/08/04/ae7510d73b276d4e98fc8e3838dc085da26df6b37a396232.png" alt></p>
 <p>到此JDK安装配置结束。</p>
-<h2 id="3-安装MySQL"><a href="#3-安装MySQL" class="headerlink" title="3. 安装MySQL"></a>3. 安装MySQL</h2><p>。以后装</p>
+<h2 id="3-安装MySQL"><a href="#3-安装MySQL" class="headerlink" title="3. 安装MySQL"></a>3. 安装MySQL</h2><p><strong>环境准备</strong></p>
+<p>卸载mariadb</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep mariadb</span><br><span class="line">rpm -e maria....</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装mysql</strong></p>
+<ul>
+<li>yum安装方式：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">下载rpm文件</span></span><br><span class="line">wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm</span><br><span class="line"><span class="meta">#</span><span class="bash">yum安装</span></span><br><span class="line">yum -y install mysql80-community-release-el7-3.noarch.rpm</span><br><span class="line"><span class="meta">#</span><span class="bash">安装mysql</span></span><br><span class="line">yum -y install mysql-community-server</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>官网下载<code>mysql-8.0.17-1.el7.x86_64.rpm-bundle.tar</code>安装包的方式</li>
+</ul>
+<p>解压安装包，会得到common、server、client等rpm文件，依次安装即可。</p>
+<p>安装common</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">rpm -ivh rpm文件名 --nodeps --force</span></span><br><span class="line"><span class="meta">#</span><span class="bash">--nodeps就是安装时不检查依赖关系</span></span><br><span class="line"><span class="meta">#</span><span class="bash">--force就是强制安装</span></span><br><span class="line">rpm -ivh mysql-c...-common... --nodeps --force</span><br></pre></td></tr></table></figure>
+
+<p>同样的命令再去装libs、client、server</p>
+<p><strong>配置mysql</strong></p>
+<ul>
+<li>检查数据包</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep mysql</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>初始化</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --initialize</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>防火墙授权</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">赋予myslq操作文件夹的权限</span></span><br><span class="line">chown mysql:mysql /var/lib/mysql -R;</span><br><span class="line"><span class="meta">#</span><span class="bash">启动mysql服务</span></span><br><span class="line">systemctl start mysqld.service;</span><br><span class="line"><span class="meta">#</span><span class="bash">设置开启启动</span></span><br><span class="line">systemctl enable mysqld;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看密码</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/log/mysqld.log | grep password</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>登录</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改密码</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">'root'</span>@<span class="string">'localhost'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>退出</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<p>再用自己密码登录就行了</p>
+<ul>
+<li>开启远程访问，新建用户然后授权</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">创建新用户，地址是任意地址</span></span><br><span class="line"><span class="meta">#</span><span class="bash">@后面可以填ip</span></span><br><span class="line">create USER 'sh'@'%' IDENTIFIED WITH mysql_native_password BY '123456';</span><br><span class="line"><span class="meta">#</span><span class="bash">授权</span></span><br><span class="line">grant all privileges on *.* to 'root'@'%' with grant option;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>开放防火墙端口</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看防火墙状态</span></span><br><span class="line">systemctl status firewalld</span><br><span class="line"><span class="meta">#</span><span class="bash">开启</span></span><br><span class="line">systemctl start firewalld</span><br><span class="line"><span class="meta">#</span><span class="bash">防火墙开放xxxx端口，xxx是端口号</span></span><br><span class="line">firewall-cmd --zone=public --add-port=xxx/tcp --permanent</span><br><span class="line"><span class="meta">#</span><span class="bash">重启防火墙</span></span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注意，linux严格区分大小写，查询语句也是如此，配置mysql忽略大小写的方法：</li>
+</ul>
+<p>修改mysql配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/my.cnf</span><br><span class="line">[mysqld]</span><br><span class="line">lower_case_table_names=1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若没找到该文件，用which看下mysql的安装位置</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which mysqld</span><br></pre></td></tr></table></figure>
+
+<p>然后用得到的路径：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">路径 --verbose --help |grep -A 1 'Default options'</span><br></pre></td></tr></table></figure>
+
+<p>会显示几个默认的文件位置，都没有的话，在这几个位置建个cnf文件就行了：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">参考的cnf文件：</span></span><br><span class="line">安装路径/mysql/support-files/my-default.cnf</span><br></pre></td></tr></table></figure>
+
+<p>mysql日志位置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat /var/log/mysqld.log</span><br><span class="line"><span class="meta">#</span><span class="bash">G跳到最后一行</span></span><br><span class="line">vim /var/log/mysqld.log</span><br></pre></td></tr></table></figure>
+
 <h2 id="4-安装Redis"><a href="#4-安装Redis" class="headerlink" title="4. 安装Redis"></a>4. 安装Redis</h2><p>非关系型数据库，Redis是一个开源的使用C语言编写(3万多行代码)，支持网络，可基于内存亦可持久化的日志型，Key-Value数据库，并提供多种语言的API。</p>
 <p><strong>持久化</strong></p>
 <p>Redis是内存数据库，数据都是存储在内存中，为了避免进程退出导致数据的永久丢失，需要定期将Redis中的数据以某种形式（数据或命令）从内存保存到硬盘。</p>
@@ -789,7 +873,7 @@
 <h3 id="5-4-Nginx指令、运行检查"><a href="#5-4-Nginx指令、运行检查" class="headerlink" title="5.4. Nginx指令、运行检查"></a>5.4. Nginx指令、运行检查</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx.service</span><br><span class="line"><span class="meta">#</span><span class="bash">启动</span></span><br><span class="line"></span><br><span class="line">systemctl stop nginx.service</span><br><span class="line"><span class="meta">#</span><span class="bash">停止</span></span><br><span class="line"></span><br><span class="line">systemctl restart nginx.service</span><br><span class="line"><span class="meta">#</span><span class="bash">重启</span></span><br></pre></td></tr></table></figure>
 
 <p>启动Nginx，浏览器输入ip，若访问不到：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">添加80端口配置防火墙</span></span><br><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent</span><br><span class="line"><span class="meta">#</span><span class="bash">重新加载</span></span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">添加80端口配置防火墙</span></span><br><span class="line">firewall-cmd --zone=public --add-port=1422/tcp --permanent</span><br><span class="line"><span class="meta">#</span><span class="bash">重新加载</span></span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
 
 <p>再去访问即可。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x /usr/local/nginx</span><br><span class="line"><span class="meta">#</span><span class="bash">访问权限,a+x ==&gt; all user can execute  所有用户可执行</span></span><br></pre></td></tr></table></figure>

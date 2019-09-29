@@ -96,17 +96,20 @@
 
 
 
-  <meta name="description" content="https://gist.github.com/biezhi/f90923b48863c7d745481ccdd678ccab">
+  <meta name="description" content="##    物理层：中继器、集线器    数据链路层：网桥、交换机   网络层：路由器    网络层以上：网关  ##    电路交换有预留，且分配一定空间，提供专用的网络资源，提供有保证的服务，应用于电话网；    分组交换无预留，且不分配空间，存在网络资源争用，提供有无保证的服务。分组交换可用于数据报网络和虚电路网络。我们常用的Internet就是数据报网络，单位是Bit。  ##  TCP协">
 <meta property="og:type" content="website">
 <meta property="og:title" content="☘(๑•̀ㅂ•́)و✧">
-<meta property="og:url" content="http://Shirtiny.cn/新建文本文档.html">
+<meta property="og:url" content="http://Shirtiny.cn/题目.html">
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
-<meta property="og:description" content="https://gist.github.com/biezhi/f90923b48863c7d745481ccdd678ccab">
+<meta property="og:description" content="##    物理层：中继器、集线器    数据链路层：网桥、交换机   网络层：路由器    网络层以上：网关  ##    电路交换有预留，且分配一定空间，提供专用的网络资源，提供有保证的服务，应用于电话网；    分组交换无预留，且不分配空间，存在网络资源争用，提供有无保证的服务。分组交换可用于数据报网络和虚电路网络。我们常用的Internet就是数据报网络，单位是Bit。  ##  TCP协">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-27T06:46:38.234Z">
+<meta property="og:image" content="https://uploadfiles.nowcoder.com/images/20190307/6461901_1551947231183_3682CE42917068614DE79F608B7E283B">
+<meta property="og:image" content="https://uploadfiles.nowcoder.com/images/20190303/289535953_1551600105103_D7C2E311EA1C87CAF6EBCEBC128A20E3">
+<meta property="og:updated_time" content="2019-09-26T14:34:08.340Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="☘(๑•̀ㅂ•́)و✧">
-<meta name="twitter:description" content="https://gist.github.com/biezhi/f90923b48863c7d745481ccdd678ccab">
+<meta name="twitter:description" content="##    物理层：中继器、集线器    数据链路层：网桥、交换机   网络层：路由器    网络层以上：网关  ##    电路交换有预留，且分配一定空间，提供专用的网络资源，提供有保证的服务，应用于电话网；    分组交换无预留，且不分配空间，存在网络资源争用，提供有无保证的服务。分组交换可用于数据报网络和虚电路网络。我们常用的Internet就是数据报网络，单位是Bit。  ##  TCP协">
+<meta name="twitter:image" content="https://uploadfiles.nowcoder.com/images/20190307/6461901_1551947231183_3682CE42917068614DE79F608B7E283B">
 
 
 
@@ -114,7 +117,7 @@
 
   
   
-  <link rel="canonical" href="http://Shirtiny.cn/新建文本文档">
+  <link rel="canonical" href="http://Shirtiny.cn/题目">
 
 
 
@@ -458,7 +461,118 @@
       <div class="post-body">
         
         
-          <p><a href="https://gist.github.com/biezhi/f90923b48863c7d745481ccdd678ccab" target="_blank" rel="noopener">https://gist.github.com/biezhi/f90923b48863c7d745481ccdd678ccab</a></p>
+          <p>## </p>
+<p>  物理层：中继器、集线器 </p>
+<p>  数据链路层：网桥、交换机</p>
+<p>  网络层：路由器 </p>
+<p>  网络层以上：网关 </p>
+<p>## </p>
+<p>  <strong>电路交换</strong>有预留，且分配一定空间，提供专用的网络资源，提供有保证的服务，应用于<strong>电话网</strong>； </p>
+<p>  <strong>分组交换</strong>无预留，且不分配空间，存在网络资源争用，提供有无保证的服务。分组交换可用于<strong>数据报网络和虚电路网络</strong>。我们常用的<strong>Internet就是数据报网络</strong>，单位是Bit。 </p>
+<p>## </p>
+<p>TCP协议<a href="https://blog.csdn.net/qq_34501940/article/details/51180268" target="_blank" rel="noopener">https://blog.csdn.net/qq_34501940/article/details/51180268</a></p>
+<p>  滑动窗口协议有 </p>
+<p>  1、停止等待协议，发送窗口=1，接受窗口=1； </p>
+<p>  2、退后N帧协议，发送&gt;1,接收=1; </p>
+<p>  3、选择重传协议，发送&gt;1,接收&gt;1; </p>
+<p>## </p>
+<p>  为什么在第三次挥手时需要发送ack和seq？ </p>
+<p>  因为  TCP 是可靠的全双工传输，所以需要确保客户端的链接关闭正确，并且防止传送的数据包在网络中延迟出现的错误，如果后面又使用同样的端口建立了一个  TCP  链接而且现在要释放(完成了两次挥手)，刚才延迟的包现在到了，这时也许服务器还有数据要发送，但是客户端收到延迟的包，就直接确认返回ACK，从而出现非正常关闭。</p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190307/6461901_1551947231183_3682CE42917068614DE79F608B7E283B" alt></p>
+<p>## </p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190303/289535953_1551600105103_D7C2E311EA1C87CAF6EBCEBC128A20E3" alt></p>
+<p>## </p>
+<p>  在三次握手过程中，服务器发送SYN-ACK之后，收到客户端的ACK之前的TCP连接称为半连接(half-open connect)。此时服务器处于SYN_RECV状态。当收到ACK后，服务器转入ESTABLISHED状态。 </p>
+<p>  攻击客户端通过发包器，在短时间内伪造大量不存在的IP地址，向服务器不断地发送SYN包，服务器回复确认包SYN/ACK，并等待客户的确认，由于源地址是不存在的，服务器需要不断的重发SYN/ACK直至超时，这些伪造的SYN包将长时间占用未连接队列，正常的SYN请求被丢弃，目标系统运行缓慢，严重者引起网络堵塞甚至系统瘫痪。 </p>
+<p>  SYN攻击是一个典型的DDOS攻击。检测SYN攻击非常的方便，当你在服务器上看到大量的半连接状态时，特别是源IP地址是随机的，基本上可以断定这是一次SYN攻击。 </p>
+<p> 当大量syn请求包发送给服务端的时候，需要设置合理的最大并发半开连接数。一旦超过相应的最大限制，系统就会认为自己收到了syn flood攻击，进入防范模式中。SYN Timeout时间被减短，SYN-ACK的重试次数减少，系统也会自动对缓冲区中的报文进行延时，避免对TCP/IP堆栈造成过大的冲击，力图将攻击危害减到最低。</p>
+<p>## </p>
+<ul>
+<li><p>软链接有自己的文件属性及权限等；  </p>
+</li>
+<li><p>可对不存在的文件或目录创建软链接；  </p>
+</li>
+<li><p>软链接可交叉文件系统；  </p>
+</li>
+<li><p>软链接可对文件或目录创建；  </p>
+</li>
+<li><p>创建软链接时，链接计数 i_nlink 不会增加；  </p>
+</li>
+<li><p>​    删除软链接并不影响被指向的文件，但若被指向的原文件被删除，则相关软连接被称为死链接（即 dangling link，若被指向路径文件被重新创建，死链接可恢复为正常的软链接）。   </p>
+</li>
+</ul>
+<h2 id="ext3文件系统的特点"><a href="#ext3文件系统的特点" class="headerlink" title="ext3文件系统的特点"></a>ext3文件系统的特点</h2><p>  1、高可用性：系统使用了ext3文件系统后，即使在非正常关机后，系统也不需要检查文件系统。 </p>
+<p>   2、数据的完整性：避免了意外宕机对文件系统的破坏。 </p>
+<p>   3、文件系统的速度：因为ext3的日志功能对磁盘的驱动器读写头进行了优化。所以，文件系统的读写性能较之Ext2文件系统并来说，性能并没有降低。  </p>
+<p>  4、数据转换 ：“由ext2文件系统转换成ext3文件系统非常容易。 </p>
+<p>   5、多种日志模式 </p>
+<p>## </p>
+<p>  <strong>ifconfig</strong>命令<code>network interfaces configuring</code>被用于配置和显示Linux内核中网络接口的网络参数。用ifconfig命令配置的网卡信息，在网卡重启后机器重启后，配置就不存在。要想将上述的配置信息永远的存的电脑里，那就要修改网卡的配置文件了。 </p>
+<p>  <strong>uptime命令</strong>能够打印系统总共运行了多长时间和系统的平均负载。uptime命令可以显示的信息显示依次为：现在时间、系统已经运行了多长时间、目前有多少登陆用户、系统在过去的1分钟、5分钟和15分钟内的平均负载。 </p>
+<p>  <strong>top命令</strong>可以实时动态地查看系统的整体运行情况，是一个综合了多方信息监测系统性能和运行信息的实用工具。</p>
+<p>  <strong>netstat命令</strong>用来打印Linux中网络系统的状态信息，可让你得知整个Linux系统的网络情况。</p>
+<p>  export 用于修改环境变量  </p>
+<p>  cat 命令用于连接文件并打印到标准输出设备上。 </p>
+<p>  echo命令：显示文字并给文字添加颜色 </p>
+<p>  env 用于创建环境变量</p>
+<h2 id="范式化处理数据"><a href="#范式化处理数据" class="headerlink" title="范式化处理数据"></a>范式化处理数据</h2><p>1 、第一范式（1NF）</p>
+<p>指数据库表的每一列(即每个属性)都是不可分割的基本数据项，同一列中不能有多个值，即实体中的某个属性不能有多个值或者不能有重复的属性。简而言之，第一范式就是无重复的列。</p>
+<p>2.第二范式（2NF）要求实体的属性完全依赖于主关键字。 </p>
+<p>  所谓完全依赖是指不能存在仅依赖主关键字一部分的属性，如果存在，那么这个属性和主关键字的这一部分应该分离出来形成一个新的实体，新实体与原实体之间是一对多的关系。 </p>
+<p>  简而言之，第二范式就是非主属性依赖于主关键字。 </p>
+<p> 3 、第三范式（3NF）</p>
+<p>  在满足第二范式的基础上，切不存在传递函数依赖，那么就是第三范式。 </p>
+<p>  简而言之，第三范式就是属性不依赖于其它非主属性。 </p>
+<p>## </p>
+<p>以下哪条SQL语句可以返回table1中的全部的key：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select tabel1.key from table1 left semi join tabel2 on table1.key=table2.key</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select tabel1.key from table1 left outer join tabel2 on table1.key=table2.key</span><br></pre></td></tr></table></figure>
+
+<p>由于要返回table1中的全部的key，则需要左连接，而left semi join表示只打印出左边表中 的key，<strong>但前提是左表中的key在右表中存在，否则会过滤掉</strong>，所以选第一2个</p>
+<h2 id="Mysql数据库引擎MyISAM特性："><a href="#Mysql数据库引擎MyISAM特性：" class="headerlink" title="Mysql数据库引擎MyISAM特性："></a>Mysql数据库引擎<strong>MyISAM特性：</strong></h2><p>  1:不支持事务、不具备AICD特性(原子性、一致性、分离性、永久性); </p>
+<p>  2:表级别锁定形式(更新数据时锁定整个表、这样虽然可以让锁定的实现成本很小但是同时大大降低了其并发的性能)； </p>
+<p>  3:读写相互阻塞(不仅会在写入的时候阻塞读取、还会在读取的时候阻塞写入、但是读取不会阻塞读取); </p>
+<p>  4:只会缓存索引(myisam通过key_buffer_size来设置缓存索引，提高访问性能较少磁盘IO的压力、但是只缓存索引、不缓存数据); </p>
+<p>  5:读取速度快、占用资源比较少; </p>
+<p>  6:不支持外键约束、只支持全文检索； </p>
+<p>  7:是MySQL5.5.5版本之前的默认存储引擎； </p>
+<p>## </p>
+<p>Mysql中表user的建表语句如下，<br>CREATE TABLE <code>user</code> (<br>  <code>id</code> bigint(20) NOT NULL AUTO_INCREMENT COMMENT ‘主键Id’,<br>  <code>name</code> varchar(255) DEFAULT NULL COMMENT ‘名称’,<br>  <code>age</code> int(11) DEFAULT NULL COMMENT ‘年龄’,<br>  <code>address</code> varchar(255) DEFAULT NULL COMMENT ‘地址’,<br>  <code>created_time</code> datetime DEFAULT NULL COMMENT ‘创建时间’,<br>  <code>updated_time</code> datetime DEFAULT NULL COMMENT ‘更新时间’,<br>  PRIMARY KEY (<code>id</code>),<br>  KEY <code>idx_com1</code> (<code>name</code>,<code>age</code>,<code>address</code>)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT=’用户表’;<br>以下哪个查询语句没有使用到索引idx_com1？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select  *  from user where name=&apos;张三&apos; and age = 25 and address=&apos;北京大兴区&apos;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select  *  from user where name=&apos;张三&apos; and address=&apos;北京大兴区&apos;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select  *  from user where age = 25 and address=&apos;北京大兴区&apos;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select  *  from user where address=&apos;北京大兴区&apos;  and age = 25 and name=&apos;张三&apos;</span><br></pre></td></tr></table></figure>
+
+<p>3,（使用到索引）==（条件中出现联合索引最左前缀字段）</p>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><p>  备忘录模式：适用于恢复某个类的先前状态，有点类似于快照这类型功能。 </p>
+<p>  原型模式：通过new产生一个对象需要非常繁琐的数据准备或访问权限，则可以使用原型模式。就是java中的克隆技术，以某个对象为原型，复制出新的对象。显然，新的对象具备原型对象的特点。 </p>
+<p>  状态模式：当一个对象，它具有很多种状态的，需要进行繁琐复杂的逻辑处理时，我们可以利用状态模式，将对象的各种状态进行类的封装，用于避免if else过于繁琐的情况。</p>
+<p>  命令模式：是一种数据驱动的设计模式，它属于行为型模式。请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。 </p>
+<p>  建造者模式：将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。 </p>
+<p>  适配器模式：将一个类的接口转换成另外一个客户希望的接口。Adapter 模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。 </p>
+<p>  桥接模式：将抽象部分与它的实现部分分离，使它们都可以独立地变化。 </p>
+<p>  代理模式：为其他对象提供一种代理以控制对这个对象的访问。 </p>
+<h2 id="静态代码块、代码块、构造器方法的执行顺序"><a href="#静态代码块、代码块、构造器方法的执行顺序" class="headerlink" title="静态代码块、代码块、构造器方法的执行顺序"></a>静态代码块、代码块、构造器方法的执行顺序</h2><p>在<strong>同一类</strong>里面,首先<strong>静态代码块</strong>在类加载的时候就执行了,而且只执行一次,不论你是否new了对象,而<strong>构造代码块</strong>和<strong>构造方法</strong>是在每次创建对象时都会被调用，并且<strong>构造代码块</strong>的执行次序<strong>优先</strong>于<strong>类构造函数</strong>。 </p>
+<h3 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h3><p>EQ 就是 EQUAL等于<br> NE就是 NOT EQUAL不等于<br> GT 就是 GREATER THAN大于<br> LT 就是 LESS THAN小于<br> GE 就是 GREATER THAN OR EQUAL 大于等于<br> LE 就是 LESS THAN OR EQUAL 小于等于</p>
+<p>  chmod :  </p>
+<p>  a ：代表所有人  u ：用户  g :组  o ：代表其他用户 </p>
+<p>  read = 4  write = 2 execute = 1 </p>
+<p>   $0  </p>
+<p>   Shell本身的文件名  </p>
+<p>  $! </p>
+<p>  Shell最后运行的后台Process的PID(后台运行的最后一个进程的<a href="https://www.baidu.com/s?wd=进程ID&tn=SE_PcZhidaonwhc_ngpagmjz&rsv_dl=gh_pc_zhidao" target="_blank" rel="noopener">进程ID</a>号) </p>
+<p>  $? </p>
+<p>  最后运行的命令的结束代码（返回值）即执行上一个指令的返回值 (显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误) </p>
+<p>   $#  </p>
+<p>   添加到Shell的参数个数  </p>
+<p>  错误重定向  2&gt; </p>
+<p>  标准输出     &gt; </p>
+<p>  同时实现输出和错误重定向 &amp;&gt; </p>
 
         
       </div>
@@ -508,8 +622,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -750,6 +873,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ext3文件系统的特点"><span class="nav-text">ext3文件系统的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#范式化处理数据"><span class="nav-text">范式化处理数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mysql数据库引擎MyISAM特性："><span class="nav-text">Mysql数据库引擎MyISAM特性：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计模式"><span class="nav-text">设计模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态代码块、代码块、构造器方法的执行顺序"><span class="nav-text">静态代码块、代码块、构造器方法的执行顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shell"><span class="nav-text">shell</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -954,7 +1094,7 @@
 <script>
   function renderGitment() {
     var gitment = new Gitment({
-      id: '1569566798234',
+      id: '1569508448340',
       owner: 'Shirtiny',
       repo: 'Shirtiny.github.io',
       
