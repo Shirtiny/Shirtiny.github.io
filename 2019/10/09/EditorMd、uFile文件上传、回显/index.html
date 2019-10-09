@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Editor.md配合UFile图片上传、回显Editor.md是一个开源的Markdown在线编辑器，可作为富文本编辑器使用，UFile是Ucloud对象云存储的服务。 1. Editor.md官网：">
+<meta name="keywords" content="uCloud,云空间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Editor.md、UFile文件上传、回显">
+<meta property="og:url" content="http://Shirtiny.cn/2019/10/09/EditorMd、uFile文件上传、回显/index.html">
+<meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:description" content="Editor.md配合UFile图片上传、回显Editor.md是一个开源的Markdown在线编辑器，可作为富文本编辑器使用，UFile是Ucloud对象云存储的服务。 1. Editor.md官网：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/09/63652efc622bad5fe74e3e46406b68453c0c1f44ebf33d27.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/09/ac2582b6d40e5f720a16843a8f2d0470830da3955acf0817.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/09/e3b369113a2eb557d49ea7f2a1659758cecc64817a4e1c9b.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/09/74616e1e14ede6d54c172dc60da4e9c187e5677b67c6226b.png">
+<meta property="og:updated_time" content="2019-10-09T13:42:36.407Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Editor.md、UFile文件上传、回显">
+<meta name="twitter:description" content="Editor.md配合UFile图片上传、回显Editor.md是一个开源的Markdown在线编辑器，可作为富文本编辑器使用，UFile是Ucloud对象云存储的服务。 1. Editor.md官网：">
+<meta name="twitter:image" content="https://file.moetu.org/images/2019/10/09/63652efc622bad5fe74e3e46406b68453c0c1f44ebf33d27.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/10/09/EditorMd、uFile文件上传、回显/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Editor.md、UFile文件上传、回显 | ☘(๑•̀ㅂ•́)و✧</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘(๑•̀ㅂ•́)و✧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-放映厅">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/video/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>放映厅</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/10/09/EditorMd、uFile文件上传、回显/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Editor.md、UFile文件上传、回显
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-09 19:51:13 / 修改时间：21:42:36" itemprop="dateCreated datePublished" datetime="2019-10-09T19:51:13+08:00">2019-10-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Editor-md配合UFile图片上传、回显"><a href="#Editor-md配合UFile图片上传、回显" class="headerlink" title="Editor.md配合UFile图片上传、回显"></a>Editor.md配合UFile图片上传、回显</h1><p><code>Editor.md</code>是一个开源的Markdown在线编辑器，可作为富文本编辑器使用，<code>UFile</code>是Ucloud对象云存储的服务。</p>
+<h2 id="1-Editor-md"><a href="#1-Editor-md" class="headerlink" title="1. Editor.md"></a>1. Editor.md</h2><p><a href="http://editor.md.ipandao.com/" target="_blank" rel="noopener">官网</a>：</p>
+<p><img src="https://file.moetu.org/images/2019/10/09/63652efc622bad5fe74e3e46406b68453c0c1f44ebf33d27.png" alt></p>
+<a id="more"></a>
+
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>下载在Github的源码，然后在Html中引入;</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"/editor.md/css/editormd.min.css"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/editor.md/editormd.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Markdown编辑器"><a href="#Markdown编辑器" class="headerlink" title="Markdown编辑器"></a>Markdown编辑器</h3><p>初始化编辑器，可输入内容</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"editor"</span> <span class="attr">class</span>=<span class="string">"sh_MdEditor"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">textarea</span>  <span class="attr">style</span>=<span class="string">"display:none;"</span> <span class="attr">name</span>=<span class="string">"content"</span> <span class="attr">id</span>=<span class="string">"content"</span> <span class="attr">placeholder</span>=<span class="string">"在此输入文章内容..."</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--初始化编辑器--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">    $(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> editor = editormd(<span class="string">"editor"</span>, &#123;</span></span><br><span class="line"><span class="javascript">            width: <span class="string">"100%"</span>,</span></span><br><span class="line"><span class="javascript">            height: <span class="string">"100%"</span>,</span></span><br><span class="line"><span class="javascript">            <span class="comment">// markdown: "xxxx",     // dynamic set Markdown text</span></span></span><br><span class="line"><span class="javascript">            path: <span class="string">"/editormd/lib/"</span>, <span class="comment">// Autoload modules mode, codemirror, marked... dependents libs path</span></span></span><br><span class="line">            delay: 0,</span><br><span class="line"><span class="javascript">            codeFold: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">            htmlDecode: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">            emoji: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">            <span class="comment">//图片上传</span></span></span><br><span class="line"><span class="javascript">            imageUpload: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">            imageFormats: [<span class="string">"jpg"</span>, <span class="string">"jpeg"</span>, <span class="string">"gif"</span>, <span class="string">"png"</span>, <span class="string">"bmp"</span>, <span class="string">"webp"</span>],</span></span><br><span class="line"><span class="javascript">            imageUploadURL: <span class="string">"/imageUpload"</span>,             <span class="comment">// Upload url</span></span></span><br><span class="line"><span class="javascript">            crossDomainUpload: <span class="literal">false</span>,          <span class="comment">// Enable/disable Cross-domain upload</span></span></span><br><span class="line"><span class="javascript">            uploadCallbackURL: <span class="string">""</span>,</span></span><br><span class="line"><span class="javascript">            placeholder: <span class="string">'在此输入文章内容，使用markdown语法...'</span>,</span></span><br><span class="line"><span class="javascript">            description: <span class="string">"Markdown 文本编辑"</span>,</span></span><br><span class="line"><span class="javascript">            lang: &#123;  <span class="comment">// Language data, you can custom your language.</span></span></span><br><span class="line"><span class="javascript">                description: <span class="string">"Markdown编辑器&lt;br/&gt;Markdown editor."</span></span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Markdown解析"><a href="#Markdown解析" class="headerlink" title="Markdown解析"></a>Markdown解析</h3><p>对Markdown内容进行解析，显示成html，注意，需要额外引入：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/editormd/lib/marked.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/editormd/lib/prettify.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--md解析器                        --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"md_viewer"</span> <span class="attr">class</span>=<span class="string">"sh_MdViewer"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">textarea</span> <span class="attr">style</span>=<span class="string">"display:none;"</span> <span class="attr">th:text</span>=<span class="string">"$&#123;invitationDetail.content&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">	<span class="comment">//md解析器</span></span></span><br><span class="line"><span class="javascript">	<span class="keyword">var</span> md_viewer = editormd.markdownToHTML(<span class="string">"md_viewer"</span>, &#123;</span></span><br><span class="line"><span class="javascript">	<span class="comment">// markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set 	Markdown text</span></span></span><br><span class="line"><span class="javascript">	htmlDecode: <span class="literal">true</span>  <span class="comment">// Enable / disable HTML tag encode.</span></span></span><br><span class="line"><span class="javascript">	<span class="comment">// htmlDecode : "style,script,iframe",  // <span class="doctag">Note:</span> If enabled, you should filter some dangerous HTML tags for website security.</span></span></span><br><span class="line">&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="图片上传前端"><a href="#图片上传前端" class="headerlink" title="图片上传前端"></a>图片上传<code>前端</code></h3><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>图片上传需要在初始化md编辑器的js里设置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//图片上传</span></span><br><span class="line">imageUpload: <span class="literal">true</span>,<span class="comment">//启用图片上传</span></span><br><span class="line">imageFormats: [<span class="string">"jpg"</span>, <span class="string">"jpeg"</span>, <span class="string">"gif"</span>, <span class="string">"png"</span>, <span class="string">"bmp"</span>, <span class="string">"webp"</span>],<span class="comment">//文件格式限制</span></span><br><span class="line">imageUploadURL: <span class="string">"/imageUpload"</span>,             <span class="comment">// 上传地址</span></span><br><span class="line">crossDomainUpload: <span class="literal">false</span>,          <span class="comment">// 是否启用跨域上传</span></span><br><span class="line">uploadCallbackURL: <span class="string">""</span>,		<span class="comment">//上传完成后的回调地址</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="表单"><a href="#表单" class="headerlink" title="表单"></a>表单</h4><p>编辑器上传图片，使用的是<code>&lt;ifram&gt;</code>里的<code>form</code>表单，如图：</p>
+<p><img src="https://file.moetu.org/images/2019/10/09/ac2582b6d40e5f720a16843a8f2d0470830da3955acf0817.png" alt></p>
+<p>只是普通的上传文件，然后对文件进行格式限制，传递文件的参数名为：<code>editormd-file-input</code></p>
+<p><img src="https://file.moetu.org/images/2019/10/09/e3b369113a2eb557d49ea7f2a1659758cecc64817a4e1c9b.png" alt></p>
+<h4 id="Json-Data"><a href="#Json-Data" class="headerlink" title="Json Data"></a>Json Data</h4><p>编辑器需要服务器返回Json数据，以此获得上传结果、图片回显地址。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    success : 1,           // 0 表示上传失败，1 表示上传成功</span><br><span class="line">    message : "上传成功或上传失败及错误信息等。",</span><br><span class="line">    url     : "回显需要的图片地址"        // 上传成功时才返回</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="图片上传Controller"><a href="#图片上传Controller" class="headerlink" title="图片上传Controller"></a>图片上传<code>Controller</code></h3><p>通过前端传递过来的参数、需要的返回值，便可以写出一个临时的<code>Controller</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//暂无service</span></span><br><span class="line">    <span class="comment">//imageService</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment">//md编辑器的图片上传表单的name参数值（放在.properties文件中，Md_Editor_imageFile_name=editormd-image-file）</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;Md_Editor_imageFile_name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String Md_Editor_imageFile_name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//md图片上传以及回显</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/imageUpload"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Md_ImageUpResultDTO <span class="title">uploadImage</span><span class="params">(HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        <span class="comment">//转换request</span></span><br><span class="line">        MultipartHttpServletRequest multipartRequest= (MultipartHttpServletRequest) request;</span><br><span class="line">        String downloadUrl=<span class="string">""</span>;</span><br><span class="line">            <span class="comment">//需要md图片表单提交的文件name</span></span><br><span class="line">            MultipartFile file = multipartRequest.getFile(Md_Editor_imageFile_name);</span><br><span class="line">                <span class="comment">//调用上传服务</span></span><br><span class="line">                <span class="comment">//downloadUrl = imageService.upload();</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Md_ImageUpResultDTO(<span class="number">1</span>,<span class="string">"上传成功!"</span>,downloadUrl);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>Md_ImageUpResultDTO</code>是服务器上传完成后，返回信息的封装</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.DTO;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Md_ImageUpResultDTO</span> </span>&#123;</span><br><span class="line">    <span class="comment">//表示是否上传成功</span></span><br><span class="line">    <span class="keyword">int</span> success;</span><br><span class="line">    <span class="comment">//提示</span></span><br><span class="line">    String message;</span><br><span class="line">    <span class="comment">//图片地址</span></span><br><span class="line">    String url;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Md_ImageUpResultDTO</span><span class="params">(<span class="keyword">int</span> success, String message, String url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.success = success;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">        <span class="keyword">this</span>.url = url;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-UFile"><a href="#2-UFile" class="headerlink" title="2. UFile"></a>2. UFile</h2><p>使用<code>UFile</code>作为存储上传文件的云空间，因为有20G免费空间。</p>
+<h3 id="UFile-SDK"><a href="#UFile-SDK" class="headerlink" title="UFile SDK"></a>UFile SDK</h3><p><a href="https://github.com/ucloud/ufile-sdk-java" target="_blank" rel="noopener">Github地址</a>，这里用java版的</p>
+<h4 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h4><p>公钥、密钥在令牌管理里生成</p>
+<p><img src="https://file.moetu.org/images/2019/10/09/74616e1e14ede6d54c172dc60da4e9c187e5677b67c6226b.png" alt></p>
+<p>为了方便修改，将这些固定信息放在<code>xx.properties</code>文件里</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#md编辑器的图片上传表单的name参数值，由插件表单决定的固定值</span><br><span class="line">Md_Editor_imageFile_name=editormd-image-file</span><br><span class="line"></span><br><span class="line">#是否允许图片上传服务修改文件的名字</span><br><span class="line">ImageUploadService_isAllownRename=true</span><br><span class="line"></span><br><span class="line">#ucloud对象存储 java JDK https://github.com/ucloud/ufile-sdk-java</span><br><span class="line">#ucloud对象存储，令牌SHtoken，https://console.ucloud.cn/ufile/token</span><br><span class="line">ucloud_uFile_SHtoken_PublicKey=123456</span><br><span class="line">ucloud_uFile_SHtoken_PrivateKey=123456</span><br><span class="line"></span><br><span class="line">#命名空间的名字</span><br><span class="line">ucloud_uFile_bucket_name=shirtinycn</span><br><span class="line">#命名空间bucket所在的地区编码,地区编码列表 https://docs.ucloud.cn/api/summary/regionlist.html</span><br><span class="line">ucloud_uFile_bucket_region=cn-gd</span><br><span class="line">#域名后缀ufileos.com</span><br><span class="line">ucloud_uFile_bucket_proxySuffix=ufileos.com</span><br><span class="line"></span><br><span class="line">#临时下载地址的过期时间,315360000 --&gt; 10 * 365 * 24 * 60 * 60s = 10年</span><br><span class="line">ucloud_uFile_downloadURL_expiresDuration=315360000</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件上传Service"><a href="#文件上传Service" class="headerlink" title="文件上传Service"></a>文件上传Service</h3><ul>
+<li>接口：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ImageService</span> </span>&#123;</span><br><span class="line">    <span class="comment">//图片文件上传</span></span><br><span class="line">    <span class="function">String <span class="title">upload</span><span class="params">(InputStream inputStream, String mimeType, <span class="keyword">boolean</span> allownRename, String clientFileName)</span></span>;</span><br><span class="line">    <span class="comment">//生成随机文件名</span></span><br><span class="line">    <span class="function">String <span class="title">createRandomName</span><span class="params">(String clientFileName)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>实现类：</li>
+</ul>
+<p><strong>授权以及配置</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对象相关API的授权器</span></span><br><span class="line">       ObjectAuthorization OBJECT_AUTHORIZER = <span class="keyword">new</span> UfileObjectLocalAuthorization(myPublicKey, myPrivateKey);</span><br><span class="line">       <span class="comment">// 对象操作需要ObjectConfig来配置您的地区和域名后缀</span></span><br><span class="line">       ObjectConfig config = <span class="keyword">new</span> ObjectConfig(region, proxySuffix);</span><br></pre></td></tr></table></figure>
+
+<p><strong>执行上传</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">PutObjectResultBean response;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                response = UfileClient.object(OBJECT_AUTHORIZER, config)</span><br><span class="line">                        <span class="comment">//可以使用文件的方式，此上传方法有很多同类型的方法</span></span><br><span class="line">                        .putObject(inputStream, mimeType)</span><br><span class="line">                        .nameAs(serverFileName)</span><br><span class="line">                        <span class="comment">//我命名空间的名字</span></span><br><span class="line">                        .toBucket(bucketName)</span><br><span class="line">                        <span class="comment">/**</span></span><br><span class="line"><span class="comment">                         * 是否上传校验MD5, Default = true</span></span><br><span class="line"><span class="comment">                         */</span></span><br><span class="line">                        <span class="comment">//  .withVerifyMd5(false)</span></span><br><span class="line">                        <span class="comment">/**</span></span><br><span class="line"><span class="comment">                         * 指定progress callback的间隔, Default = 每秒回调</span></span><br><span class="line"><span class="comment">                         */</span></span><br><span class="line">                        <span class="comment">//  .withProgressConfig(ProgressConfig.callbackWithPercent(10))</span></span><br><span class="line">                        <span class="comment">/**</span></span><br><span class="line"><span class="comment">                         * 配置进度监听</span></span><br><span class="line"><span class="comment">                         */</span></span><br><span class="line">                        .setOnProgressListener(<span class="keyword">new</span> OnProgressListener() &#123;</span><br><span class="line">                            <span class="meta">@Override</span></span><br><span class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgress</span><span class="params">(<span class="keyword">long</span> bytesWritten, <span class="keyword">long</span> contentLength)</span> </span>&#123;</span><br><span class="line">                                <span class="comment">//已上传/总长度</span></span><br><span class="line">                                System.out.println(bytesWritten + <span class="string">"/"</span> + contentLength + <span class="string">"进度："</span> + (bytesWritten * <span class="number">100</span>) / contentLength + <span class="string">"%"</span>);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;).execute();</span><br></pre></td></tr></table></figure>
+
+<p><strong>响应以及回显文件地址</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//上传完成后，查看response，然后获得刚刚上传图片的临时地址</span></span><br><span class="line">                <span class="comment">//上传成功RetCode是0，错误时的response：&#123;"ResponseCode":400,"RetCode":-30010,"ErrMsg":"bucket not exist","X-SessionId":"0e9df91b-5d69-4e9b-bfeb-5d9b8c182869"&#125;</span></span><br><span class="line">                <span class="keyword">if</span> (response.getRetCode() == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">//获取刚刚上传的文件地址，设置过期时间</span></span><br><span class="line">                    downloadUrl = UfileClient.object(OBJECT_AUTHORIZER, config)</span><br><span class="line">                            .getDownloadUrlFromPrivateBucket(serverFileName, bucketName, expiresDuration)</span><br><span class="line">                            .createUrl();</span><br><span class="line">                    <span class="keyword">return</span> downloadUrl;</span><br><span class="line"><span class="comment">//出错时，throw new Md_ImageUploadFailedException(e.getMessage());</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>全局异常处理</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Advice;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="meta">@ControllerAdvice</span><span class="comment">//结合@ExceptionHandler用于全局异常的处理</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">myControllerAdvice</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(Md_ImageUploadFailedException.class)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Md_ImageUpResultDTO <span class="title">uploadFileErr</span><span class="params">(Throwable e)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"文件上传失败"</span>);</span><br><span class="line">        <span class="comment">//返回图片上传的失败结果，以及错误信息</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Md_ImageUpResultDTO(<span class="number">0</span>,e.getMessage(),<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Md_ImageUploadFailedException</code>是自定义的异常。</p>
+<h2 id="3-后端完整代码"><a href="#3-后端完整代码" class="headerlink" title="3. 后端完整代码"></a>3. 后端完整代码</h2><h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ImageService imageService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//md编辑器的图片上传表单的name参数值</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;Md_Editor_imageFile_name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String Md_Editor_imageFile_name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//是否允许服务修改上传到服务器后的文件名</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;ImageUploadService_isAllownRename&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> ImageUploadService_isAllownRename;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//md图片上传以及回显</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/imageUpload"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Md_ImageUpResultDTO <span class="title">uploadImage</span><span class="params">(HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        <span class="comment">//转换request</span></span><br><span class="line">        MultipartHttpServletRequest multipartRequest= (MultipartHttpServletRequest) request;</span><br><span class="line">        String downloadUrl=<span class="string">""</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//需要md图片表单提交的文件name</span></span><br><span class="line">            MultipartFile file = multipartRequest.getFile(Md_Editor_imageFile_name);</span><br><span class="line">            <span class="keyword">if</span> (file != <span class="keyword">null</span>) &#123;</span><br><span class="line">                InputStream inputStream = file.getInputStream();</span><br><span class="line">                String contentType = file.getContentType();</span><br><span class="line">                String filename = file.getOriginalFilename();</span><br><span class="line">                <span class="comment">//调用上传服务</span></span><br><span class="line">                downloadUrl = imageService.upload(inputStream, contentType, ImageUploadService_isAllownRename, filename);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Md_ImageUpResultDTO(<span class="number">1</span>,<span class="string">"上传成功!"</span>,downloadUrl);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Service.ServiceImpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageServiceImpl</span> <span class="keyword">implements</span> <span class="title">ImageService</span> </span>&#123;</span><br><span class="line">    <span class="comment">//公钥</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;ucloud_uFile_SHtoken_PublicKey&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String myPublicKey;</span><br><span class="line">    <span class="comment">//私钥</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;ucloud_uFile_SHtoken_PrivateKey&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String myPrivateKey;</span><br><span class="line">    <span class="comment">//bucket地域</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;ucloud_uFile_bucket_region&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String region;</span><br><span class="line">    <span class="comment">//域名后缀</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;ucloud_uFile_bucket_proxySuffix&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String proxySuffix;</span><br><span class="line">    <span class="comment">//名字</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;ucloud_uFile_bucket_name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String bucketName;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//临时下载地址的过期时间</span></span><br><span class="line">    <span class="comment">//  2 * 60秒 --&gt; 2分钟后过期，315360000 --&gt; 10 * 365 * 24 * 60 * 60 = 10年</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;ucloud_uFile_downloadURL_expiresDuration&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> expiresDuration;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**上传文件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> inputStream    文件的流</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> mimeType       文件的ContentType</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> allownRename   是否需要、允许修改文件上传到服务器后的名字</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> clientFileName 初始文件名</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> downLoadUrl 返回刚刚上传文件的临时地址</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">upload</span><span class="params">(InputStream inputStream, String mimeType, <span class="keyword">boolean</span> allownRename, String clientFileName)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//文件上传到服务器后的名字</span></span><br><span class="line">        String serverFileName = clientFileName;</span><br><span class="line">        <span class="comment">//临时下载地址</span></span><br><span class="line">        String downloadUrl = <span class="string">""</span>;</span><br><span class="line">        <span class="comment">//当允许重命名文件时，命名文件</span></span><br><span class="line">        <span class="keyword">if</span> (allownRename) &#123;</span><br><span class="line">            System.out.println(<span class="string">"暂时先不重命名，到时候看一下id生成工具"</span>+<span class="string">"emm百度开源的那个雪花算法的uidGenerator要用到数据库"</span>);</span><br><span class="line">            <span class="comment">//暂时用以前自己写的,传到服务器后的文件名</span></span><br><span class="line">            serverFileName=createRandomName(clientFileName);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 对象相关API的授权器</span></span><br><span class="line">        ObjectAuthorization OBJECT_AUTHORIZER = <span class="keyword">new</span> UfileObjectLocalAuthorization(myPublicKey, myPrivateKey);</span><br><span class="line">        <span class="comment">// 对象操作需要ObjectConfig来配置您的地区和域名后缀</span></span><br><span class="line">        ObjectConfig config = <span class="keyword">new</span> ObjectConfig(region, proxySuffix);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//待上传文件</span></span><br><span class="line">        <span class="comment">//File file = new File("your file path");</span></span><br><span class="line">        PutObjectResultBean response;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                response = UfileClient.object(OBJECT_AUTHORIZER, config)</span><br><span class="line">                        <span class="comment">//可以使用文件的方式</span></span><br><span class="line">                        .putObject(inputStream, mimeType)</span><br><span class="line">                        .nameAs(serverFileName)</span><br><span class="line">                        <span class="comment">//我命名空间的名字</span></span><br><span class="line">                        .toBucket(bucketName)</span><br><span class="line">                        <span class="comment">/**</span></span><br><span class="line"><span class="comment">                         * 是否上传校验MD5, Default = true</span></span><br><span class="line"><span class="comment">                         */</span></span><br><span class="line">                        <span class="comment">//  .withVerifyMd5(false)</span></span><br><span class="line">                        <span class="comment">/**</span></span><br><span class="line"><span class="comment">                         * 指定progress callback的间隔, Default = 每秒回调</span></span><br><span class="line"><span class="comment">                         */</span></span><br><span class="line">                        <span class="comment">//  .withProgressConfig(ProgressConfig.callbackWithPercent(10))</span></span><br><span class="line">                        <span class="comment">/**</span></span><br><span class="line"><span class="comment">                         * 配置进度监听</span></span><br><span class="line"><span class="comment">                         */</span></span><br><span class="line">                        .setOnProgressListener(<span class="keyword">new</span> OnProgressListener() &#123;</span><br><span class="line">                            <span class="meta">@Override</span></span><br><span class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgress</span><span class="params">(<span class="keyword">long</span> bytesWritten, <span class="keyword">long</span> contentLength)</span> </span>&#123;</span><br><span class="line">                                <span class="comment">//已上传/总长度</span></span><br><span class="line">                                System.out.println(bytesWritten + <span class="string">"/"</span> + contentLength + <span class="string">"进度："</span> + (bytesWritten * <span class="number">100</span>) / contentLength + <span class="string">"%"</span>);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;).execute();</span><br><span class="line">                <span class="comment">//上传完成后，查看response，然后获得刚刚上传图片的临时地址</span></span><br><span class="line">                    <span class="comment">//上传成功RetCode是0，错误时的response：&#123;"ResponseCode":400,"RetCode":-30010,"ErrMsg":"bucket not exist","X-SessionId":"0e9df91b-5d69-4e9b-bfeb-5d9b8c182869"&#125;</span></span><br><span class="line">                    <span class="keyword">if</span> (response.getRetCode() == <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="comment">//获取刚刚上传的文件地址，设置过期时间</span></span><br><span class="line">                        downloadUrl = UfileClient.object(OBJECT_AUTHORIZER, config)</span><br><span class="line">                                .getDownloadUrlFromPrivateBucket(serverFileName, bucketName, expiresDuration)</span><br><span class="line">                                .createUrl();</span><br><span class="line">                        <span class="keyword">return</span> downloadUrl;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (UfileClientException | UfileServerException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> Md_ImageUploadFailedException(e.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> downloadUrl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">createRandomName</span><span class="params">(String clientFileName)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//拿到文件后缀名</span></span><br><span class="line">        String suffix = clientFileName.substring(clientFileName.lastIndexOf(<span class="string">"."</span>));</span><br><span class="line">        <span class="comment">//根据当前日期，伪建一个文件夹</span></span><br><span class="line">        String directory = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>).format(<span class="keyword">new</span> Date());</span><br><span class="line">        <span class="comment">//生成新的文件名</span></span><br><span class="line">        <span class="comment">//时间戳</span></span><br><span class="line">        <span class="keyword">long</span> currentTimeMillis = System.currentTimeMillis();</span><br><span class="line">        <span class="comment">//随机数</span></span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">int</span> randomInt = random.nextInt(<span class="number">999</span>);</span><br><span class="line">        <span class="comment">//%X 获得数字，把它转为16进制，大写字母</span></span><br><span class="line">        <span class="comment">//%04X 增加的04，意思是，转化后的字符串占4个字符，不够用0填充</span></span><br><span class="line">        String fileId=currentTimeMillis+String.format(<span class="string">"%04X"</span>,randomInt);</span><br><span class="line">        <span class="comment">//组合为传到服务器后的文件名</span></span><br><span class="line">        <span class="keyword">return</span> directory+<span class="string">"_"</span>+fileId+suffix;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Editor-md-拓展"><a href="#4-Editor-md-拓展" class="headerlink" title="4. Editor.md 拓展"></a>4. Editor.md 拓展</h2><p>Md编辑器内容提交、显示，<code>VueJs</code>+<code>Element</code>组合的简单使用。</p>
+<h3 id="提交编辑的内容"><a href="#提交编辑的内容" class="headerlink" title="提交编辑的内容"></a>提交编辑的内容</h3><ul>
+<li><h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-xs-12  col-sm-9 row_left"</span> <span class="attr">id</span>=<span class="string">"vue_Editor"</span>&gt;</span></span><br><span class="line">               <span class="comment">&lt;!-- 编辑文章标题               --&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"input-group input-group-lg margin_top"</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"input-group-addon"</span> <span class="attr">id</span>=<span class="string">"sizing-addon1"</span>&gt;</span>title<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">"md_title"</span> <span class="attr">class</span>=<span class="string">" form-control"</span>  <span class="attr">type</span>=<span class="string">"text"</span>  <span class="attr">placeholder</span>=<span class="string">"在此输入标题..."</span></span></span><br><span class="line"><span class="tag">                          <span class="attr">aria-describedby</span>=<span class="string">"sizing-addon1"</span></span></span><br><span class="line"><span class="tag">                          <span class="attr">name</span>=<span class="string">"title"</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">hr</span>/&gt;</span></span><br><span class="line">               <span class="comment">&lt;!--编辑文章内容--&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">h2</span>&gt;</span><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"content"</span>&gt;</span>Content<span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">               <span class="comment">&lt;!--md编辑器--&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"editor"</span> <span class="attr">class</span>=<span class="string">"sh_MdEditor"</span>&gt;</span></span><br><span class="line">                   <span class="tag">&lt;<span class="name">textarea</span>  <span class="attr">style</span>=<span class="string">"display:none;"</span> <span class="attr">name</span>=<span class="string">"content"</span> <span class="attr">id</span>=<span class="string">"content"</span></span></span><br><span class="line"><span class="tag">                             <span class="attr">placeholder</span>=<span class="string">"在此输入文章内容..."</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">               <span class="comment">&lt;!--空文本错误警告--&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">               <span class="comment">&lt;!--提交按钮                --&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"btn btn-success btn-lg float_right"</span> @<span class="attr">click</span>=<span class="string">"submitMd"</span>&gt;</span>发布<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--md编辑--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">    $(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">const</span> vue_Editor = <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="javascript">            el: <span class="string">"#vue_Editor"</span>,</span></span><br><span class="line">            data:&#123;</span><br><span class="line"><span class="javascript">                md_title:<span class="string">""</span>,</span></span><br><span class="line"><span class="javascript">                fileUploadErr:<span class="literal">false</span></span></span><br><span class="line">            &#125;,</span><br><span class="line">            methods: &#123;</span><br><span class="line"><span class="javascript">                submitMd: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//获得编辑区Markdown源码</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">var</span> md_content=editor.getMarkdown();</span></span><br><span class="line"><span class="javascript">                    <span class="built_in">console</span>.log(<span class="string">'输出title：\n'</span>+vue_Editor.md_title);</span></span><br><span class="line"><span class="javascript">                    <span class="built_in">console</span>.log(<span class="string">'输出content：\n'</span>+md_content);</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//提交数据给后台</span></span></span><br><span class="line"><span class="javascript">                    axios.post(<span class="string">'/createInvitation'</span>,&#123;</span></span><br><span class="line">                        title:vue_Editor.md_title,</span><br><span class="line">                        content:md_content,</span><br><span class="line"><span class="javascript">                        isAxios:<span class="literal">true</span></span></span><br><span class="line"><span class="javascript">                    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                        <span class="comment">//成功提交的情况</span></span></span><br><span class="line"><span class="javascript">                        <span class="keyword">if</span> (response.data.code==<span class="number">200</span>)&#123;</span></span><br><span class="line"><span class="javascript">                            <span class="comment">//通知</span></span></span><br><span class="line">                            vue_Editor.$notify(&#123;</span><br><span class="line"><span class="javascript">                                title: <span class="string">'OK~'</span>,</span></span><br><span class="line"><span class="javascript">                                message: response.data.message+<span class="string">"，即将跳转..."</span>,</span></span><br><span class="line"><span class="javascript">                                type: <span class="string">'success'</span></span></span><br><span class="line">                            &#125;);</span><br><span class="line"><span class="javascript">                            <span class="comment">//2秒后调到最后一页</span></span></span><br><span class="line"><span class="javascript">                            setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                                <span class="built_in">window</span>.location.href=<span class="string">"/?curPage=999999"</span></span></span><br><span class="line">                            &#125;,2000);</span><br><span class="line"><span class="javascript">                        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(response.data.code==<span class="number">400</span>)&#123;</span></span><br><span class="line">                            vue_Editor.$notify.error(&#123;</span><br><span class="line"><span class="javascript">                                title: <span class="string">'No~'</span>,</span></span><br><span class="line">                                message: response.data.message</span><br><span class="line">                            &#125;);</span><br><span class="line">                        &#125;</span><br><span class="line"><span class="javascript">                    &#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">this</span>.$alert(error, <span class="string">'服务器出错'</span>, &#123;</span></span><br><span class="line"><span class="javascript">                            confirmButtonText: <span class="string">'确定'</span></span></span><br><span class="line">                        &#125;);</span><br><span class="line"><span class="javascript">                        <span class="built_in">console</span>.log(error)</span></span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> editor = editormd(<span class="string">"editor"</span>, &#123;</span></span><br><span class="line"><span class="javascript">            width: <span class="string">"100%"</span>,</span></span><br><span class="line"><span class="javascript">            height: <span class="string">"100%"</span>,</span></span><br><span class="line"><span class="javascript">            <span class="comment">// markdown: "xxxx",     // dynamic set Markdown text</span></span></span><br><span class="line"><span class="javascript">            path: <span class="string">"/editormd/lib/"</span>, <span class="comment">// Autoload modules mode, codemirror, marked... dependents libs path</span></span></span><br><span class="line">            delay: 0,</span><br><span class="line"><span class="javascript">            codeFold: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">            htmlDecode: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">            emoji: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">            <span class="comment">//图片上传</span></span></span><br><span class="line"><span class="javascript">            imageUpload: <span class="literal">true</span>,</span></span><br><span class="line"><span class="javascript">            imageFormats: [<span class="string">"jpg"</span>, <span class="string">"jpeg"</span>, <span class="string">"gif"</span>, <span class="string">"png"</span>, <span class="string">"bmp"</span>, <span class="string">"webp"</span>],</span></span><br><span class="line"><span class="javascript">            imageUploadURL: <span class="string">"/imageUpload"</span>,             <span class="comment">// Upload url</span></span></span><br><span class="line"><span class="javascript">            crossDomainUpload: <span class="literal">false</span>,          <span class="comment">// Enable/disable Cross-domain upload</span></span></span><br><span class="line"><span class="javascript">            uploadCallbackURL: <span class="string">""</span>,</span></span><br><span class="line"><span class="javascript">            placeholder: <span class="string">'在此输入文章内容，使用markdown语法...'</span>,</span></span><br><span class="line"><span class="javascript">            description: <span class="string">"Markdown 文本编辑"</span>,</span></span><br><span class="line"><span class="javascript">            lang: &#123;  <span class="comment">// Language data, you can custom your language.</span></span></span><br><span class="line"><span class="javascript">                description: <span class="string">"Markdown编辑器&lt;br/&gt;Markdown editor."</span></span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h4 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h4></li>
+</ul>
+<h5 id="Controller-1"><a href="#Controller-1" class="headerlink" title="Controller"></a>Controller</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InvitationController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IinvitationService invitationService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostMapping</span>(value = <span class="string">"/createInvitation"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShResultDTO <span class="title">createInvitation</span><span class="params">(@RequestBody Invitation invitation, Model model, HttpServletRequest request)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        Long userId=((User)request.getSession().getAttribute(<span class="string">"user"</span>)).getId();</span><br><span class="line">        invitation.setAuthorId(userId);</span><br><span class="line">        <span class="keyword">boolean</span> flag = invitationService.addInvitation(invitation);</span><br><span class="line">        <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ShResultDTO&lt;String&gt;(<span class="number">200</span>,<span class="string">"提交成功了哦~"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ShResultDTO&lt;String&gt;(<span class="number">400</span>,<span class="string">"标题或内容不能为空，并且字数不能大于20和400"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>ShResultDTO</code>为返回信息的封装</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.DTO;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShResultDTO</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//状态码</span></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line">    <span class="comment">//信息</span></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="comment">//数据</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line">    <span class="comment">//错误</span></span><br><span class="line">    String error;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ShResultDTO</span><span class="params">(Integer code, String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ShResultDTO</span><span class="params">(String message, String error)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">        <span class="keyword">this</span>.error = error;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Service-1"><a href="#Service-1" class="headerlink" title="Service"></a>Service</h5><p>接口省略…</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InvitationService</span> <span class="keyword">implements</span> <span class="title">IinvitationService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> InvitationMapper invitationMapper;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//增加帖子</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">addInvitation</span><span class="params">(Invitation invitation)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (invitation == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">boolean</span> titleIsEmpty = StringUtils.isEmpty(invitation.getTitle());</span><br><span class="line">        <span class="keyword">boolean</span> contentIsEmpty = StringUtils.isEmpty(invitation.getContent());</span><br><span class="line">        <span class="comment">//判断标题或内容是不是空、标题或内容长度是否超限</span></span><br><span class="line">        <span class="keyword">if</span> (titleIsEmpty || contentIsEmpty || invitation.getTitle().length() &gt; <span class="number">20</span> || invitation.getContent().length() &gt; <span class="number">2000</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            invitation.setGmtCreated(System.currentTimeMillis());</span><br><span class="line">            invitation.setGmtModified(invitation.getGmtCreated());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                invitationMapper.insert(invitation);<span class="comment">//插入数据库</span></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> CreateInvitationErrException(e.toString(),<span class="number">4502</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>CreateInvitationErrExceptio</code>为自定义异常类</p>
+<h5 id="全局异常处理"><a href="#全局异常处理" class="headerlink" title="全局异常处理"></a>全局异常处理</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span><span class="comment">//结合@ExceptionHandler用于全局异常的处理</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">myControllerAdvice</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line"><span class="meta">@ExceptionHandler</span>(CreateInvitationErrException.class)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShResultDTO <span class="title">createInvitationErr</span><span class="params">(Throwable e)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"帖子提交失败，数据库的异常，在应该是InvitationService里抛出"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ShResultDTO(<span class="number">4502</span>,e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/uCloud/" rel="tag">#^_^#uCloud</a>
+          
+            <a href="/tags/云空间/" rel="tag">#^_^#云空间</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/06/Vue3/" rel="next" title="Vue CLI">
+                <i class="fa fa-chevron-left"></i> Vue CLI
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">65</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Editor-md配合UFile图片上传、回显"><span class="nav-text">Editor.md配合UFile图片上传、回显</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Editor-md"><span class="nav-text">1. Editor.md</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入"><span class="nav-text">引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Markdown编辑器"><span class="nav-text">Markdown编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Markdown解析"><span class="nav-text">Markdown解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片上传前端"><span class="nav-text">图片上传前端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-text">配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表单"><span class="nav-text">表单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Json-Data"><span class="nav-text">Json Data</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片上传Controller"><span class="nav-text">图片上传Controller</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-UFile"><span class="nav-text">2. UFile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UFile-SDK"><span class="nav-text">UFile SDK</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置信息"><span class="nav-text">配置信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件上传Service"><span class="nav-text">文件上传Service</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-后端完整代码"><span class="nav-text">3. 后端完整代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller"><span class="nav-text">Controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service"><span class="nav-text">Service</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Editor-md-拓展"><span class="nav-text">4. Editor.md 拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提交编辑的内容"><span class="nav-text">提交编辑的内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前端"><span class="nav-text">前端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后端"><span class="nav-text">后端</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Controller-1"><span class="nav-text">Controller</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Service-1"><span class="nav-text">Service</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#全局异常处理"><span class="nav-text">全局异常处理</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1570621873000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+
+<!--音乐播放器
+<link rel="stylesheet" href="/APlayer/APlayer.min.css">
+<div  id="aplayer"></div>
+<script type="text/javascript" src="/APlayer/APlayer.min.js"></script>
+<script type="text/javascript" src="/APlayer/music.js"></script>
+ -->
+ 
+</body>
+</html>
