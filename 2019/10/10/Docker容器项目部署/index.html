@@ -96,21 +96,25 @@
 
 
 
-  <meta name="description" content="使用Docker部署Vue、Go项目不经意看到Docker这个大鲸鱼：  突然好奇它怎么用的，这些技术像动物世界一样。">
-<meta name="keywords" content="Docker,linux,Vue,Go">
+  <meta name="description" content="使用Docker部署Vue、Go项目，Ubuntu18.04不经意看到Docker这个大鲸鱼：  突然好奇它怎么用的，这些技术像动物世界一样。 我在这篇文章记录了自己在Windows、Ubuntu18.04下的Docker安装和使用的过程，顺带记录了Vue项目的Docker部署、Go语言web项目的Docker部署、Nginx反向代理配置，还有Mysql、Redis等部署操作。">
+<meta name="keywords" content="Docker,linux,ubuntu,Vue,Go,nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker容器项目部署">
 <meta property="og:url" content="http://Shirtiny.cn/2019/10/10/Docker容器项目部署/index.html">
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
-<meta property="og:description" content="使用Docker部署Vue、Go项目不经意看到Docker这个大鲸鱼：  突然好奇它怎么用的，这些技术像动物世界一样。">
+<meta property="og:description" content="使用Docker部署Vue、Go项目，Ubuntu18.04不经意看到Docker这个大鲸鱼：  突然好奇它怎么用的，这些技术像动物世界一样。 我在这篇文章记录了自己在Windows、Ubuntu18.04下的Docker安装和使用的过程，顺带记录了Vue项目的Docker部署、Go语言web项目的Docker部署、Nginx反向代理配置，还有Mysql、Redis等部署操作。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://file.moetu.org/images/2019/10/10/timg2688a0fbc705d49b7.jpg">
 <meta property="og:image" content="https://file.moetu.org/images/2019/10/10/520a1eac53965cc8774b3a13baee45e2436257d449d7aa1d.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/10/10/8e46f34add3de7f2ba193b8f22235ed690784a2644f670b1.png">
-<meta property="og:updated_time" content="2019-10-10T16:04:00.735Z">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/13/392276760b56fd5751ce2d1666a562548a48340b847973b0.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/13/1681e553e03e404a940492f8f5d5f4bbc82d88803f44b323.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/13/48b08cdc46aa4ada508e8fa6f895ad1ad646ba19f42ff81a.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/13/e3d51bf2e3ba887da117fc6f8be6ab430a9160560ff53963.png">
+<meta property="og:updated_time" content="2019-10-14T15:05:59.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker容器项目部署">
-<meta name="twitter:description" content="使用Docker部署Vue、Go项目不经意看到Docker这个大鲸鱼：  突然好奇它怎么用的，这些技术像动物世界一样。">
+<meta name="twitter:description" content="使用Docker部署Vue、Go项目，Ubuntu18.04不经意看到Docker这个大鲸鱼：  突然好奇它怎么用的，这些技术像动物世界一样。 我在这篇文章记录了自己在Windows、Ubuntu18.04下的Docker安装和使用的过程，顺带记录了Vue项目的Docker部署、Go语言web项目的Docker部署、Nginx反向代理配置，还有Mysql、Redis等部署操作。">
 <meta name="twitter:image" content="https://file.moetu.org/images/2019/10/10/timg2688a0fbc705d49b7.jpg">
 
 
@@ -484,7 +488,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-10-11 00:04:00" itemprop="dateModified" datetime="2019-10-11T00:04:00+08:00">2019-10-11</time>
+                <time title="修改时间：2019-10-14 23:05:59" itemprop="dateModified" datetime="2019-10-14T23:05:59+08:00">2019-10-14</time>
               
             
           </span>
@@ -536,9 +540,10 @@
       
 
       
-        <h1 id="使用Docker部署Vue、Go项目"><a href="#使用Docker部署Vue、Go项目" class="headerlink" title="使用Docker部署Vue、Go项目"></a>使用Docker部署Vue、Go项目</h1><p>不经意看到Docker这个大鲸鱼：</p>
+        <h1 id="使用Docker部署Vue、Go项目，Ubuntu18-04"><a href="#使用Docker部署Vue、Go项目，Ubuntu18-04" class="headerlink" title="使用Docker部署Vue、Go项目，Ubuntu18.04"></a>使用Docker部署Vue、Go项目，Ubuntu18.04</h1><p>不经意看到Docker这个大鲸鱼：</p>
 <p><img src="https://file.moetu.org/images/2019/10/10/timg2688a0fbc705d49b7.jpg" alt></p>
 <p>突然好奇它怎么用的，这些技术像动物世界一样。</p>
+<p>我在这篇文章记录了自己在Windows、Ubuntu18.04下的Docker安装和使用的过程，顺带记录了Vue项目的Docker部署、Go语言web项目的Docker部署、Nginx反向代理配置，还有Mysql、Redis等部署操作。</p>
 <a id="more"></a>
 
 <h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><ul>
@@ -555,6 +560,14 @@
 <p>把<code>Docker ToolBox</code>装好后，运行<code>Docker Quickstart Terminal</code>就行了（需要管理员运行），等它把需要的东西装完，它的快捷方式应该在桌面上，当出现以下画面时，表示已经准备完成，可以使用了：</p>
 <p><img src="https://file.moetu.org/images/2019/10/10/8e46f34add3de7f2ba193b8f22235ed690784a2644f670b1.png" alt></p>
 <p>使用的是Linux的命令，会看到它的ip。</p>
+<ul>
+<li>windows下linux命令行推荐：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">putty </span><br><span class="line"></span><br><span class="line">wscp</span><br><span class="line"></span><br><span class="line">win10 wsl</span><br></pre></td></tr></table></figure>
+
+<p>一个可以在线使用Docker的网站，也可以不用装Docker</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://play-with-docker.com/</span><br></pre></td></tr></table></figure>
+
 <h2 id="Nginx-alpine"><a href="#Nginx-alpine" class="headerlink" title="Nginx-alpine"></a>Nginx-alpine</h2><p>一个最小Nginx运行镜像</p>
 <ul>
 <li>配置端口映射并运行</li>
@@ -607,7 +620,7 @@
 <ul>
 <li>构建Docker镜像，镜像名只能小写，<code>docker build</code> 会执行<code>Dockerfile</code>文件，<code>-t</code>会给镜像起个名字</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>先cd到刚刚建的Docker文件夹</span><br><span class="line">docker build -t shvideo:v0.0.1 ./</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>先cd到刚刚建的Docker文件夹</span><br><span class="line">docker build -t shvideo-vue:v0.0.1 ./</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>运行镜像</li>
@@ -630,38 +643,165 @@
 <li>把镜像上传到云空间，以便公网访问</li>
 </ul>
 <p>我这里用的阿里云的容器镜像服务，去阿里云找一下就有了，注册就能用。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">命名空间 shirtinycn</span><br><span class="line">仓库名称 shvideo</span><br><span class="line">代码源：本地仓库</span><br><span class="line">在访问凭证栏设置固定密码</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">地域：香港</span><br><span class="line">命名空间 shirtinycn</span><br><span class="line">仓库名称 shvideo-vue</span><br><span class="line">代码源：本地仓库</span><br><span class="line">在访问凭证栏设置固定密码</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>Docker登录</li>
+<li>Docker Hub/阿里容器登录</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker login --username=shirtiny registry.cn-hongkong.aliyuncs.com</span><br><span class="line">然后输你的密码</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>重新构建镜像，这次是会存到云空间的</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>还是要cd到刚刚那个docker文件夹 看看这个./</span><br><span class="line">docker build -t registry.cn-hongkong.aliyuncs.com/shirtinycn/shvideo:v1.0.0 ./</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>还是要cd到刚刚那个docker文件夹 看看这个./</span><br><span class="line">docker build -t registry.cn-hongkong.aliyuncs.com/shirtinycn/shvideo-vue:v1.0.0 ./</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>推到云空间</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push registry.cn-hongkong.aliyuncs.com/shirtinycn/shvideo:v1.0.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push registry.cn-hongkong.aliyuncs.com/shirtinycn/shvideo-vue:v1.0.0</span><br></pre></td></tr></table></figure>
 
-<h2 id="更新中……明天再整理"><a href="#更新中……明天再整理" class="headerlink" title="更新中……明天再整理"></a>更新中……明天再整理</h2><p>windows下linux命令行推荐：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">putty </span><br><span class="line"></span><br><span class="line">wscp</span><br><span class="line"></span><br><span class="line">win10 wsl</span><br></pre></td></tr></table></figure>
-
-<p>在服务器上装上Docker，百度</p>
-<p>Go的镜像</p>
+<h2 id="GO项目的Docker镜像"><a href="#GO项目的Docker镜像" class="headerlink" title="GO项目的Docker镜像"></a>GO项目的Docker镜像</h2><ul>
+<li>cd 到go项目中，新建Dockerfile、Nginx.conf</li>
+</ul>
 <p>编辑Dockerfile为：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">From golang as build</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>把当前所有目录都放入指定文件夹</span><br><span class="line">ADD . /usr/local/go/src/shvideogoDir</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>工作目录，指定所有的run都在此目录执行</span><br><span class="line">WORKDIR /usr/local/go/src/shvideogoDir</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>编译成可以在linux运行的版本（Golang交叉编译）     - o 会指定build后的名字</span><br><span class="line">RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build - o shvideogo</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>第二段构建</span><br><span class="line">FROM alpine:3.7</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>环境变量</span><br><span class="line">ENV REDIS_ADDR=""</span><br><span class="line">ENV REDIS_PW=""</span><br><span class="line">ENV REDIS_DB=""</span><br><span class="line">ENV MysqlDSN=""</span><br><span class="line">ENV GIN_MODE="release"</span><br><span class="line">ENV PORT=3000</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>阿里的镜像</span><br><span class="line">RUN echo "http://mirrors.aliyun.com/alpine/v3.7/main/" &gt; /etc/apk/repositories &amp;&amp; \</span><br><span class="line">    apk update &amp;&amp; \</span><br><span class="line">    apk add ca-certificates &amp;&amp; \</span><br><span class="line">    echo "hosts: files dns" &gt; /etc/nsswitch.conf &amp;&amp; \</span><br><span class="line">    mkdir -p /www/conf</span><br><span class="line"></span><br><span class="line">WORKDIR /www</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>从第一段构建中拷贝编译好的可执行文件</span><br><span class="line">COPY --from==build /usr/local/go/src/shvideogoDir/shvideogo /usr/bin/shvideogo</span><br><span class="line">ADD ./conf /www/conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>给它可执行权限，/usr/bin是linux默认放环境变量的地方</span><br><span class="line">RUN chmod +x /usr/bin/shvideogo</span><br><span class="line"></span><br><span class="line">ENTRYPOINT ["shvideogo"]</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">From golang:1.12 as build</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>把当前所有目录都放入指定文件夹，包括项目shVideoGo</span><br><span class="line">ADD ./ /usr/local/GoProject/shVideoGo</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>工作目录，指定所有的run都在此目录执行</span><br><span class="line">WORKDIR /usr/local/GoProject/shVideoGo</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>环境变量，这里最好写内网ip</span><br><span class="line">ENV REDIS_ADDR="1.2.3.4:6379"</span><br><span class="line"><span class="meta">#</span>ENV REDIS_PW=""</span><br><span class="line">ENV REDIS_DB="0"</span><br><span class="line">ENV MysqlDSN="root:123456@tcp(1.2.3.42)/mydb?charset=utf8&amp;parseTime=True&amp;loc=Local"</span><br><span class="line">ENV GIN_MODE="release"</span><br><span class="line">ENV PORT=3000</span><br><span class="line"><span class="meta">#</span>Go的代理</span><br><span class="line">ENV GOPROXY="https://goproxy.io"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>编译成可以在linux运行的版本（Golang交叉编译）     - o 会指定build后的名字</span><br><span class="line">RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o shvideogo</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>第二段构建</span><br><span class="line">FROM alpine:3.7</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>阿里的镜像</span><br><span class="line">RUN echo "http://mirrors.aliyun.com/alpine/v3.7/main/" &gt; /etc/apk/repositories &amp;&amp; \</span><br><span class="line">    apk update &amp;&amp; \</span><br><span class="line">    apk add ca-certificates &amp;&amp; \</span><br><span class="line">    echo "hosts: files dns" &gt; /etc/nsswitch.conf &amp;&amp; \</span><br><span class="line">    mkdir -p /www/conf</span><br><span class="line"></span><br><span class="line">WORKDIR /www</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>从第一段构建中拷贝编译好的可执行文件</span><br><span class="line">COPY  --from=build  /usr/local/GoProject/shVideoGo/shvideogo /usr/bin/shvideogo</span><br><span class="line">ADD ./conf /www/conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>给它可执行权限，/usr/bin是linux默认放环境变量的地方</span><br><span class="line">RUN chmod +x /usr/bin/shvideogo</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>运行</span><br><span class="line">ENTRYPOINT ["shvideogo"]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>docker容器的所在位置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker info | greo Docker</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>更新一下包依赖</span><br><span class="line">go mod tidy</span><br></pre></td></tr></table></figure>
 
 <p>构建镜像</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t registry.cn-hongkong.aliyuncs.com/shirtinycn/shvideo-go:v1.0.0 ./</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --no-cache -t registry.cn-hongkong.aliyuncs.com/shirtinycn/shvideo-go:v6.0.0 ./</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>把镜像推到云空间</li>
+</ul>
 <p>推到云空间，会自动创建名为shvideo-go的仓库</p>
-<p>push….</p>
-<p>使用管理工具</p>
-<p>portainer.io</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push registry.cn-hongkong.aliyuncs.com/shirtinycn/shvideo-go:v6.0.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>其他方式</li>
+</ul>
+<p>实在不行，自己编译一个linux的go程序，放到服务器上，emm能用，233。</p>
+<p>本地编译，可以看：<a href="https://blog.csdn.net/x356982611/article/details/80054314" target="_blank" rel="noopener">GO交叉编译</a></p>
+<p>docker windows用起来很不方便，可以选择用远程工具连接（因为是虚拟机上的）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip启动时会有，默认用户名是docker，密码是tcuser</span><br></pre></td></tr></table></figure>
+
+<h2 id="Ubuntu服务器上Docker的安装"><a href="#Ubuntu服务器上Docker的安装" class="headerlink" title="Ubuntu服务器上Docker的安装"></a>Ubuntu服务器上Docker的安装</h2><p>使用<code>ubuntu 18.04</code> 据说和Docker有莫名的亲密度</p>
+<ul>
+<li>日常第一步:</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>获取更新</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装Docker，谷歌搜 <code>ubuntu 18.04 install Docker</code> 有个<code>DigitalOcean</code>网站的步骤比较好，能保证Docker版本</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sudo apt install apt-transport-https ca-certificates curl software-properties-common</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>认证Docker证书</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-cache policy docker-ce</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install docker-ce</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>检查运行状态</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status docker</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动docker</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service docker start</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动Docker管理进程</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start compassionate_valhard</span><br></pre></td></tr></table></figure>
+
+<h2 id="portainer-io管理工具"><a href="#portainer-io管理工具" class="headerlink" title="portainer.io管理工具"></a>portainer.io管理工具</h2><p>portainer.io是一个特权容器，可以管理其他的Docker容器，不过需要授权。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>国内下载比较慢，服务器在国内的话，请使用国内镜像源：</p>
+<ul>
+<li>新建文件或编辑 /etc/docker/daemon.json</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>写入内容：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "registry-mirrors": [</span><br><span class="line">    "https://dockerhub.azk8s.cn",</span><br><span class="line">    "https://reg-mirror.qiniu.com",</span><br><span class="line">    "https://registry.docker-cn.com"</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重启Docker</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>运行portainer.io</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>挂载卷，用于保存portainer.io的配置数据</span><br><span class="line">docker volume create portainer_data</span><br><span class="line"><span class="meta">#</span>授权并运行</span><br><span class="line">docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>访问服务器的9000端口即可，记得防火墙开放，我的是阿里云的服务器：</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/10/13/392276760b56fd5751ce2d1666a562548a48340b847973b0.png" alt></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>所有ip均可访问此端口9000/9000</span><br><span class="line">0.0.0.0/0</span><br><span class="line"><span class="meta">#</span>指定ip：1.2.3.4可访问此端口9000/9000</span><br><span class="line">1.2.3.4/32</span><br></pre></td></tr></table></figure>
+
+<h3 id="portainer-io的使用"><a href="#portainer-io的使用" class="headerlink" title="portainer.io的使用"></a>portainer.io的使用</h3><h4 id="运行vue项目"><a href="#运行vue项目" class="headerlink" title="运行vue项目"></a>运行vue项目</h4><ul>
+<li>创建管理用户后，连接本地Docker，那个local，点进去：</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/10/13/1681e553e03e404a940492f8f5d5f4bbc82d88803f44b323.png" alt></p>
+<ul>
+<li>先如图所示创建登录你镜像空间的信息：</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/10/13/48b08cdc46aa4ada508e8fa6f895ad1ad646ba19f42ff81a.png" alt></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">registry.cn-hongkong.aliyuncs.com</span><br><span class="line">shirtiny</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后进入Stacks，然后新建stack：</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/10/13/e3d51bf2e3ba887da117fc6f8be6ab430a9160560ff53963.png" alt></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  nginx_shvideo_vue:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">registry.cn-hongkong.aliyuncs.com/shirtinycn/shvideo-vue:v1.0.0</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">     -</span> <span class="number">8000</span><span class="string">:80</span></span><br></pre></td></tr></table></figure>
+
+<p>如图配置了一个Nginx，是yaml格式，点deploy即可。</p>
+<p>现在就已经可以直接访问vue项目了，在8000端口，记得开放端口。</p>
+<h4 id="运行Go后台项目"><a href="#运行Go后台项目" class="headerlink" title="运行Go后台项目"></a>运行Go后台项目</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  api:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">registry.cn-hongkong.aliyuncs.com/shirtinycn/shvideo-go:v6.0.0</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line">      <span class="comment">#golang MYSQL_DSN</span></span><br><span class="line"><span class="attr">      MYSQL_DSN:</span> <span class="string">"root:123456@tcp(1.2.3.4)/mydb?charset=utf8&amp;parseTime=True&amp;loc=Local"</span></span><br><span class="line">      <span class="comment">#容器有自己的环境，容器的localhost不是主机的localhost，这里填内网ip地址，阿里会给个私网ip，理论上应该用内网ip。。可我有时候要换成公网ip才能用</span></span><br><span class="line"><span class="attr">      REDIS_ADDR:</span> <span class="string">"1.2.3.4:6379"</span></span><br><span class="line">      <span class="comment">#REDIS_PW: 没设密码 </span></span><br><span class="line"><span class="attr">      REDIS_DB:</span> <span class="string">"0"</span></span><br><span class="line"><span class="attr">      SESSION_SECRET:</span> <span class="string">"224895477"</span></span><br><span class="line"><span class="attr">      GIN_MODE:</span> <span class="string">"release"</span></span><br><span class="line"><span class="attr">      LOG_LEVEL:</span> <span class="string">"debug"</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">     -</span> <span class="number">3000</span><span class="string">:3000</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="宿主机Nginx反向代理"><a href="#宿主机Nginx反向代理" class="headerlink" title="宿主机Nginx反向代理"></a>宿主机Nginx反向代理</h4><ul>
+<li>我们需要对这些项目的Nginx进行请求的分发，所以我们主机还需要一个Nginx做反向代理</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>主机安装Nginx</span><br><span class="line">sudo apt install nginx</span><br><span class="line"><span class="meta">#</span>修改nginx的配置文件</span><br><span class="line"><span class="meta">#</span>cd /etc/nginx/sites-enabled，这个目录有一个默认配置文件</span><br><span class="line">vi /etc/nginx/sites-enabled/shvideo.conf</span><br><span class="line"><span class="meta">#</span>检查文件上下文格式是否写错</span><br><span class="line">sudo nginx -t </span><br><span class="line"><span class="meta">#</span>重启nginx</span><br><span class="line">sudo service nginx restart</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Nginx配置文件shvideo.conf内容为：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name video.shirtiny.cn;</span><br><span class="line">    #server_name 1.2.3.4;</span><br><span class="line"></span><br><span class="line">    #vue项目位置，video.shirtiny.cn/，会映射到本地8000端口</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_set_header x-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header x-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_pass http://127.0.0.1:8000;</span><br><span class="line">    &#125;</span><br><span class="line">    #后台api，video.shirtiny.cn/api路径，映射到本地3000端口</span><br><span class="line">    location /api &#123;</span><br><span class="line">        proxy_set_header x-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header x-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_pass http://127.0.0.1:3000;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name mysql.shirtiny.cn;</span><br><span class="line">    #server_name 1.2.3.4;</span><br><span class="line"></span><br><span class="line">    #mysql位置，mysql.shirtiny.cn根路径/，会映射到本地3306端口</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_set_header x-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header x-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_pass http://127.0.0.1:3306;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name docker.shirtiny.cn;</span><br><span class="line">    #server_name 1.2.3.4;</span><br><span class="line"></span><br><span class="line">    #docker管理工具位置，docker.shirtiny.cn根路径/，会映射到本地端口</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_set_header x-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header x-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_pass http://127.0.0.1:9000;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h3><p>到Volumes选项，开一个Docker的卷，映射到主机文件目录，用于存储数据库数据，就叫mysql_data好了</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  docker_mysql:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">mysql:5.6</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="attr">      MYSQL_ROOT_PASSWORD:</span> <span class="number">123456</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="attr">    - mysql_data:</span><span class="string">/var/lib/mysql/data</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">     -</span> <span class="number">3306</span><span class="string">:3306</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p>依然是开个Docker的卷，名为redis_data</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  docker_redis:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="attr">      - redis_data:</span><span class="string">/data</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">     -</span> <span class="number">6379</span><span class="string">:6379</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>服务器停机，像阿里那种释放cpu、内存、保留硬盘，重启后IP可能会更改、有时需要手动启动docker，mysql等服务会随着Docker启动，只是portainer需要再次手动启动，管理进程也不会自动启动，手动启动的命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>docker容器管理工具</span><br><span class="line">docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer</span><br><span class="line"><span class="meta">#</span>docker管理进程</span><br><span class="line">docker start compassionate_valhard</span><br></pre></td></tr></table></figure>
+
+<p>想开机自启的话，写个脚本，配置一下，即可。</p>
+<blockquote>
+<p> 题外话：</p>
+<p>nmap可进行端口扫描等，在ubuntu安装很简单:</p>
+<p>sudo apt-get install nmap</p>
+</blockquote>
 
       
     </div>
@@ -689,9 +829,13 @@
           
             <a href="/tags/linux/" rel="tag">#^_^#linux</a>
           
+            <a href="/tags/ubuntu/" rel="tag">#^_^#ubuntu</a>
+          
             <a href="/tags/Vue/" rel="tag">#^_^#Vue</a>
           
             <a href="/tags/Go/" rel="tag">#^_^#Go</a>
+          
+            <a href="/tags/nginx/" rel="tag">#^_^#nginx</a>
           
         </div>
       
@@ -974,7 +1118,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">68</span>
+                      
+                    
+                    <span class="site-state-item-count">69</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1038,7 +1184,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Docker部署Vue、Go项目"><span class="nav-text">使用Docker部署Vue、Go项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Docker"><span class="nav-text">安装Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows"><span class="nav-text">Windows</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-alpine"><span class="nav-text">Nginx-alpine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#镜像构建与上传"><span class="nav-text">镜像构建与上传</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建Vue项目的Docker镜像"><span class="nav-text">构建Vue项目的Docker镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传Vue项目的Docker镜像"><span class="nav-text">上传Vue项目的Docker镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新中……明天再整理"><span class="nav-text">更新中……明天再整理</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Docker部署Vue、Go项目，Ubuntu18-04"><span class="nav-text">使用Docker部署Vue、Go项目，Ubuntu18.04</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Docker"><span class="nav-text">安装Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows"><span class="nav-text">Windows</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-alpine"><span class="nav-text">Nginx-alpine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#镜像构建与上传"><span class="nav-text">镜像构建与上传</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建Vue项目的Docker镜像"><span class="nav-text">构建Vue项目的Docker镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传Vue项目的Docker镜像"><span class="nav-text">上传Vue项目的Docker镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GO项目的Docker镜像"><span class="nav-text">GO项目的Docker镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu服务器上Docker的安装"><span class="nav-text">Ubuntu服务器上Docker的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#portainer-io管理工具"><span class="nav-text">portainer.io管理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#portainer-io的使用"><span class="nav-text">portainer.io的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行vue项目"><span class="nav-text">运行vue项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行Go后台项目"><span class="nav-text">运行Go后台项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#宿主机Nginx反向代理"><span class="nav-text">宿主机Nginx反向代理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql"><span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis"><span class="nav-text">redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-text">最后</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
