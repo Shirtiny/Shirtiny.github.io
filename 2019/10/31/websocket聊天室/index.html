@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="快速完成聊天室核心功能学习和使用springBoot框架下的websocket，完成聊天室的核心功能   ws引导 Stomp文档  通过阅读文档，配合官方demo，快速的学习和使用websocket技术">
+<meta name="keywords" content="java,js,socket,springBoot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单websocket聊天室">
+<meta property="og:url" content="http://Shirtiny.cn/2019/10/31/websocket聊天室/index.html">
+<meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:description" content="快速完成聊天室核心功能学习和使用springBoot框架下的websocket，完成聊天室的核心功能   ws引导 Stomp文档  通过阅读文档，配合官方demo，快速的学习和使用websocket技术">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/31/f2ead8229520723575a000bed84552eb40196ed82b61e203.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/10/31/183abb2a0fcb7c783cd4fcce2bdbf346568cd8bf11b49db6.png">
+<meta property="og:updated_time" content="2019-10-31T12:58:21.972Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单websocket聊天室">
+<meta name="twitter:description" content="快速完成聊天室核心功能学习和使用springBoot框架下的websocket，完成聊天室的核心功能   ws引导 Stomp文档  通过阅读文档，配合官方demo，快速的学习和使用websocket技术">
+<meta name="twitter:image" content="https://file.moetu.org/images/2019/10/31/f2ead8229520723575a000bed84552eb40196ed82b61e203.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/10/31/websocket聊天室/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>简单websocket聊天室 | ☘(๑•̀ㅂ•́)و✧</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘(๑•̀ㅂ•́)و✧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-放映厅">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/video/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>放映厅</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/10/31/websocket聊天室/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">简单websocket聊天室
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-31 18:43:01 / 修改时间：20:58:21" itemprop="dateCreated datePublished" datetime="2019-10-31T18:43:01+08:00">2019-10-31</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/开发经验/" itemprop="url" rel="index"><span itemprop="name">开发经验</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="快速完成聊天室核心功能"><a href="#快速完成聊天室核心功能" class="headerlink" title="快速完成聊天室核心功能"></a>快速完成聊天室核心功能</h1><p>学习和使用springBoot框架下的websocket，完成聊天室的核心功能</p>
+<p><img src="https://file.moetu.org/images/2019/10/31/f2ead8229520723575a000bed84552eb40196ed82b61e203.png" alt></p>
+<ul>
+<li><a href="https://spring.io/guides/gs/messaging-stomp-websocket/" target="_blank" rel="noopener">ws引导</a></li>
+<li><a href="http://jmesnil.net/stomp-websocket/doc/" target="_blank" rel="noopener">Stomp文档</a></li>
+</ul>
+<p>通过阅读文档，配合官方demo，快速的学习和使用websocket技术</p>
+<a id="more"></a>
+
+<h2 id="服务端-基础版"><a href="#服务端-基础版" class="headerlink" title="服务端 基础版"></a>服务端 基础版</h2><h3 id="springBoot-WebSocket"><a href="#springBoot-WebSocket" class="headerlink" title="springBoot WebSocket"></a>springBoot WebSocket</h3><h4 id="Maven依赖"><a href="#Maven依赖" class="headerlink" title="Maven依赖"></a>Maven依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--WebSocket--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-websocket<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.messaging.simp.config.MessageBrokerRegistry;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.socket.config.annotation.StompEndpointRegistry;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="comment">//消息订阅器</span></span><br><span class="line"><span class="meta">@EnableWebSocketMessageBroker</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSocketConfig</span> <span class="keyword">implements</span> <span class="title">WebSocketMessageBrokerConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerStompEndpoints</span><span class="params">(StompEndpointRegistry registry)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//添加服务端接口 终端点 js连接: let socket=new SockJS('/websocket');</span></span><br><span class="line">        registry.addEndpoint(<span class="string">"/websocket"</span>).withSockJS();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureMessageBroker</span><span class="params">(MessageBrokerRegistry registry)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//允许客户端订阅主题/room</span></span><br><span class="line">        registry.enableSimpleBroker(<span class="string">"/room"</span>);</span><br><span class="line">        <span class="comment">//注册 app的前缀/app</span></span><br><span class="line">        registry.setApplicationDestinationPrefixes(<span class="string">"/app"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Endpoint</code>为客户端连接服务端websocket服务，服务端通过<code>SimpleBroker</code>控制客户端的订阅的主题、频道，客户端发送消息时，需要带<code>ApplicationDestinationPrefixes</code>中的前缀。</li>
+</ul>
+<h4 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSocketController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//接收消息的接口路径，聊天室频道</span></span><br><span class="line">    <span class="meta">@MessageMapping</span>(<span class="string">"/sendToRoom"</span>)</span><br><span class="line">    <span class="comment">//发送到 /room/chat 频道</span></span><br><span class="line">    <span class="meta">@SendTo</span>(<span class="string">"/room/chat"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShResultDTO&lt;String,Object&gt; <span class="title">retString</span><span class="params">(@RequestBody ChatMessageDTO message )</span>  </span>&#123;</span><br><span class="line">		</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ShResultDTO&lt;&gt;();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>@MessageMapping(&quot;/sendToRoom&quot;)</code>，使用上类似于<code>@RequestMapping</code>，不过客户端发送消息时，需要带上<code>ApplicationDestinationPrefixe</code>前缀，如：<code>/app/sendToRoom</code>，使用的为ws协议，完整的写法为：<code>ws://ip:port/app/sendToRoom</code>。</p>
+</li>
+<li><p><code>@SendTo(&quot;/room/chat&quot;)</code>会把返回结果广播到<code>/room/chat</code>频道</p>
+</li>
+</ul>
+<h2 id="客户端-基础版"><a href="#客户端-基础版" class="headerlink" title="客户端 基础版"></a>客户端 基础版</h2><h3 id="sockjs-client-stomp-websocket"><a href="#sockjs-client-stomp-websocket" class="headerlink" title="sockjs-client + stomp-websocket"></a>sockjs-client + stomp-websocket</h3><h4 id="Maven依赖-1"><a href="#Maven依赖-1" class="headerlink" title="Maven依赖"></a>Maven依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.webjars<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>sockjs-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.webjars<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>stomp-websocket<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>springBoot可以用这种方式使用静态资源，前端页面引入方式：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/webjars/sockjs-client/sockjs.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/webjars/stomp-websocket/stomp.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//连接socket</span></span><br><span class="line">                connect: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="comment">//建立socket连接</span></span><br><span class="line">                    <span class="keyword">let</span> socket = <span class="keyword">new</span> SockJS(<span class="string">'/websocket'</span>);</span><br><span class="line">                    stompClient = Stomp.over(socket);</span><br><span class="line">                    <span class="comment">//连接socket</span></span><br><span class="line">                    stompClient.connect(&#123;&#125;, <span class="function"><span class="keyword">function</span> (<span class="params">frame</span>) </span>&#123;</span><br><span class="line">                        <span class="built_in">console</span>.log(<span class="string">"连接socket: /websocket"</span>);</span><br><span class="line">                        <span class="built_in">console</span>.log(frame);</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;,</span><br></pre></td></tr></table></figure>
+
+<h4 id="断开连接"><a href="#断开连接" class="headerlink" title="断开连接"></a>断开连接</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//断开socket连接</span></span><br><span class="line">                disconnect: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="keyword">this</span>.isConnected);</span><br><span class="line">                    <span class="keyword">if</span> (stompClient !== <span class="literal">null</span> &amp;&amp; <span class="keyword">this</span>.isConnected === <span class="literal">true</span>) &#123;</span><br><span class="line">                        stompClient.disconnect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                            <span class="built_in">console</span>.log(<span class="string">"断开socket连接"</span>);</span><br><span class="line">                        &#125;);</span><br><span class="line">                        <span class="keyword">this</span>.$notify.success(&#123;</span><br><span class="line">                            title: <span class="string">'√'</span>,</span><br><span class="line">                            message: <span class="string">'已断开连接'</span></span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br></pre></td></tr></table></figure>
+
+<h4 id="订阅频道"><a href="#订阅频道" class="headerlink" title="订阅频道"></a>订阅频道</h4><p>每次订阅都将生成一个客户端id，订阅后会持续接收服务端的广播，每次接收都会更新响应数据</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//订阅频道</span></span><br><span class="line">                subscribeChatRoom: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="comment">//订阅 /room/chat 频道，每次订阅频道广播数据时都会执行回调方法</span></span><br><span class="line">                    <span class="keyword">this</span>.chatSubscribe = stompClient.subscribe(<span class="string">'/room/chat'</span>, retData =&gt; &#123;</span><br><span class="line">                        <span class="comment">// console.log("频道: /room/chat，响应数据为：");</span></span><br><span class="line">                        <span class="comment">// console.log(retData);</span></span><br><span class="line">                        <span class="comment">//存储订阅频道发过来的数据</span></span><br><span class="line">                        <span class="keyword">let</span> res = <span class="built_in">JSON</span>.parse(retData.body);</span><br><span class="line">                        <span class="built_in">console</span>.log(<span class="string">"你订阅的频道更新啦！！！！！~"</span>);</span><br><span class="line">                    &#125;);</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"订阅频道，接收到的对象："</span>);</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="keyword">this</span>.chatSubscribe);</span><br><span class="line">                &#125;,</span><br></pre></td></tr></table></figure>
+
+<h4 id="取消订阅"><a href="#取消订阅" class="headerlink" title="取消订阅"></a>取消订阅</h4><p>取消订阅需要使用之前此订阅对象的<code>unsubscribe()</code>方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//取消订阅聊天室频道</span></span><br><span class="line">                unsubscribeChat: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">this</span>.chatSubscribe.unsubscribe();</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"取消订阅"</span>);</span><br><span class="line">                &#125;,</span><br></pre></td></tr></table></figure>
+
+<h4 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h4><p>需要带有指定前缀，header可以为空</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//发送消息</span></span><br><span class="line">             sendMessage: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                     stompClient.send(<span class="string">"/app/sendToRoom"</span>, &#123;&#125;, <span class="string">"message"</span>);</span><br><span class="line">             &#125;,</span><br></pre></td></tr></table></figure>
+
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>我以我社区的聊天室为例，前端样式上使用了elmentUI的表格，然后进行了自定义：</p>
+<p><img src="https://file.moetu.org/images/2019/10/31/183abb2a0fcb7c783cd4fcce2bdbf346568cd8bf11b49db6.png" alt></p>
+<p>目前仍在完善中。</p>
+<h4 id="前端Vue-Element"><a href="#前端Vue-Element" class="headerlink" title="前端Vue+Element"></a>前端Vue+Element</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/webjars/sockjs-client/sockjs.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/webjars/stomp-websocket/stomp.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">el-row</span> <span class="attr">id</span>=<span class="string">"vue_el_tab"</span> <span class="attr">th:fragment</span>=<span class="string">"el_tab"</span> <span class="attr">class</span>=<span class="string">"img-rounded"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">el-tabs</span> <span class="attr">v-model</span>=<span class="string">"activeName"</span> @<span class="attr">tab-click</span>=<span class="string">"clickTab"</span> <span class="attr">type</span>=<span class="string">"border-card"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">el-tab-pane</span> <span class="attr">label</span>=<span class="string">"聊天室"</span> <span class="attr">name</span>=<span class="string">"first"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">el-row</span> <span class="attr">style</span>=<span class="string">"height: 400px"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">el-col</span> <span class="attr">:span</span>=<span class="string">"24"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">el-table</span></span></span><br><span class="line"><span class="tag">                            <span class="attr">:data</span>=<span class="string">"historyMessages"</span></span></span><br><span class="line"><span class="tag">                            <span class="attr">style</span>=<span class="string">"width: 100%"</span></span></span><br><span class="line"><span class="tag">                            <span class="attr">max-height</span>=<span class="string">"500"</span></span></span><br><span class="line"><span class="tag">                            <span class="attr">id</span>=<span class="string">"messageTable"</span></span></span><br><span class="line"><span class="tag">                    &gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--暂时只支持游客--&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">el-table-column</span></span></span><br><span class="line"><span class="tag">                                <span class="attr">label</span>=<span class="string">"消息记录 "</span></span></span><br><span class="line"><span class="tag">                                <span class="attr">min-width</span>=<span class="string">"280"</span></span></span><br><span class="line"><span class="tag">                                <span class="attr">show-overflow-tooltip</span>&gt;</span></span><br><span class="line"></span><br><span class="line">                            <span class="tag">&lt;<span class="name">div</span> <span class="attr">slot-scope</span>=<span class="string">"scope"</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">el-row</span> <span class="attr">id</span>=<span class="string">"message_header"</span>&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">span</span> <span class="attr">v-if</span>=<span class="string">"scope.row.sender!=null"</span> <span class="attr">style</span>=<span class="string">"font-style: italic;color: #a185f7"</span>&gt;</span>&#123;&#123;scope.row.sender.nickName&#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">span</span> <span class="attr">v-else-if</span>=<span class="string">"scope.row.sender==null"</span> <span class="attr">style</span>=<span class="string">"font-style: italic;color: #a185f7"</span>&gt;</span>游客&#123;&#123;scope.row.senderId&#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"float_right"</span>&gt;</span>&#123;&#123;fomateDate(scope.row.gmtCreated)&#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;/<span class="name">el-row</span>&gt;</span></span><br><span class="line"></span><br><span class="line">                                <span class="tag">&lt;<span class="name">el-row</span> <span class="attr">id</span>=<span class="string">"message_content"</span>&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">el-col</span> <span class="attr">:span</span>=<span class="string">"4"</span>&gt;</span></span><br><span class="line">                                        <span class="tag">&lt;<span class="name">el-avatar</span> <span class="attr">icon</span>=<span class="string">"el-icon-user-solid"</span>&gt;</span><span class="tag">&lt;/<span class="name">el-avatar</span>&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;/<span class="name">el-col</span>&gt;</span></span><br><span class="line"></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">el-col</span> <span class="attr">:span</span>=<span class="string">"20"</span>&gt;</span></span><br><span class="line">                                        <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"display: block;"</span>&gt;</span>&#123;&#123;scope.row.chatMessageContent&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;/<span class="name">el-col</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;/<span class="name">el-row</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">el-table-column</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">el-table</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">el-col</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">el-row</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">el-row</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">el-col</span> <span class="attr">:span</span>=<span class="string">"24"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">el-input</span></span></span><br><span class="line"><span class="tag">                            <span class="attr">placeholder</span>=<span class="string">"请输入要发送的消息..."</span></span></span><br><span class="line"><span class="tag">                            <span class="attr">v-model</span>=<span class="string">"unsendChatMessage"</span></span></span><br><span class="line"><span class="tag">                            <span class="attr">clearable</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">el-input</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">el-col</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">el-row</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">el-row</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">el-col</span> <span class="attr">:span</span>=<span class="string">"24"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">el-tooltip</span> <span class="attr">content</span>=<span class="string">"发送"</span> <span class="attr">placement</span>=<span class="string">"bottom"</span> <span class="attr">effect</span>=<span class="string">"light"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">el-button</span> <span class="attr">icon</span>=<span class="string">"el-icon-s-promotion"</span> @<span class="attr">click</span>=<span class="string">"sendMessage"</span> <span class="attr">circle</span>&gt;</span><span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">el-tooltip</span>&gt;</span></span><br><span class="line"></span><br><span class="line">                    <span class="tag">&lt;<span class="name">el-tooltip</span> <span class="attr">content</span>=<span class="string">"登出"</span> <span class="attr">placement</span>=<span class="string">"bottom"</span> <span class="attr">effect</span>=<span class="string">"light"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">el-button</span> <span class="attr">id</span>=<span class="string">"unSubBtn"</span> <span class="attr">icon</span>=<span class="string">"el-icon-close"</span> <span class="attr">type</span>=<span class="string">"danger"</span> <span class="attr">class</span>=<span class="string">"float_right"</span></span></span><br><span class="line"><span class="tag">                                   @<span class="attr">click</span>=<span class="string">"unsubscribeChat"</span></span></span><br><span class="line"><span class="tag">                                   <span class="attr">circle</span>&gt;</span><span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">el-tooltip</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">el-tooltip</span> <span class="attr">content</span>=<span class="string">"登入"</span> <span class="attr">placement</span>=<span class="string">"bottom"</span> <span class="attr">effect</span>=<span class="string">"light"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">el-button</span> <span class="attr">id</span>=<span class="string">"subBtn"</span> <span class="attr">icon</span>=<span class="string">"el-icon-user-solid"</span> <span class="attr">type</span>=<span class="string">"success"</span> <span class="attr">class</span>=<span class="string">"float_right"</span></span></span><br><span class="line"><span class="tag">                                   @<span class="attr">click</span>=<span class="string">"subscribeChatRoom"</span></span></span><br><span class="line"><span class="tag">                                   <span class="attr">circle</span>&gt;</span><span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">el-tooltip</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">el-col</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">el-row</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">el-tab-pane</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">el-tab-pane</span> <span class="attr">label</span>=<span class="string">"配置管理"</span> <span class="attr">name</span>=<span class="string">"second"</span>&gt;</span>配置管理<span class="tag">&lt;/<span class="name">el-tab-pane</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">el-tab-pane</span> <span class="attr">label</span>=<span class="string">"角色管理"</span> <span class="attr">name</span>=<span class="string">"third"</span>&gt;</span>角色管理<span class="tag">&lt;/<span class="name">el-tab-pane</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">el-tab-pane</span> <span class="attr">label</span>=<span class="string">"定时任务补偿"</span> <span class="attr">name</span>=<span class="string">"fourth"</span>&gt;</span>定时任务补偿<span class="tag">&lt;/<span class="name">el-tab-pane</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">el-tabs</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        #vue_el_tab &#123;</span><br><span class="line">            background-color: #fff;</span><br><span class="line">            padding: 20px 20px 20px 20px;</span><br><span class="line">            width: 400px;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">const</span> vue_el_tab = <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="javascript">            el: <span class="string">"#vue_el_tab"</span>,</span></span><br><span class="line">            data() &#123;</span><br><span class="line"><span class="javascript">                <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">                    activeName: <span class="string">'second'</span>,</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//聊天室正在输入的消息</span></span></span><br><span class="line"><span class="javascript">                    unsendChatMessage: <span class="string">''</span>,</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//聊天室历史消息</span></span></span><br><span class="line">                    historyMessages: [],</span><br><span class="line"><span class="javascript">                    <span class="comment">//聊天室订阅的对象 为空时为不订阅状态</span></span></span><br><span class="line"><span class="javascript">                    chatSubscribe: <span class="literal">null</span>,</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//游客id</span></span></span><br><span class="line"><span class="javascript">                    touristID: <span class="string">''</span>,</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//聊天室每个消息单元格的高度</span></span></span><br><span class="line">                    cellHeight: 94,</span><br><span class="line"><span class="javascript">                    <span class="comment">//标识是否让滚动条 自动跟进新消息</span></span></span><br><span class="line"><span class="javascript">                    letScollAtFoot: <span class="literal">true</span>,</span></span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;,</span><br><span class="line">            computed: &#123;</span><br><span class="line"><span class="javascript">                <span class="comment">//游客用户名</span></span></span><br><span class="line"><span class="javascript">                touristName: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">return</span> <span class="string">'游客'</span> + <span class="keyword">this</span>.touristID</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            methods: &#123;</span><br><span class="line"><span class="javascript">                <span class="comment">//切换tab时触发</span></span></span><br><span class="line">                clickTab(tab, event) &#123;</span><br><span class="line"><span class="javascript">                    <span class="built_in">console</span>.log(<span class="string">"点击tab"</span>);</span></span><br><span class="line"><span class="javascript">                    <span class="built_in">console</span>.log(tab.index);</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">if</span> (tab.index == <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="javascript">                        <span class="comment">//订阅聊天室</span></span></span><br><span class="line"><span class="javascript">                        <span class="keyword">this</span>.subscribeChatRoom();</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//加载聊天室历史数据</span></span></span><br><span class="line">                loadChatHistoryDta() &#123;</span><br><span class="line"><span class="javascript">                    axios.get(<span class="string">'/shApi/listChatRoomMessages'</span>).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">this</span>.historyMessages = res.data.data.historyMessages;</span></span><br><span class="line"><span class="javascript">                        <span class="built_in">console</span>.log(<span class="keyword">this</span>.historyMessages);</span></span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//订阅频道</span></span></span><br><span class="line"><span class="javascript">                subscribeChatRoom: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//已订阅聊天室则不再订阅</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">if</span> (<span class="keyword">this</span>.chatSubscribe != <span class="literal">null</span>) &#123;</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">return</span>;</span></span><br><span class="line">                    &#125;</span><br><span class="line"><span class="javascript">                    <span class="comment">//订阅 /room/chat 频道，每次订阅频道广播数据时都会执行回调方法</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">this</span>.chatSubscribe = stompClient.subscribe(<span class="string">'/room/chat'</span>, retData =&gt; &#123;</span></span><br><span class="line"><span class="javascript">                        <span class="comment">// console.log("频道: /room/chat，响应数据为：");</span></span></span><br><span class="line"><span class="javascript">                        <span class="comment">// console.log(retData);</span></span></span><br><span class="line"><span class="javascript">                        <span class="comment">//存储订阅频道发过来的数据</span></span></span><br><span class="line"><span class="javascript">                        <span class="keyword">let</span> res = <span class="built_in">JSON</span>.parse(retData.body);</span></span><br><span class="line"><span class="javascript">                        <span class="comment">//更新历史消息</span></span></span><br><span class="line"><span class="javascript">                        <span class="keyword">this</span>.historyMessages = res.data.historyMessages;</span></span><br><span class="line"><span class="javascript">                        <span class="built_in">console</span>.log(<span class="string">"你订阅的频道更新啦！！！！！~"</span>);</span></span><br><span class="line"><span class="javascript">                    &#125;, &#123;<span class="attr">id</span>: <span class="string">'client1'</span>&#125;);</span></span><br><span class="line"><span class="javascript">                    <span class="built_in">console</span>.log(<span class="string">"订阅频道，接收到的对象："</span>);</span></span><br><span class="line"><span class="javascript">                    <span class="built_in">console</span>.log(<span class="keyword">this</span>.chatSubscribe);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">                    <span class="comment">//订阅，加载聊天室历史数据</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">this</span>.loadChatHistoryDta();</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">                    <span class="comment">//提示</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">this</span>.$notify.success(&#123;</span></span><br><span class="line"><span class="javascript">                        title: <span class="string">'√'</span>,</span></span><br><span class="line"><span class="javascript">                        message: <span class="string">'已订阅聊天室'</span></span></span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//取消订阅聊天室频道</span></span></span><br><span class="line"><span class="javascript">                unsubscribeChat: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">if</span> (<span class="keyword">this</span>.chatSubscribe == <span class="literal">null</span>) &#123;</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">this</span>.$notify.info(&#123;</span></span><br><span class="line"><span class="javascript">                            title: <span class="string">'消息'</span>,</span></span><br><span class="line"><span class="javascript">                            message: <span class="string">'已经退出聊天室了'</span></span></span><br><span class="line">                        &#125;);</span><br><span class="line"><span class="javascript">                        <span class="keyword">return</span>;</span></span><br><span class="line">                    &#125;</span><br><span class="line"><span class="javascript">                    <span class="keyword">this</span>.chatSubscribe.unsubscribe();</span></span><br><span class="line"><span class="javascript">                    <span class="built_in">console</span>.log(<span class="string">"取消订阅"</span>);</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//把聊天室订阅对象置为null</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">this</span>.chatSubscribe = <span class="literal">null</span>;</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">this</span>.$notify.info(&#123;</span></span><br><span class="line"><span class="javascript">                        title: <span class="string">'消息'</span>,</span></span><br><span class="line"><span class="javascript">                        message: <span class="string">'已退出聊天室'</span></span></span><br><span class="line">                    &#125;);</span><br><span class="line"></span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//发送消息</span></span></span><br><span class="line"><span class="javascript">                sendMessage: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//在已订阅时，才发送和清空输入框</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">if</span> (<span class="keyword">this</span>.chatSubscribe != <span class="literal">null</span>) &#123;</span></span><br><span class="line"><span class="javascript">                        stompClient.send(<span class="string">"/app/sendToRoom"</span>, &#123;&#125;, <span class="built_in">JSON</span>.stringify(&#123;</span></span><br><span class="line"><span class="javascript">                            chatMessageContent: <span class="keyword">this</span>.unsendChatMessage,</span></span><br><span class="line"><span class="javascript">                            senderId: <span class="built_in">Number</span>(<span class="keyword">this</span>.touristID)</span></span><br><span class="line">                        &#125;));</span><br><span class="line"><span class="javascript">                        <span class="comment">//清空输入框</span></span></span><br><span class="line"><span class="javascript">                        <span class="keyword">this</span>.unsendChatMessage = <span class="string">''</span>;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//连接socket</span></span></span><br><span class="line"><span class="javascript">                connect: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//建立socket连接</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">let</span> socket = <span class="keyword">new</span> SockJS(<span class="string">'/websocket'</span>);</span></span><br><span class="line">                    stompClient = Stomp.over(socket);</span><br><span class="line"><span class="javascript">                    <span class="comment">//连接socket</span></span></span><br><span class="line"><span class="javascript">                    stompClient.connect(&#123;&#125;, <span class="function"><span class="keyword">function</span> (<span class="params">frame</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                        <span class="built_in">console</span>.log(<span class="string">"连接socket: /websocket"</span>);</span></span><br><span class="line"><span class="javascript">                        <span class="built_in">console</span>.log(frame);</span></span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//断开socket连接</span></span></span><br><span class="line"><span class="javascript">                disconnect: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="built_in">console</span>.log(<span class="keyword">this</span>.isConnected);</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">if</span> (stompClient !== <span class="literal">null</span> &amp;&amp; <span class="keyword">this</span>.isConnected === <span class="literal">true</span>) &#123;</span></span><br><span class="line"><span class="javascript">                        stompClient.disconnect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">                            <span class="built_in">console</span>.log(<span class="string">"断开socket连接"</span>);</span></span><br><span class="line">                        &#125;);</span><br><span class="line"><span class="javascript">                        <span class="keyword">this</span>.$notify.success(&#123;</span></span><br><span class="line"><span class="javascript">                            title: <span class="string">'√'</span>,</span></span><br><span class="line"><span class="javascript">                            message: <span class="string">'已断开连接'</span></span></span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//随机生成一个游客id，从后台获取数据</span></span></span><br><span class="line">                getTouristID() &#123;</span><br><span class="line"><span class="javascript">                    axios.get(<span class="string">'/shApi/newChatRoomSenderId'</span>).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">                        <span class="built_in">console</span>.log(<span class="string">"获取游客id"</span>);</span></span><br><span class="line"><span class="javascript">                        <span class="built_in">console</span>.log(res);</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">this</span>.touristID = res.data.data.touristID;</span></span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//日期格式化</span></span></span><br><span class="line"><span class="javascript">                fomateDate: <span class="function"><span class="keyword">function</span> (<span class="params">dateStr</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">var</span> date = <span class="built_in">Number</span>(dateStr);</span></span><br><span class="line"><span class="javascript">                    date = <span class="keyword">new</span> <span class="built_in">Date</span>(date).toLocaleString();</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">return</span> date.split(<span class="string">" "</span>)[<span class="number">1</span>];</span></span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//判断滚动条是否在底部</span></span></span><br><span class="line"><span class="javascript">                scrollAtFoot: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">let</span> elTable = $(<span class="string">`#messageTable .el-table__body-wrapper`</span>)[<span class="number">0</span>];</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">let</span> clientHeight = elTable.clientHeight;</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">let</span> scrollHeight = elTable.scrollHeight;</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">let</span> scrollTop = $(<span class="string">'#messageTable .el-table__body-wrapper'</span>).scrollTop();</span></span><br><span class="line"><span class="javascript">                    <span class="built_in">console</span>.log(<span class="string">"clientHeight的值为："</span> + clientHeight + <span class="string">"；scrollHeight为"</span> + scrollHeight + <span class="string">"；scrollTop为"</span> + scrollTop);</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//当滚动条在底部时</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">if</span> (scrollHeight - scrollTop === clientHeight) &#123;</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">return</span> <span class="literal">true</span></span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line"><span class="javascript">                <span class="comment">//移动滚动条到底部</span></span></span><br><span class="line"><span class="javascript">                moveScroll: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="comment">//注意，需要在数据更新完成，并且页面渲染完成后才做这件事</span></span></span><br><span class="line"><span class="javascript">                    $(<span class="string">'#messageTable .el-table__body-wrapper'</span>).scrollTop((<span class="keyword">this</span>.historyMessages.length) * <span class="keyword">this</span>.cellHeight);</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line"><span class="javascript">            <span class="comment">//vue创建后</span></span></span><br><span class="line"><span class="javascript">            created: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="comment">//连接socket</span></span></span><br><span class="line"><span class="javascript">                <span class="keyword">this</span>.connect();</span></span><br><span class="line"><span class="javascript">                <span class="comment">//获取游客id</span></span></span><br><span class="line"><span class="javascript">                <span class="keyword">this</span>.getTouristID()</span></span><br><span class="line">            &#125;,</span><br><span class="line"><span class="javascript">            updated: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="comment">//如果订阅了频道，并且打开了滚动条跟进</span></span></span><br><span class="line"><span class="javascript">                <span class="keyword">if</span> (<span class="keyword">this</span>.chatSubscribe != <span class="literal">null</span> &amp;&amp; <span class="keyword">this</span>.letScollAtFoot === <span class="literal">true</span>) &#123;</span></span><br><span class="line"><span class="javascript">                    <span class="comment">// 把滚条移动到最底部</span></span></span><br><span class="line"><span class="javascript">                    <span class="keyword">this</span>.moveScroll();</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在聊天室业务中，我们需要在新消息收到后，将滚动条下拉，以便显示新消息。如果使用传统或自定义的组件，这个没有任何问题。</p>
+<blockquote>
+<p>注意，需要在页面渲染完成后再操作滚动条</p>
+</blockquote>
+<p>这里我选用了<code>el-table</code>组件，但其并未对此有相关说明。这里我只能选中<code>el-table</code>的元素进行<code>dom</code>操作：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//选中el-table的滚动条元素</span></span><br><span class="line"><span class="keyword">let</span> elTable = $(<span class="string">`#messageTable .el-table__body-wrapper`</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//判断滚动条是否在底部</span></span><br><span class="line">                scrollAtFoot: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">let</span> elTable = $(<span class="string">`#messageTable .el-table__body-wrapper`</span>)[<span class="number">0</span>];</span><br><span class="line">                    <span class="keyword">let</span> clientHeight = elTable.clientHeight;</span><br><span class="line">                    <span class="keyword">let</span> scrollHeight = elTable.scrollHeight;</span><br><span class="line">                    <span class="keyword">let</span> scrollTop = $(<span class="string">'#messageTable .el-table__body-wrapper'</span>).scrollTop();</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"clientHeight的值为："</span> + clientHeight + <span class="string">"；scrollHeight为"</span> + scrollHeight + <span class="string">"；scrollTop为"</span> + scrollTop);</span><br><span class="line">                    <span class="comment">//当滚动条在底部时</span></span><br><span class="line">                    <span class="keyword">if</span> (scrollHeight - scrollTop === clientHeight) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line"><span class="comment">//移动滚动条到底部</span></span><br><span class="line">                moveScroll: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="comment">//注意，需要在数据更新完成，并且页面渲染完成后才做这件事</span></span><br><span class="line">                    $(<span class="string">'#messageTable .el-table__body-wrapper'</span>).scrollTop((<span class="keyword">this</span>.historyMessages.length) * <span class="keyword">this</span>.cellHeight);</span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="后端springBoot"><a href="#后端springBoot" class="headerlink" title="后端springBoot"></a>后端springBoot</h4><p>仍在完善中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSocketController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IchatHistoryService chatHistoryService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IchatMessageService chatMessageService;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//接收消息的接口路径，聊天室频道</span></span><br><span class="line">    <span class="meta">@MessageMapping</span>(<span class="string">"/sendToRoom"</span>)</span><br><span class="line">    <span class="comment">//发送到 /room/chat 频道</span></span><br><span class="line">    <span class="meta">@SendTo</span>(<span class="string">"/room/chat"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShResultDTO&lt;String,Object&gt; <span class="title">retString</span><span class="params">(@RequestBody ChatMessageDTO message )</span>  </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//聊天室记录的固定id</span></span><br><span class="line">        Long historyId=<span class="number">0L</span>;</span><br><span class="line">        <span class="comment">//发送者id 游客模式</span></span><br><span class="line">        senderId=message.getSenderId();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//接收者id</span></span><br><span class="line">        <span class="comment">//暂无</span></span><br><span class="line">        <span class="comment">//将消息存入数据库</span></span><br><span class="line">        chatMessageService.addChatMessage(message.getChatMessageContent(), historyId, senderId, <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//从数据库中查询此聊天室的消息，广播给该频道</span></span><br><span class="line">        <span class="keyword">return</span> tolistChatRoomMessages();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建聊天室的聊天记录表</span></span><br><span class="line">    <span class="meta">@PostMapping</span>(value = <span class="string">"/shApi/createChatRoomTable"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShResultDTO&lt;String,Object&gt; <span class="title">toCreateChatRoomTable</span><span class="params">()</span></span>&#123;</span><br><span class="line">        ChatHistory chatHistory=<span class="keyword">new</span> ChatHistory();</span><br><span class="line">        chatHistory.setChatHistoryId(<span class="number">0L</span>);</span><br><span class="line">        chatHistory.setChatHistoryName(<span class="string">"shChatRoom"</span>);</span><br><span class="line">        chatHistory.setGmtCreated(System.currentTimeMillis());</span><br><span class="line">        chatHistory.setGmtModified(chatHistory.getGmtCreated());</span><br><span class="line">        <span class="keyword">boolean</span> flag = chatHistoryService.addOneChatHistory(chatHistory);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> flag ? <span class="keyword">new</span> ShResultDTO&lt;&gt;(<span class="number">200</span>,<span class="string">"聊天室创建成功"</span>) : <span class="keyword">new</span> ShResultDTO&lt;&gt;(<span class="number">501</span>,<span class="string">"聊天室创建失败，该聊天室已存在"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//查询聊天室的聊天记录</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/shApi/listChatRoomMessages"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShResultDTO&lt;String,Object&gt; <span class="title">tolistChatRoomMessages</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        List&lt;ChatMessageDTO&gt; chatMessageDTOs = chatMessageService.selectMessagesByHistoryId(<span class="number">0L</span>);</span><br><span class="line">        Map&lt;String,Object&gt; map=<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">"historyMessages"</span>,chatMessageDTOs);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ShResultDTO&lt;&gt;(<span class="number">200</span>,<span class="string">"聊天室记录查询完成"</span>,map,<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//清空聊天室的聊天记录</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/shApi/cleanChatRoomMessages"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShResultDTO&lt;String,Object&gt; <span class="title">toCleanChatRoomMessages</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        chatMessageService.deleteMessagesByhistoryId(<span class="number">0L</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ShResultDTO&lt;&gt;(<span class="number">200</span>,<span class="string">"聊天室记录已清空"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//生成一个聊天室游客id</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/shApi/newChatRoomSenderId"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShResultDTO&lt;String,Object&gt; <span class="title">toNewChatRoomTouristId</span><span class="params">(HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map=<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        Random random=<span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">int</span> touristIDNumber= random.nextInt(<span class="number">999</span>);</span><br><span class="line">        <span class="comment">//转成字符串，加上时间戳</span></span><br><span class="line">        String touristID=<span class="string">""</span>+System.currentTimeMillis()+touristIDNumber;</span><br><span class="line">        System.out.println(<span class="string">"生成的游客id为："</span>+touristID);</span><br><span class="line">        map.put(<span class="string">"touristID"</span>,touristID);</span><br><span class="line">        <span class="comment">//存入session</span></span><br><span class="line">        request.getSession().setAttribute(<span class="string">"touristID"</span>,touristID);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ShResultDTO&lt;&gt;(<span class="number">200</span>,<span class="string">"生成一个游客id"</span>,map,<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="表结构"><a href="#表结构" class="headerlink" title="表结构"></a>表结构</h4><p><code>ChatHistory</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.annotation.*;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">//聊天记录、频道</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@TableName</span>(<span class="string">"chat_history"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChatHistory</span> </span>&#123;</span><br><span class="line">    <span class="comment">//主键</span></span><br><span class="line">    <span class="meta">@TableId</span>(value = <span class="string">"chat_history_id"</span>,type = IdType.AUTO)</span><br><span class="line">    Long chatHistoryId;</span><br><span class="line">    <span class="comment">//聊天记录的名称，唯一</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"chat_history_name"</span>,insertStrategy = FieldStrategy.NOT_EMPTY)</span><br><span class="line">    String chatHistoryName;</span><br><span class="line">    <span class="comment">//聊天创建时间</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"gmt_created"</span>,insertStrategy = FieldStrategy.NOT_NULL)</span><br><span class="line">    Long gmtCreated;</span><br><span class="line">    <span class="comment">//更新时间</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"gmt_modified"</span>,insertStrategy = FieldStrategy.NOT_NULL)</span><br><span class="line">    Long gmtModified;</span><br><span class="line">    <span class="comment">//消息条数</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"message_num"</span>,insertStrategy = FieldStrategy.DEFAULT)</span><br><span class="line">    Long messageNum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ChatMessage</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.annotation.*;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">//聊天消息</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@TableName</span>(<span class="string">"chat_message"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChatMessage</span> </span>&#123;</span><br><span class="line">    <span class="comment">//主键</span></span><br><span class="line">    <span class="meta">@TableId</span>(value = <span class="string">"chat_message_id"</span>,type = IdType.AUTO)</span><br><span class="line">    Long chatMessageId;</span><br><span class="line">    <span class="comment">//记录此消息的 聊天记录的id</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"chat_history_id"</span>,insertStrategy = FieldStrategy.NOT_NULL)</span><br><span class="line">    Long chatHistoryId;</span><br><span class="line">    <span class="comment">//消息内容</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"chat_message_content"</span>,insertStrategy = FieldStrategy.NOT_EMPTY)</span><br><span class="line">    String chatMessageContent;</span><br><span class="line">    <span class="comment">//创建时间</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"gmt_created"</span>,insertStrategy = FieldStrategy.NOT_NULL)</span><br><span class="line">    Long gmtCreated;</span><br><span class="line">    <span class="comment">//发送者id，可以为空</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"sender_id"</span>)</span><br><span class="line">    Long senderId;</span><br><span class="line">    <span class="comment">//接收者id，可以为空</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"recipient_id"</span>)</span><br><span class="line">    Long recipientId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="DTO对象"><a href="#DTO对象" class="headerlink" title="DTO对象"></a>DTO对象</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.DTO;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.shirtiny.community.SHcommunity.Model.ChatMessage;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChatHistoryDTO</span> </span>&#123;</span><br><span class="line">    <span class="comment">//主键</span></span><br><span class="line">    Long chatHistoryId;</span><br><span class="line">    <span class="comment">//聊天记录的名称</span></span><br><span class="line">    String chatHistoryName;</span><br><span class="line">    <span class="comment">//聊天创建时间</span></span><br><span class="line">    Long gmtCreated;</span><br><span class="line">    <span class="comment">//更新时间</span></span><br><span class="line">    Long gmtModified;</span><br><span class="line">    <span class="comment">//消息条数</span></span><br><span class="line">    Long messageNum;</span><br><span class="line">    <span class="comment">//记录的消息列表,不在数据库中</span></span><br><span class="line">    List&lt;ChatMessage&gt; chatMessages;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.DTO;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChatMessageDTO</span> </span>&#123;</span><br><span class="line">    <span class="comment">//主键</span></span><br><span class="line">    Long chatMessageId;</span><br><span class="line">    <span class="comment">//记录此消息的 聊天记录的id</span></span><br><span class="line">    Long chatHistoryId;</span><br><span class="line">    <span class="comment">//消息内容</span></span><br><span class="line">    String chatMessageContent;</span><br><span class="line">    <span class="comment">//创建时间</span></span><br><span class="line">    Long gmtCreated;</span><br><span class="line">    <span class="comment">//发送者id</span></span><br><span class="line">    Long senderId;</span><br><span class="line">    <span class="comment">//接收者id</span></span><br><span class="line">    Long recipientId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//发送者</span></span><br><span class="line">    UserDTO sender;</span><br><span class="line">    <span class="comment">//接收者</span></span><br><span class="line">    UserDTO recipient;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#^_^#java</a>
+          
+            <a href="/tags/js/" rel="tag">#^_^#js</a>
+          
+            <a href="/tags/socket/" rel="tag">#^_^#socket</a>
+          
+            <a href="/tags/springBoot/" rel="tag">#^_^#springBoot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/25/面包屑足迹/" rel="next" title="面包屑足迹">
+                <i class="fa fa-chevron-left"></i> 面包屑足迹
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">76</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#快速完成聊天室核心功能"><span class="nav-text">快速完成聊天室核心功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务端-基础版"><span class="nav-text">服务端 基础版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#springBoot-WebSocket"><span class="nav-text">springBoot WebSocket</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Maven依赖"><span class="nav-text">Maven依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置类"><span class="nav-text">配置类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Controller"><span class="nav-text">Controller</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端-基础版"><span class="nav-text">客户端 基础版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sockjs-client-stomp-websocket"><span class="nav-text">sockjs-client + stomp-websocket</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Maven依赖-1"><span class="nav-text">Maven依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#建立连接"><span class="nav-text">建立连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#断开连接"><span class="nav-text">断开连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#订阅频道"><span class="nav-text">订阅频道</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#取消订阅"><span class="nav-text">取消订阅</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发送消息"><span class="nav-text">发送消息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-text">案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前端Vue-Element"><span class="nav-text">前端Vue+Element</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后端springBoot"><span class="nav-text">后端springBoot</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表结构"><span class="nav-text">表结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DTO对象"><span class="nav-text">DTO对象</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1572518581000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+
+<!--音乐播放器
+<link rel="stylesheet" href="/APlayer/APlayer.min.css">
+<div  id="aplayer"></div>
+<script type="text/javascript" src="/APlayer/APlayer.min.js"></script>
+<script type="text/javascript" src="/APlayer/music.js"></script>
+ -->
+ 
+</body>
+</html>
