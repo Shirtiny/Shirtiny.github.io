@@ -9,6 +9,24 @@ git init
 	name=shirtiny
 	email=1849468240@qq.com
 这样不会与其他人混淆，或用错名字
+如：
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[user]
+	name=shirtiny
+	email=1849468240@qq.com
+[remote "origin"]
+	url = https://github.com/Shirtiny/shCrawler-.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+
 
 
 git add .
