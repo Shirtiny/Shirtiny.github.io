@@ -111,7 +111,7 @@
 <meta property="og:image" content="https://file.moetu.org/images/2019/10/13/1681e553e03e404a940492f8f5d5f4bbc82d88803f44b323.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/10/13/48b08cdc46aa4ada508e8fa6f895ad1ad646ba19f42ff81a.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/10/13/e3d51bf2e3ba887da117fc6f8be6ab430a9160560ff53963.png">
-<meta property="og:updated_time" content="2019-10-15T02:13:11.123Z">
+<meta property="og:updated_time" content="2019-11-05T07:55:46.774Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker容器项目部署">
 <meta name="twitter:description" content="使用Docker部署Vue、Go项目，Ubuntu18.04不经意看到Docker这个大鲸鱼：  突然好奇它怎么用的，这些技术像动物世界一样。 我在这篇文章记录了自己在Windows、Ubuntu18.04下的Docker安装和使用的过程，顺带记录了Vue项目的Docker部署、Go语言web项目的Docker部署、Nginx反向代理配置，还有Mysql、Redis等部署操作。">
@@ -488,7 +488,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-10-15 10:13:11" itemprop="dateModified" datetime="2019-10-15T10:13:11+08:00">2019-10-15</time>
+                <time title="修改时间：2019-11-05 15:55:46" itemprop="dateModified" datetime="2019-11-05T15:55:46+08:00">2019-11-05</time>
               
             
           </span>
@@ -793,6 +793,15 @@
 <h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p>依然是开个Docker的卷，名为redis_data</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  docker_redis:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="attr">      - redis_data:</span><span class="string">/data</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">     -</span> <span class="number">6379</span><span class="string">:6379</span></span><br></pre></td></tr></table></figure>
 
+<h3 id="elasticSearch"><a href="#elasticSearch" class="headerlink" title="elasticSearch"></a>elasticSearch</h3><p>需要2G内存</p>
+<p>基础</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  docker_Es:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">elasticsearch:7.4.2</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">     -</span> <span class="number">9200</span><span class="string">:9200</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">     -</span> <span class="string">somenetwork</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">     -</span> <span class="string">discovery.type=single-node</span></span><br></pre></td></tr></table></figure>
+
+<p>推荐</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>需要2g内存</span><br><span class="line">docker network create somenetwork</span><br><span class="line">docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:7.4.2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>测试</span><br><span class="line">Get http://ip:9200/</span><br><span class="line"><span class="meta">#</span>增 使用post可以省略id，系统自动生成  </span><br><span class="line"><span class="meta">#</span>格式类似http://ip:9200/database/table/id http://ip:9200/index/type/id 带上json数据 es版本7以后去除了type的概念，不在支持一个index内多个type</span><br><span class="line">Put http://ip:9200/shsipder/user/2</span><br><span class="line"><span class="meta">#</span>删除</span><br><span class="line">Delete http://ip:9200/shsipder/user/2</span><br><span class="line"><span class="meta">#</span>修改 覆盖式</span><br><span class="line">Put http://ip:9200/shsipder/user/2</span><br><span class="line"><span class="meta">#</span>全查 显示pretty=yrue 每页大小size=100</span><br><span class="line">Get http://ip:9200/shsipder/user/_search</span><br><span class="line"><span class="meta">#</span>条件 age:(&lt;30)</span><br><span class="line">Get http://ip:9200/shsipder/user/_search?q=shirtiny</span><br><span class="line"><span class="meta">#</span>查看表结构</span><br><span class="line">Get http://ip:9200/shsipder/_mapping</span><br></pre></td></tr></table></figure>
+
 <h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>服务器停机，像阿里那种释放cpu、内存、保留硬盘，重启后IP可能会更改、有时需要手动启动docker，mysql等服务会随着Docker启动，只是portainer需要再次手动启动，管理进程也不会自动启动，手动启动的命令如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>docker容器管理工具</span><br><span class="line">docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer</span><br><span class="line"><span class="meta">#</span>docker管理进程</span><br><span class="line">docker start compassionate_valhard</span><br></pre></td></tr></table></figure>
 
@@ -938,7 +947,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-count">53</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -971,7 +980,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                      
+                    
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1140,7 +1151,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">76</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1204,7 +1219,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Docker部署Vue、Go项目，Ubuntu18-04"><span class="nav-text">使用Docker部署Vue、Go项目，Ubuntu18.04</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Docker"><span class="nav-text">安装Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows"><span class="nav-text">Windows</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-alpine"><span class="nav-text">Nginx-alpine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#镜像构建与上传"><span class="nav-text">镜像构建与上传</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建Vue项目的Docker镜像"><span class="nav-text">构建Vue项目的Docker镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传Vue项目的Docker镜像"><span class="nav-text">上传Vue项目的Docker镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GO项目的Docker镜像"><span class="nav-text">GO项目的Docker镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu服务器上Docker的安装"><span class="nav-text">Ubuntu服务器上Docker的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#portainer-io管理工具"><span class="nav-text">portainer.io管理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#portainer-io的使用"><span class="nav-text">portainer.io的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行vue项目"><span class="nav-text">运行vue项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行Go后台项目"><span class="nav-text">运行Go后台项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#宿主机Nginx反向代理"><span class="nav-text">宿主机Nginx反向代理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql"><span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis"><span class="nav-text">redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-text">最后</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Docker部署Vue、Go项目，Ubuntu18-04"><span class="nav-text">使用Docker部署Vue、Go项目，Ubuntu18.04</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Docker"><span class="nav-text">安装Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows"><span class="nav-text">Windows</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-alpine"><span class="nav-text">Nginx-alpine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#镜像构建与上传"><span class="nav-text">镜像构建与上传</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建Vue项目的Docker镜像"><span class="nav-text">构建Vue项目的Docker镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传Vue项目的Docker镜像"><span class="nav-text">上传Vue项目的Docker镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GO项目的Docker镜像"><span class="nav-text">GO项目的Docker镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu服务器上Docker的安装"><span class="nav-text">Ubuntu服务器上Docker的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#portainer-io管理工具"><span class="nav-text">portainer.io管理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#portainer-io的使用"><span class="nav-text">portainer.io的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行vue项目"><span class="nav-text">运行vue项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行Go后台项目"><span class="nav-text">运行Go后台项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#宿主机Nginx反向代理"><span class="nav-text">宿主机Nginx反向代理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql"><span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis"><span class="nav-text">redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#elasticSearch"><span class="nav-text">elasticSearch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-text">最后</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
