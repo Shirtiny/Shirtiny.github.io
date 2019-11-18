@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="标题在我论坛网站中，登录是第一个做的功能，可做的很简单，只是在河水两岸扔了块软绵绵的木板，以供临时的通行。登录注册、权限认证，这两个服务是隐私的入口，需要格外的注意。现在，社区爬取到了很多的用户数据，我觉得是时候对SSO、JWT这方面的知识做个总结了，我将在这份md中，会边写登录认证服务的代码，边记录与总结自己的思考和体会，之后会整理思路，希望对读者有所帮助。 0. 需求登录注册显然是必须的，此外">
+<meta name="keywords" content="JWT,登录认证,信息安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JWT">
+<meta property="og:url" content="http://Shirtiny.cn/2019/11/13/JWT/index.html">
+<meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:description" content="标题在我论坛网站中，登录是第一个做的功能，可做的很简单，只是在河水两岸扔了块软绵绵的木板，以供临时的通行。登录注册、权限认证，这两个服务是隐私的入口，需要格外的注意。现在，社区爬取到了很多的用户数据，我觉得是时候对SSO、JWT这方面的知识做个总结了，我将在这份md中，会边写登录认证服务的代码，边记录与总结自己的思考和体会，之后会整理思路，希望对读者有所帮助。 0. 需求登录注册显然是必须的，此外">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-16T06:11:22.240Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JWT">
+<meta name="twitter:description" content="标题在我论坛网站中，登录是第一个做的功能，可做的很简单，只是在河水两岸扔了块软绵绵的木板，以供临时的通行。登录注册、权限认证，这两个服务是隐私的入口，需要格外的注意。现在，社区爬取到了很多的用户数据，我觉得是时候对SSO、JWT这方面的知识做个总结了，我将在这份md中，会边写登录认证服务的代码，边记录与总结自己的思考和体会，之后会整理思路，希望对读者有所帮助。 0. 需求登录注册显然是必须的，此外">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/11/13/JWT/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>JWT | ☘(๑•̀ㅂ•́)و✧</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘(๑•̀ㅂ•́)و✧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-放映厅">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/video/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>放映厅</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/11/13/JWT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JWT
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-13 15:19:50" itemprop="dateCreated datePublished" datetime="2019-11-13T15:19:50+08:00">2019-11-13</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-16 14:11:22" itemprop="dateModified" datetime="2019-11-16T14:11:22+08:00">2019-11-16</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/记录/" itemprop="url" rel="index"><span itemprop="name">记录</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h1><p>在我论坛网站中，登录是第一个做的功能，可做的很简单，只是在河水两岸扔了块软绵绵的木板，以供临时的通行。登录注册、权限认证，这两个服务是隐私的入口，需要格外的注意。现在，社区爬取到了很多的用户数据，我觉得是时候对SSO、JWT这方面的知识做个总结了，我将在这份md中，会边写登录认证服务的代码，边记录与总结自己的思考和体会，之后会整理思路，希望对读者有所帮助。</p>
+<h2 id="0-需求"><a href="#0-需求" class="headerlink" title="0. 需求"></a>0. 需求</h2><p>登录注册显然是必须的，此外在我的社区网站中，站长、版主、管理员、普通成员一共有这4种角色，大概可以这么看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">站长&gt;管理员&gt;版主&gt;普通成员</span><br></pre></td></tr></table></figure>
+
+<p>普通成员拥有<code>发表帖子</code>、<code>查看帖子</code>、<code>回复评论</code>、<code>私信任意用户</code>等权限</p>
+<p>版主则拥有<code>版块管理</code>、<code>版内帖子管理</code>、<code>成员发言权管理</code>等权限</p>
+<p>管理员自然拥有<code>版主管理</code>、<code>普通成员管理</code>、<code>版块与帖子管理</code>等权限</p>
+<p>站长自然拥有所有权限，包括对权限的修改等。</p>
+<p>成员登录，从而进入网站大门，而对成员角色的认证，则是网站的一个小门。</p>
+<h2 id="1-密码加密存储"><a href="#1-密码加密存储" class="headerlink" title="1. 密码加密存储"></a>1. 密码加密存储</h2><p>显然，无论如何我们都需要把用户存在数据库中，这个有状态服务是无法避免的。</p>
+<p>用户表：Users，字段有邮箱、昵称、密码（加密存储）、身份等。</p>
+<ul>
+<li>密码以密文的形式存储，用户登录时，将邮箱和密码输入，然后网站大门的系统会根据邮箱查询数据库，将用户提交的密码进行加密运算，将运算后得到值去盐与数据库中的密文进行比对，以确认用户是否合法。</li>
+</ul>
+<h4 id="关于hash加密"><a href="#关于hash加密" class="headerlink" title="关于hash加密"></a>关于hash加密</h4><p>加密需要使用hash散列函数来计算，比如<code>%</code>取余就是最简单的hash运算，常见的hash算法，像MD5、sha256、sha1，MD5已经被能被人为的制造hash碰撞了，所以不推荐使用。</p>
+<p>为什么要使用hash加密呢，因为hash是不可逆的，比如<code>x%3=9</code>你无法确定x的值。所以就算得到了数据库中保存的hash值，也难以恢复成原来的密码，而正确的密码取hash后的值，是不变的。</p>
+<p>然而，单纯的hash运算后的加密数据，也并不保险，比如彩虹表就能暴力的破解hash。所以又出现了一种更安全的算法<code>加盐hash</code>，它会在hash运算中，带上随机数或字符串，从而增加彩虹表的破解难度</p>
+<h4 id="关于浏览器缓存"><a href="#关于浏览器缓存" class="headerlink" title="关于浏览器缓存"></a>关于浏览器缓存</h4><p>说个题外话，web服务器在返回文件时会返回一个eTag作为此文件的唯一标识会放在响应的header里，当浏览器发现再次请求的文件的eTag没有改变时，便不会再拉取文件，这是浏览器的缓存机制，可以节省流量。而eTag是怎么来的呢？我曾经以为是对文件取的hash运算，但后来发现并不是这样。eTag是由文件修改时间<code>time</code>与文件大小<code>size</code>进行按位异或运算，即：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//二进制 按位异或运算</span><br><span class="line">time ^ size =  eTage</span><br><span class="line">//比如：</span><br><span class="line">101000010 ^ 10010110 = 00110100</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Https"><a href="#2-Https" class="headerlink" title="2. Https"></a>2. Https</h2><p>在上部分中：</p>
+<blockquote>
+<p>密码以密文的形式存储，用户登录时，将邮箱和密码输入，然后网站大门的系统会根据邮箱查询数据库，将用户提交的密码进行加密运算，将运算后得到值去盐与数据库中的密文进行比对，以确认用户是否合法。</p>
+</blockquote>
+<p>这样看起来似乎没什么问题，设想一下，如果有一名黑客，在用户发起登录的Post请求时窃听用户邮箱和密码，这该怎么办呢？应该使用https。对于https，我觉得，需要先从非对称加密说起。</p>
+<h4 id="关于非对称加密"><a href="#关于非对称加密" class="headerlink" title="关于非对称加密"></a>关于非对称加密</h4><p>最有名的非对称加密算法是<strong>RSA</strong>，非对称加密会生成一个密钥对，包含公钥和私钥。分为两种情况，私钥加密，使用公钥解密；公钥加密，使用私钥解密。</p>
+<p>这样看，应该不是很清楚，我会举几个例子说明这两种情形：</p>
+<div class="note info">
+            <p><strong>情景一</strong></p><ul><li><p>A要发送Message给B</p></li><li><p>A需要先询问B的公钥，B将自己的公钥告诉对方</p></li><li><p>A使用B的公钥加密Message，然后把得到的密文发给B</p></li><li><p>B使用自己的私钥解密Message，获得明文</p></li></ul><p>这样，第三者即使看完了整个通信过程，也无法知道Message的内容。但是，第三者知晓了B的公钥，他也可以使用B的公钥加密消息，向B发送消息，此时B是无法知道写信人是谁的。所以，公钥加密，使用私钥解密，这种情形无法防止伪造的问题。</p>
+          </div>
+
+<div class="note info">
+            <p><strong>情景二</strong></p><ul><li>依然是A要发送Message给B</li><li>A先把自己公钥发给B</li><li>然后A使用自己的私钥加密了Message，发送给了B</li><li>B根据A的公钥解密Message，便明确的知道Message确实是来自于A</li></ul><p>私钥加密，就像一个人的字迹、签名，能够标识消息的来源。但在这个情形里，Message的内容显然被第三者看的一清二楚。</p>
+          </div>
+
+<p>所以我们发现，只使用非对称加密算法，无法满足我们的需要，所以需要引入对称加密算法。</p>
+<h4 id="关于对称加密"><a href="#关于对称加密" class="headerlink" title="关于对称加密"></a>关于对称加密</h4><p>对称加密有一个共享密钥PSK<code>Pre Shared Key</code>，原数据使用PSK加密后得到密文，密文使用PSK解密后，便会回到明文。使用对称加密，需要事先发信双方都知道PSK的值。推荐使用<strong>AES对称加密算法</strong>，DES算法已经被攻破。</p>
+<div class="note info">
+            <p><strong>情景三</strong></p><ul><li>依然是A要发送Message给B</li><li>A需要先询问B的公钥，B将自己的公钥告诉对方</li><li>A把对称加密的密钥PSK放入Message，使用B的公钥加密后，发送给B</li><li>B使用自己的私钥解密Message，得到PSK</li><li>然后，双方便可以使用对称加密算法的PSK进行通信</li></ul><p>这样就可以防止Message内容的泄漏、修改、伪造了，看上去似乎是个很好的解决方式。</p>
+          </div>
+
+<p>其实，这三种情形，都有一个更大的问题，A并不清楚对方是不是真正的B，B也同样如此。如何理解呢，这里是有个前提，通信是在网络上进行的，而网络上的身份和现实是不绑定的，就像百度搜索xx官网一样，没有一个充分的理由便不能确认它的真实性。此时需要一个中间的机构，比如百度认证的xx官网，我信任百度，便会相信这个xx官网是真正的。那这个组成信任链的中间机构是谁呢？</p>
+<h4 id="CA机构"><a href="#CA机构" class="headerlink" title="CA机构"></a>CA机构</h4><p>比如<code>Let&#39;s Encrypt</code>、<code>DigiCert</code>、<code>赛门铁克</code>等CA机构，就是中间人。CA机构会颁发数字证书给信任的网站，数字证书是公钥和私钥的密钥对，证书由CA机构的私钥签发。浏览器信任CA机构，便会信任CA机构信任的网站，然后当用户访问受信任的网站时，浏览器便会提醒该站是安全可信的。</p>
+<p>于是，便产生了情景四：</p>
+<div class="note info">
+            <p><strong>情景四</strong></p><ul><li>依然是A要发送Message给B</li><li>A需要先询问B的CA签名公钥，B将CA签名过的公钥告诉对方</li><li>A进行比对，确认是CA签发的，A信任CA，也就信任了B</li><li>A把对称加密的密钥PSK放入Message，使用B的公钥加密后，发送给B</li><li>B使用自己的私钥解密Message，得到PSK</li><li>然后，双方便可以使用对称加密算法的PSK进行通信</li></ul><p>这就是Https核心的加密解密，<strong>RSA非对称加密结合数字签名算法以及CA体系</strong>，所以，Https不会被窃听、伪造、修改，能够确保用户所连接的服务器是受信的。</p>
+          </div>
+
+
+
+<h2 id="3-Token"><a href="#3-Token" class="headerlink" title="3. Token"></a>3. Token</h2><p>所以，使用Https传输，结合加盐Hash加密，便可以完成大门的系统。那么，还有个问题，小门怎么办，登录的大门进入了，权限控制的小门该如何对已登入用户进行认证。</p>
+<ul>
+<li>如果，在用户通过小门时，再去通过用户邮箱查一遍他的角色信息呢？</li>
+</ul>
+<p>这是不合适的，此时大门系统和小门系统都是知道用户信息的，这会把重要数据损失的责任分散，如果发现用户信息泄漏了，便不知道该对哪个组件追责。而且，这种设计，会加大数据库的压力。</p>
+<ul>
+<li>由大门系统发放Token（令牌），token有有效期，用户携带的令牌由小门系统认证，这样小门系统便不会知道用户信息。但还有个问题，Token存哪呢？小门怎么知道Token是合法的呢？</li>
+</ul>
+<p>先不谈把Token存在数据库或Redis里合不合适，先看这个，<strong>能把Token存Session里吗？</strong></p>
+<h4 id="为什么Session不安全"><a href="#为什么Session不安全" class="headerlink" title="为什么Session不安全"></a>为什么Session不安全</h4><p>对于每个用户，服务器都有一块独立内存，怎么标识这些内存所属用户的呢？Http请求之间并没有关联，服务器如果想要标识某个用户，就只能去依赖Cookie，给每个新用户发一个cookie，里面存放一个sessionId，每次用户请求时，就会携带这个cookie，服务器便会根据对应id访问对应内存。</p>
+<ul>
+<li><p>所以说Session依赖于Cookie，而Cookie会被修改和伪造。完全可以把Cookie中的sessionId修改为另外一个用户的id，便可以伪造成别人，进而获得不该有的权限。</p>
+</li>
+<li><p>还有个问题，随着用户的增多，服务器内存便可能会不足，而且恶意的人可以不断使用空Cookie请求服务器，这会使服务器开辟出大量的无用内存。</p>
+</li>
+<li><p>最后一个问题，session是有状态的，由于在内存存储了数据，关机重启或宕机，数据便无法找回，新服务器无法承接旧服务器的工作。</p>
+</li>
+</ul>
+<h4 id="为什么不把Token存在数据库或Redis"><a href="#为什么不把Token存在数据库或Redis" class="headerlink" title="为什么不把Token存在数据库或Redis"></a>为什么不把Token存在数据库或Redis</h4><p>我们再回头来看Token存储在数据库或Redis中会怎样：</p>
+<ul>
+<li>负担加重</li>
+</ul>
+<p>这个是毋庸置疑的，如果在数据库多了张Token表，我们不止要去频繁的查询，而且还要去维护Token的有效期，显然存在数据库中是不可取的。看到这，您一定会想，存redis里不就完了，访问量高的话，就做性能优化、集群，甚至用消息队列等。并非如此，问题其实并不是出在性能上，而是不合理，这会产生不必要的开销。</p>
+<ul>
+<li>安全隐患</li>
+</ul>
+<p>为什么会说有安全隐患呢，因为小门系统通过查询数据库或redis能够拿到任何人的Token，这是不安全的，我们不该让小门系统接触到这些敏感数据，尽量把用户的敏感数据只交给一个系统去负责。</p>
+<p>那怎么做呢？</p>
+<h2 id="4-数字签名"><a href="#4-数字签名" class="headerlink" title="4. 数字签名"></a>4. 数字签名</h2><p>什么是数字签名呢，其实这个概念在上面说非对称加密的时候提到过。而在这儿的情景，用户在大门系统登录时，由大门系统确认用户的合法性，然后将用户需要传输的信息，比如昵称、权限等信息使用大门系统的私钥与加密算法进行加密，这部分加密的数据就是数字签名。</p>
+<p>在签名完成后，把<strong>数字签名与昵称、权限等明文信息</strong>（通常由Json、Base64编码）一起作为Token，一并交给用户。小门系统对用户进行权限认证时，会使用大门系统的公钥、以及加密时相应对的解密算法对数字签名解密，如果解密后的内容刚好与明文部分吻合，便通过用户合法认证，然后在看明文数据，查看该用户的权限，从而决定是否放行。</p>
+<p>有了数字签名系统后，我们只需要维护好大门的私钥，公开大门的公钥，这样，用户如果需要校验令牌是否过期，只需要在本地校验。这就是简化版的<strong>JWT</strong><code>Json Web Token</code>。</p>
+<p>那么，最后还有个问题，如果要存的话，JWT存哪呢？我们显然可以不用存在服务器上了，所以我们有两个选择：</p>
+<ul>
+<li>LocalStorage</li>
+</ul>
+<p>LocalStorage和服务器没有任何关系，JS可以随意的操作LocalStorage，JWT存在这里，会被轻松拿到，肯定不安全。</p>
+<ul>
+<li>Cookie</li>
+</ul>
+<p>我们知道，Cookie是可以被篡改、可以被伪造，但是JWT是可以存在Cookie中的。为什么呢，使用带有HttpOnly的cookie时，通过JavaScript无法访问，免疫XSS。不过还有种攻击要加以防范，跨站点请求伪造(CSRF)</p>
+<blockquote>
+<p>CSRF攻击是当一个恶意网站，电子邮件或博客导致用户在当前已验证用户的可信站点上的web浏览器中，执行一个有害的动作时发生的攻击。这是一个浏览器如何处理cookies的漏洞。cookie只能被发送到的允许的域中。默认情况下，这个是最初设置cookie的域。请求将发送一个cookie无论你在he.com或you.com。</p>
+<p>CSRF的工作试图引诱你到you.com。该网站将有一个img标记或JavaScript来模拟一个表单post到he.com，并试图劫持你的会话，如果它仍然有效，就修改您的帐户。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JWT/" rel="tag">#^_^#JWT</a>
+          
+            <a href="/tags/登录认证/" rel="tag">#^_^#登录认证</a>
+          
+            <a href="/tags/信息安全/" rel="tag">#^_^#信息安全</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/08/关于H2数据库与mysql之间的数据迁移/" rel="next" title="H2数据库数据迁移">
+                <i class="fa fa-chevron-left"></i> H2数据库数据迁移
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">54</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">81</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#标题"><span class="nav-text">标题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-需求"><span class="nav-text">0. 需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-密码加密存储"><span class="nav-text">1. 密码加密存储</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于hash加密"><span class="nav-text">关于hash加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于浏览器缓存"><span class="nav-text">关于浏览器缓存</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Https"><span class="nav-text">2. Https</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于非对称加密"><span class="nav-text">关于非对称加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于对称加密"><span class="nav-text">关于对称加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CA机构"><span class="nav-text">CA机构</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Token"><span class="nav-text">3. Token</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么Session不安全"><span class="nav-text">为什么Session不安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么不把Token存在数据库或Redis"><span class="nav-text">为什么不把Token存在数据库或Redis</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-数字签名"><span class="nav-text">4. 数字签名</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1573629590000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+
+<!--音乐播放器
+<link rel="stylesheet" href="/APlayer/APlayer.min.css">
+<div  id="aplayer"></div>
+<script type="text/javascript" src="/APlayer/APlayer.min.js"></script>
+<script type="text/javascript" src="/APlayer/music.js"></script>
+ -->
+ 
+</body>
+</html>

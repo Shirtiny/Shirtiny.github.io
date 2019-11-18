@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[JWT]]></title>
+    <url>%2F2019%2F11%2F13%2FJWT%2F</url>
+    <content type="text"><![CDATA[标题在我论坛网站中，登录是第一个做的功能，可做的很简单，只是在河水两岸扔了块软绵绵的木板，以供临时的通行。登录注册、权限认证，这两个服务是隐私的入口，需要格外的注意。现在，社区爬取到了很多的用户数据，我觉得是时候对SSO、JWT这方面的知识做个总结了，我将在这份md中，会边写登录认证服务的代码，边记录与总结自己的思考和体会，之后会整理思路，希望对读者有所帮助。 0. 需求登录注册显然是必须的，此外在我的社区网站中，站长、版主、管理员、普通成员一共有这4种角色，大概可以这么看： 1站长&gt;管理员&gt;版主&gt;普通成员 普通成员拥有发表帖子、查看帖子、回复评论、私信任意用户等权限 版主则拥有版块管理、版内帖子管理、成员发言权管理等权限 管理员自然拥有版主管理、普通成员管理、版块与帖子管理等权限 站长自然拥有所有权限，包括对权限的修改等。 成员登录，从而进入网站大门，而对成员角色的认证，则是网站的一个小门。 1. 密码加密存储显然，无论如何我们都需要把用户存在数据库中，这个有状态服务是无法避免的。 用户表：Users，字段有邮箱、昵称、密码（加密存储）、身份等。 密码以密文的形式存储，用户登录时，将邮箱和密码输入，然后网站大门的系统会根据邮箱查询数据库，将用户提交的密码进行加密运算，将运算后得到值去盐与数据库中的密文进行比对，以确认用户是否合法。 关于hash加密加密需要使用hash散列函数来计算，比如%取余就是最简单的hash运算，常见的hash算法，像MD5、sha256、sha1，MD5已经被能被人为的制造hash碰撞了，所以不推荐使用。 为什么要使用hash加密呢，因为hash是不可逆的，比如x%3=9你无法确定x的值。所以就算得到了数据库中保存的hash值，也难以恢复成原来的密码，而正确的密码取hash后的值，是不变的。 然而，单纯的hash运算后的加密数据，也并不保险，比如彩虹表就能暴力的破解hash。所以又出现了一种更安全的算法加盐hash，它会在hash运算中，带上随机数或字符串，从而增加彩虹表的破解难度 关于浏览器缓存说个题外话，web服务器在返回文件时会返回一个eTag作为此文件的唯一标识会放在响应的header里，当浏览器发现再次请求的文件的eTag没有改变时，便不会再拉取文件，这是浏览器的缓存机制，可以节省流量。而eTag是怎么来的呢？我曾经以为是对文件取的hash运算，但后来发现并不是这样。eTag是由文件修改时间time与文件大小size进行按位异或运算，即： 1234//二进制 按位异或运算time ^ size = eTage//比如：101000010 ^ 10010110 = 00110100 2. Https在上部分中： 密码以密文的形式存储，用户登录时，将邮箱和密码输入，然后网站大门的系统会根据邮箱查询数据库，将用户提交的密码进行加密运算，将运算后得到值去盐与数据库中的密文进行比对，以确认用户是否合法。 这样看起来似乎没什么问题，设想一下，如果有一名黑客，在用户发起登录的Post请求时窃听用户邮箱和密码，这该怎么办呢？应该使用https。对于https，我觉得，需要先从非对称加密说起。 关于非对称加密最有名的非对称加密算法是RSA，非对称加密会生成一个密钥对，包含公钥和私钥。分为两种情况，私钥加密，使用公钥解密；公钥加密，使用私钥解密。 这样看，应该不是很清楚，我会举几个例子说明这两种情形： 情景一A要发送Message给BA需要先询问B的公钥，B将自己的公钥告诉对方A使用B的公钥加密Message，然后把得到的密文发给BB使用自己的私钥解密Message，获得明文这样，第三者即使看完了整个通信过程，也无法知道Message的内容。但是，第三者知晓了B的公钥，他也可以使用B的公钥加密消息，向B发送消息，此时B是无法知道写信人是谁的。所以，公钥加密，使用私钥解密，这种情形无法防止伪造的问题。 情景二依然是A要发送Message给BA先把自己公钥发给B然后A使用自己的私钥加密了Message，发送给了BB根据A的公钥解密Message，便明确的知道Message确实是来自于A私钥加密，就像一个人的字迹、签名，能够标识消息的来源。但在这个情形里，Message的内容显然被第三者看的一清二楚。 所以我们发现，只使用非对称加密算法，无法满足我们的需要，所以需要引入对称加密算法。 关于对称加密对称加密有一个共享密钥PSKPre Shared Key，原数据使用PSK加密后得到密文，密文使用PSK解密后，便会回到明文。使用对称加密，需要事先发信双方都知道PSK的值。推荐使用AES对称加密算法，DES算法已经被攻破。 情景三依然是A要发送Message给BA需要先询问B的公钥，B将自己的公钥告诉对方A把对称加密的密钥PSK放入Message，使用B的公钥加密后，发送给BB使用自己的私钥解密Message，得到PSK然后，双方便可以使用对称加密算法的PSK进行通信这样就可以防止Message内容的泄漏、修改、伪造了，看上去似乎是个很好的解决方式。 其实，这三种情形，都有一个更大的问题，A并不清楚对方是不是真正的B，B也同样如此。如何理解呢，这里是有个前提，通信是在网络上进行的，而网络上的身份和现实是不绑定的，就像百度搜索xx官网一样，没有一个充分的理由便不能确认它的真实性。此时需要一个中间的机构，比如百度认证的xx官网，我信任百度，便会相信这个xx官网是真正的。那这个组成信任链的中间机构是谁呢？ CA机构比如Let&#39;s Encrypt、DigiCert、赛门铁克等CA机构，就是中间人。CA机构会颁发数字证书给信任的网站，数字证书是公钥和私钥的密钥对，证书由CA机构的私钥签发。浏览器信任CA机构，便会信任CA机构信任的网站，然后当用户访问受信任的网站时，浏览器便会提醒该站是安全可信的。 于是，便产生了情景四： 情景四依然是A要发送Message给BA需要先询问B的CA签名公钥，B将CA签名过的公钥告诉对方A进行比对，确认是CA签发的，A信任CA，也就信任了BA把对称加密的密钥PSK放入Message，使用B的公钥加密后，发送给BB使用自己的私钥解密Message，得到PSK然后，双方便可以使用对称加密算法的PSK进行通信这就是Https核心的加密解密，RSA非对称加密结合数字签名算法以及CA体系，所以，Https不会被窃听、伪造、修改，能够确保用户所连接的服务器是受信的。 3. Token所以，使用Https传输，结合加盐Hash加密，便可以完成大门的系统。那么，还有个问题，小门怎么办，登录的大门进入了，权限控制的小门该如何对已登入用户进行认证。 如果，在用户通过小门时，再去通过用户邮箱查一遍他的角色信息呢？ 这是不合适的，此时大门系统和小门系统都是知道用户信息的，这会把重要数据损失的责任分散，如果发现用户信息泄漏了，便不知道该对哪个组件追责。而且，这种设计，会加大数据库的压力。 由大门系统发放Token（令牌），token有有效期，用户携带的令牌由小门系统认证，这样小门系统便不会知道用户信息。但还有个问题，Token存哪呢？小门怎么知道Token是合法的呢？ 先不谈把Token存在数据库或Redis里合不合适，先看这个，能把Token存Session里吗？ 为什么Session不安全对于每个用户，服务器都有一块独立内存，怎么标识这些内存所属用户的呢？Http请求之间并没有关联，服务器如果想要标识某个用户，就只能去依赖Cookie，给每个新用户发一个cookie，里面存放一个sessionId，每次用户请求时，就会携带这个cookie，服务器便会根据对应id访问对应内存。 所以说Session依赖于Cookie，而Cookie会被修改和伪造。完全可以把Cookie中的sessionId修改为另外一个用户的id，便可以伪造成别人，进而获得不该有的权限。 还有个问题，随着用户的增多，服务器内存便可能会不足，而且恶意的人可以不断使用空Cookie请求服务器，这会使服务器开辟出大量的无用内存。 最后一个问题，session是有状态的，由于在内存存储了数据，关机重启或宕机，数据便无法找回，新服务器无法承接旧服务器的工作。 为什么不把Token存在数据库或Redis我们再回头来看Token存储在数据库或Redis中会怎样： 负担加重 这个是毋庸置疑的，如果在数据库多了张Token表，我们不止要去频繁的查询，而且还要去维护Token的有效期，显然存在数据库中是不可取的。看到这，您一定会想，存redis里不就完了，访问量高的话，就做性能优化、集群，甚至用消息队列等。并非如此，问题其实并不是出在性能上，而是不合理，这会产生不必要的开销。 安全隐患 为什么会说有安全隐患呢，因为小门系统通过查询数据库或redis能够拿到任何人的Token，这是不安全的，我们不该让小门系统接触到这些敏感数据，尽量把用户的敏感数据只交给一个系统去负责。 那怎么做呢？ 4. 数字签名什么是数字签名呢，其实这个概念在上面说非对称加密的时候提到过。而在这儿的情景，用户在大门系统登录时，由大门系统确认用户的合法性，然后将用户需要传输的信息，比如昵称、权限等信息使用大门系统的私钥与加密算法进行加密，这部分加密的数据就是数字签名。 在签名完成后，把数字签名与昵称、权限等明文信息（通常由Json、Base64编码）一起作为Token，一并交给用户。小门系统对用户进行权限认证时，会使用大门系统的公钥、以及加密时相应对的解密算法对数字签名解密，如果解密后的内容刚好与明文部分吻合，便通过用户合法认证，然后在看明文数据，查看该用户的权限，从而决定是否放行。 有了数字签名系统后，我们只需要维护好大门的私钥，公开大门的公钥，这样，用户如果需要校验令牌是否过期，只需要在本地校验。这就是简化版的JWTJson Web Token。 那么，最后还有个问题，如果要存的话，JWT存哪呢？我们显然可以不用存在服务器上了，所以我们有两个选择： LocalStorage LocalStorage和服务器没有任何关系，JS可以随意的操作LocalStorage，JWT存在这里，会被轻松拿到，肯定不安全。 Cookie 我们知道，Cookie是可以被篡改、可以被伪造，但是JWT是可以存在Cookie中的。为什么呢，使用带有HttpOnly的cookie时，通过JavaScript无法访问，免疫XSS。不过还有种攻击要加以防范，跨站点请求伪造(CSRF) CSRF攻击是当一个恶意网站，电子邮件或博客导致用户在当前已验证用户的可信站点上的web浏览器中，执行一个有害的动作时发生的攻击。这是一个浏览器如何处理cookies的漏洞。cookie只能被发送到的允许的域中。默认情况下，这个是最初设置cookie的域。请求将发送一个cookie无论你在he.com或you.com。 CSRF的工作试图引诱你到you.com。该网站将有一个img标记或JavaScript来模拟一个表单post到he.com，并试图劫持你的会话，如果它仍然有效，就修改您的帐户。]]></content>
+      <categories>
+        <category>记录</category>
+      </categories>
+      <tags>
+        <tag>JWT</tag>
+        <tag>登录认证</tag>
+        <tag>信息安全</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[H2数据库数据迁移]]></title>
     <url>%2F2019%2F11%2F08%2F%E5%85%B3%E4%BA%8EH2%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8Emysql%E4%B9%8B%E9%97%B4%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB%2F</url>
     <content type="text"><![CDATA[记一次H2与MySQL之间的数据迁移最近在用Golang写爬虫，使用的ORM是Gorm，暂不正式支持嵌入式的H2数据库，所以就用mysql来存爬取到的数据。 由于原先数据是放在H2数据库里的，便产生了在H2和Mysql之间迁移数据的需求。 表结构之前是使用Flyway对H2数据库进行的版本管理，所以之间写的Sql保存了下来，H2与Mysql的Sql语法还是比较像的： H2 创建 user表 1234567891011121314151617181920212223242526create table USER( ID BIGINT auto_increment, NICKNAME VARCHAR(100) not null, PASSWORD VARCHAR(100), EMAIL VARCHAR(200) not null constraint USER_EMAIL_UINDEX unique, AVATARIMAGE VARCHAR(500), GITHUB_ID VARCHAR(500) constraint USER_GITHUB_ID_UINDEX unique, GMT_CREATE BIGINT not null, GMT_MODIFIED BIGINT not null, constraint USER_PK primary key (ID));comment on table USER is '论坛的用户表';comment on column USER.GMT_CREATE is '创建时间戳';comment on column USER.GMT_MODIFIED is '变更时间戳';create unique index USER_ID_UINDEX on USER (ID); Mysql创建user表 12345678910111213141516171819202122create table user( id bigint auto_increment, nickname varchar(100) not null, password varchar(100), email varchar(200) not null, avatarimage varchar(500), github_id varchar(500), gmt_create bigint not null comment '创建时间戳', gmt_modified bigint not null comment '变更时间戳', constraint user_pk primary key (id)) comment '论坛的用户表';create unique index user_id_uindex on user (id);create unique index user_email_uindex on user (email);create unique index user_github_id_uindex on user (github_id); H2增加一个字段 12alter table user add description varchar(20); mysql增加一个字段 12alter table USER add description varchar(20); H2删除字段 1alter table COMMENT drop column CITED_COMMENT_CONTENT; mysql删除字段 1alter table COMMENT drop column CITED_COMMENT_CONTENT; H2修改字段 1234alter table COMMENT alter column CITED_COMMENT_CONTENT VARCHAR(512);alter table SECTION alter column INVITATION_STAR_NUM rename to "Section_TOTAL_CANDY";comment on column SECTION."Section_TOTAL_CANDY" is '版块总糖数'; mysql修改字段 12alter table comment modify cited_comment_content varchar(512);alter table section change invitation_star_num section_total_candy bigint default 0 comment '版块总糖数'; IDEA可以使用ctrl+shift+u把字母批量的改为大写或小写。这样修改sql的目的是想让mysql接续H2的版本控制，大数据量的数据应使用其他方式。 数据表结构迁移完成后，数据的迁移就变得很简单。以前在Oracle和Mysql的数据迁移中，我使用的是Navicat，现在发现IDEA自带的数据库管理工具也挺好用的，IDEA的数据跨库迁移： 找到对应表，确认即可，注意错误信息。]]></content>
@@ -302,7 +315,7 @@
   <entry>
     <title><![CDATA[千 与 千寻的神隐]]></title>
     <url>%2F2019%2F08%2F22%2F%E5%8D%83%E4%B8%8E%E5%8D%83%E5%AF%BB%E7%9A%84%E7%A5%9E%E9%9A%90%2F</url>
-    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-PTPnOsMi"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
+    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-PZTIhNNW"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
       <categories>
         <category>闲谈</category>
       </categories>
@@ -422,7 +435,7 @@
   <entry>
     <title><![CDATA[新增视频播放插件]]></title>
     <url>%2F2019%2F08%2F06%2F%E6%96%B0%E5%A2%9E%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%8F%92%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-UvEqsCWV"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
+    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-xrOTRjfe"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
       <categories>
         <category>系统维护</category>
       </categories>
@@ -501,9 +514,9 @@
         <category>学习经验</category>
       </categories>
       <tags>
+        <tag>java</tag>
         <tag>开发知识</tag>
         <tag>IntelliJ IDEA</tag>
-        <tag>java</tag>
         <tag>Lombok插件</tag>
       </tags>
   </entry>
@@ -540,8 +553,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>Maven聚合工程</tag>
         <tag>java</tag>
+        <tag>Maven聚合工程</tag>
         <tag>SSM</tag>
         <tag>用户关系管理项目</tag>
         <tag>Spring-security</tag>
@@ -556,8 +569,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>开发知识</tag>
         <tag>java</tag>
+        <tag>开发知识</tag>
         <tag>SSM</tag>
       </tags>
   </entry>
@@ -569,8 +582,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>开发知识</tag>
         <tag>java</tag>
+        <tag>开发知识</tag>
       </tags>
   </entry>
   <entry>
@@ -581,8 +594,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>开发知识</tag>
         <tag>java</tag>
+        <tag>开发知识</tag>
         <tag>mybatis分页插件</tag>
         <tag>数据分页</tag>
       </tags>
