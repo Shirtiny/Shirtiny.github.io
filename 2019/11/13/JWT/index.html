@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
 <meta property="og:description" content="【长篇】登录认证、权限控制思路整理在我论坛网站中，登录是第一个做的功能，可做的很简单，只是在河水两岸扔了块软绵绵的木板，以供临时的通行。登录认证、权限控制，这两个服务是隐私的入口，需要格外的注意。现在，社区爬取到了很多的用户数据，我觉得是时候对SSO、JWT这方面的知识做个总结了，我将在这份md中，会边写登录认证服务的代码，边记录与总结自己的思考和体会，之后会整理思路，希望能对读者有所帮助。本文所">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-21T07:16:56.129Z">
+<meta property="og:updated_time" content="2019-11-21T07:19:57.026Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JWT+Shiro安全无状态服务">
 <meta name="twitter:description" content="【长篇】登录认证、权限控制思路整理在我论坛网站中，登录是第一个做的功能，可做的很简单，只是在河水两岸扔了块软绵绵的木板，以供临时的通行。登录认证、权限控制，这两个服务是隐私的入口，需要格外的注意。现在，社区爬取到了很多的用户数据，我觉得是时候对SSO、JWT这方面的知识做个总结了，我将在这份md中，会边写登录认证服务的代码，边记录与总结自己的思考和体会，之后会整理思路，希望能对读者有所帮助。本文所">
@@ -480,7 +480,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-21 15:16:56" itemprop="dateModified" datetime="2019-11-21T15:16:56+08:00">2019-11-21</time>
+                <time title="修改时间：2019-11-21 15:19:57" itemprop="dateModified" datetime="2019-11-21T15:19:57+08:00">2019-11-21</time>
               
             
           </span>
@@ -543,7 +543,8 @@
 <p>管理员自然拥有<code>版主管理</code>、<code>普通成员管理</code>、<code>版块与帖子管理</code>等权限</p>
 <p>站长自然拥有所有权限，包括对权限的修改等。</p>
 <p>成员登录，从而进入网站<code>大门</code>，而对成员角色的认证，则是网站的一个<code>小门</code>。</p>
-<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><p>具体实现上，我打算选用<code>Shiro</code>与<code>JWT</code>来完成。</p>
+<p><strong>依赖</strong></p>
+<p>具体实现上，我打算选用<code>Shiro</code>与<code>JWT</code>来完成。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--Shiro--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-spring<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--JWT--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.jsonwebtoken<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jjwt<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>0.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>选择<code>Shiro</code>是因为其相对轻量，而且<code>shiro</code>这个词我好像经常听到，莫名感觉很亲切。而后者JWT大概是我这份md的主线吧。</p>
@@ -552,10 +553,10 @@
 <ul>
 <li>密码以密文的形式存储，用户登录时，将邮箱和密码输入，然后网站大门的系统会根据邮箱查询数据库，将用户提交的密码进行加密运算，将运算后得到值去盐与数据库中的密文进行比对，以确认用户是否合法。</li>
 </ul>
-<h4 id="关于hash加密"><a href="#关于hash加密" class="headerlink" title="关于hash加密"></a>关于hash加密</h4><p>加密需要使用hash散列函数来计算，比如<code>%</code>取余就是最简单的hash运算，常见的hash算法，像MD5、sha256、sha1，MD5已经被能被人为的制造hash碰撞了，所以不推荐使用。</p>
+<h3 id="关于hash加密"><a href="#关于hash加密" class="headerlink" title="关于hash加密"></a>关于hash加密</h3><p>加密需要使用hash散列函数来计算，比如<code>%</code>取余就是最简单的hash运算，常见的hash算法，像MD5、sha256、sha1，MD5已经被能被人为的制造hash碰撞了，所以不推荐使用。</p>
 <p>为什么要使用hash加密呢，因为hash是不可逆的，比如<code>x%3=9</code>你无法确定x的值。所以就算得到了数据库中保存的hash值，也难以恢复成原来的密码，而正确的密码取hash后的值，是不变的。</p>
 <p>然而，单纯的hash运算后的加密数据，也并不保险，比如彩虹表就能暴力的破解hash。所以又出现了一种更安全的算法<code>加盐hash</code>，它会在hash运算中，带上随机数或字符串，从而增加彩虹表的破解难度</p>
-<h4 id="关于浏览器缓存"><a href="#关于浏览器缓存" class="headerlink" title="关于浏览器缓存"></a>关于浏览器缓存</h4><p>说个题外话，web服务器在返回文件时会返回一个eTag作为此文件的唯一标识会放在响应的header里，当浏览器发现再次请求的文件的eTag没有改变时，便不会再拉取文件，这是浏览器的缓存机制，可以节省流量。而eTag是怎么来的呢？我曾经以为是对文件取的hash运算，但后来发现并不是这样。eTag是由文件修改时间<code>time</code>与文件大小<code>size</code>进行按位异或运算，即：</p>
+<h3 id="关于浏览器缓存"><a href="#关于浏览器缓存" class="headerlink" title="关于浏览器缓存"></a>关于浏览器缓存</h3><p>说个题外话，web服务器在返回文件时会返回一个eTag作为此文件的唯一标识会放在响应的header里，当浏览器发现再次请求的文件的eTag没有改变时，便不会再拉取文件，这是浏览器的缓存机制，可以节省流量。而eTag是怎么来的呢？我曾经以为是对文件取的hash运算，但后来发现并不是这样。eTag是由文件修改时间<code>time</code>与文件大小<code>size</code>进行按位异或运算，即：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//二进制 按位异或运算</span><br><span class="line">time ^ size =  eTage</span><br><span class="line">//比如：</span><br><span class="line">101000010 ^ 10010110 = 00110100</span><br></pre></td></tr></table></figure>
 
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>借助Shiro提供的加密类即可。</p>
@@ -581,7 +582,7 @@
 <p>密码以密文的形式存储，用户登录时，将邮箱和密码输入，然后网站大门的系统会根据邮箱查询数据库，将用户提交的密码进行加密运算，将运算后得到值去盐与数据库中的密文进行比对，以确认用户是否合法。</p>
 </blockquote>
 <p>这样看起来似乎没什么问题，设想一下，如果有一名黑客，在用户发起登录的Post请求时窃听用户邮箱和密码，这该怎么办呢？应该使用https。对于https，我觉得，需要先从非对称加密说起。</p>
-<h4 id="关于非对称加密"><a href="#关于非对称加密" class="headerlink" title="关于非对称加密"></a>关于非对称加密</h4><p>最有名的非对称加密算法是<strong>RSA</strong>，非对称加密会生成一个密钥对，包含公钥和私钥。分为两种情况，私钥加密，使用公钥解密；公钥加密，使用私钥解密。</p>
+<h3 id="关于非对称加密"><a href="#关于非对称加密" class="headerlink" title="关于非对称加密"></a>关于非对称加密</h3><p>最有名的非对称加密算法是<strong>RSA</strong>，非对称加密会生成一个密钥对，包含公钥和私钥。分为两种情况，私钥加密，使用公钥解密；公钥加密，使用私钥解密。</p>
 <p>这样看，应该不是很清楚，我会举几个例子说明这两种情形：</p>
 <div class="note info">
             <p><strong>情景一</strong></p><ul><li><p>A要发送Message给B</p></li><li><p>A需要先询问B的公钥，B将自己的公钥告诉对方</p></li><li><p>A使用B的公钥加密Message，然后把得到的密文发给B</p></li><li><p>B使用自己的私钥解密Message，获得明文</p></li></ul><p>这样，第三者即使看完了整个通信过程，也无法知道Message的内容。但是，第三者知晓了B的公钥，他也可以使用B的公钥加密消息，向B发送消息，此时B是无法知道写信人是谁的。所以，公钥加密，使用私钥解密，这种情形无法防止伪造的问题。</p>
@@ -592,13 +593,13 @@
           </div>
 
 <p>所以我们发现，只使用非对称加密算法，无法满足我们的需要，所以需要引入对称加密算法。</p>
-<h4 id="关于对称加密"><a href="#关于对称加密" class="headerlink" title="关于对称加密"></a>关于对称加密</h4><p>对称加密有一个共享密钥PSK<code>Pre Shared Key</code>，原数据使用PSK加密后得到密文，密文使用PSK解密后，便会回到明文。使用对称加密，需要事先发信双方都知道PSK的值。推荐使用<strong>AES对称加密算法</strong>，DES算法已经被攻破。</p>
+<h3 id="关于对称加密"><a href="#关于对称加密" class="headerlink" title="关于对称加密"></a>关于对称加密</h3><p>对称加密有一个共享密钥PSK<code>Pre Shared Key</code>，原数据使用PSK加密后得到密文，密文使用PSK解密后，便会回到明文。使用对称加密，需要事先发信双方都知道PSK的值。推荐使用<strong>AES对称加密算法</strong>，DES算法已经被攻破。</p>
 <div class="note info">
             <p><strong>情景三</strong></p><ul><li>依然是A要发送Message给B</li><li>A需要先询问B的公钥，B将自己的公钥告诉对方</li><li>A把对称加密的密钥PSK放入Message，使用B的公钥加密后，发送给B</li><li>B使用自己的私钥解密Message，得到PSK</li><li>然后，双方便可以使用对称加密算法的PSK进行通信</li></ul><p>这样就可以防止Message内容的泄漏、修改、伪造了，看上去似乎是个很好的解决方式。</p>
           </div>
 
 <p>其实，这三种情形，都有一个更大的问题，A并不清楚对方是不是真正的B，B也同样如此。如何理解呢，这里是有个前提，通信是在网络上进行的，而网络上的身份和现实是不绑定的，就像百度搜索xx官网一样，没有一个充分的理由便不能确认它的真实性。此时需要一个中间的机构，比如百度认证的xx官网，我信任百度，便会相信这个xx官网是真正的。那这个组成信任链的中间机构是谁呢？</p>
-<h4 id="CA机构"><a href="#CA机构" class="headerlink" title="CA机构"></a>CA机构</h4><p>比如<code>Let&#39;s Encrypt</code>、<code>DigiCert</code>、<code>赛门铁克</code>等CA机构，就是中间人。CA机构会颁发数字证书给信任的网站，数字证书是公钥和私钥的密钥对，证书由CA机构的私钥签发。浏览器信任CA机构，便会信任CA机构信任的网站，然后当用户访问受信任的网站时，浏览器便会提醒该站是安全可信的。</p>
+<h3 id="CA机构"><a href="#CA机构" class="headerlink" title="CA机构"></a>CA机构</h3><p>比如<code>Let&#39;s Encrypt</code>、<code>DigiCert</code>、<code>赛门铁克</code>等CA机构，就是中间人。CA机构会颁发数字证书给信任的网站，数字证书是公钥和私钥的密钥对，证书由CA机构的私钥签发。浏览器信任CA机构，便会信任CA机构信任的网站，然后当用户访问受信任的网站时，浏览器便会提醒该站是安全可信的。</p>
 <p>于是，便产生了情景四：</p>
 <div class="note info">
             <p><strong>情景四</strong></p><ul><li>依然是A要发送Message给B</li><li>A需要先询问B的CA签名公钥，B将CA签名过的公钥告诉对方</li><li>A进行比对，确认是CA签发的，A信任CA，也就信任了B</li><li>A把对称加密的密钥PSK放入Message，使用B的公钥加密后，发送给B</li><li>B使用自己的私钥解密Message，得到PSK</li><li>然后，双方便可以使用对称加密算法的PSK进行通信</li></ul><p>这就是Https核心的加密解密，<strong>RSA非对称加密结合数字签名算法以及CA体系</strong>，所以，Https不会被窃听、伪造、修改，能够确保用户所连接的服务器是受信的。</p>
@@ -617,7 +618,7 @@
 </ul>
 <p>使用令牌，无需查询用户信息，只需要能确认Token的合法性。但还有个问题，Token存哪呢？小门怎么知道Token是合法的呢？</p>
 <p>先不谈把Token存在数据库或Redis里合不合适，先看这个，<strong>能把Token存Session里吗？</strong></p>
-<h4 id="为什么Session不安全"><a href="#为什么Session不安全" class="headerlink" title="为什么Session不安全"></a>为什么Session不安全</h4><p>对于每个用户，服务器都有一块独立内存，怎么标识这些内存所属用户的呢？Http请求之间并没有关联，服务器如果想要标识某个用户，就只能去依赖Cookie，给每个新用户发一个cookie，里面存放一个sessionId，每次用户请求时，就会携带这个cookie，服务器便会根据对应id访问对应内存。</p>
+<h3 id="为什么Session不安全"><a href="#为什么Session不安全" class="headerlink" title="为什么Session不安全"></a>为什么Session不安全</h3><p>对于每个用户，服务器都有一块独立内存，怎么标识这些内存所属用户的呢？Http请求之间并没有关联，服务器如果想要标识某个用户，就只能去依赖Cookie，给每个新用户发一个cookie，里面存放一个sessionId，每次用户请求时，就会携带这个cookie，服务器便会根据对应id访问对应内存。</p>
 <ul>
 <li><p>所以说Session依赖于Cookie，而Cookie会被修改和伪造。完全可以把Cookie中的sessionId修改为另外一个用户的id，便可以伪造成别人，进而获得不该有的权限。</p>
 </li>
@@ -626,7 +627,7 @@
 <li><p>最后一个问题，session是有状态的，由于在内存存储了数据，关机重启或宕机，数据便无法找回，新服务器无法承接旧服务器的工作。</p>
 </li>
 </ul>
-<h4 id="为什么不把Token存在数据库或Redis"><a href="#为什么不把Token存在数据库或Redis" class="headerlink" title="为什么不把Token存在数据库或Redis"></a>为什么不把Token存在数据库或Redis</h4><p>我们再回头来看Token存储在数据库或Redis中会怎样：</p>
+<h3 id="为什么不把Token存在数据库或Redis"><a href="#为什么不把Token存在数据库或Redis" class="headerlink" title="为什么不把Token存在数据库或Redis"></a>为什么不把Token存在数据库或Redis</h3><p>我们再回头来看Token存储在数据库或Redis中会怎样：</p>
 <ul>
 <li>负担加重</li>
 </ul>
@@ -1113,7 +1114,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#【长篇】登录认证、权限控制思路整理"><span class="nav-text">【长篇】登录认证、权限控制思路整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-需求"><span class="nav-text">0. 需求</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖"><span class="nav-text">依赖</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-密码加密存储"><span class="nav-text">1. 密码加密存储</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于hash加密"><span class="nav-text">关于hash加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于浏览器缓存"><span class="nav-text">关于浏览器缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-text">实现</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Https"><span class="nav-text">2. Https</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于非对称加密"><span class="nav-text">关于非对称加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于对称加密"><span class="nav-text">关于对称加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CA机构"><span class="nav-text">CA机构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA非对称加密实现"><span class="nav-text">RSA非对称加密实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Token"><span class="nav-text">3. Token</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Token（令牌）"><span class="nav-text">使用Token（令牌）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么Session不安全"><span class="nav-text">为什么Session不安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么不把Token存在数据库或Redis"><span class="nav-text">为什么不把Token存在数据库或Redis</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字签名"><span class="nav-text">数字签名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-JWT"><span class="nav-text">4. JWT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT实现"><span class="nav-text">JWT实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Shiro与JWT的整合"><span class="nav-text">5. Shiro与JWT的整合</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#【长篇】登录认证、权限控制思路整理"><span class="nav-text">【长篇】登录认证、权限控制思路整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-需求"><span class="nav-text">0. 需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-密码加密存储"><span class="nav-text">1. 密码加密存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于hash加密"><span class="nav-text">关于hash加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于浏览器缓存"><span class="nav-text">关于浏览器缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Https"><span class="nav-text">2. Https</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于非对称加密"><span class="nav-text">关于非对称加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于对称加密"><span class="nav-text">关于对称加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CA机构"><span class="nav-text">CA机构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA非对称加密实现"><span class="nav-text">RSA非对称加密实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Token"><span class="nav-text">3. Token</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Token（令牌）"><span class="nav-text">使用Token（令牌）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么Session不安全"><span class="nav-text">为什么Session不安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么不把Token存在数据库或Redis"><span class="nav-text">为什么不把Token存在数据库或Redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字签名"><span class="nav-text">数字签名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-JWT"><span class="nav-text">4. JWT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT实现"><span class="nav-text">JWT实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Shiro与JWT的整合"><span class="nav-text">5. Shiro与JWT的整合</span></a></li></ol></li></ol></div>
             
 
           </div>
