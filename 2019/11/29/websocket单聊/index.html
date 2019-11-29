@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="社区用户之间的私信功能网上找了很多关于webSocket单聊的博客，大部分说的都很简单。这几天磕磕绊绊的总算完成了用户私信的功能，我在这份md中记录了社区对私信功能的实现,，使用WebSocket与Jwt认证，将包括前端部分Vue、后端springBoot的代码。">
+<meta name="keywords" content="java,webSocket,springBoot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webSocket单聊+JWt">
+<meta property="og:url" content="http://Shirtiny.cn/2019/11/29/websocket单聊/index.html">
+<meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
+<meta property="og:description" content="社区用户之间的私信功能网上找了很多关于webSocket单聊的博客，大部分说的都很简单。这几天磕磕绊绊的总算完成了用户私信的功能，我在这份md中记录了社区对私信功能的实现,，使用WebSocket与Jwt认证，将包括前端部分Vue、后端springBoot的代码。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://file.moetu.org/images/2019/11/29/2198910852790663e665302e5044d55d38be7738444216e6.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/11/29/7b4eff897383ac91ff52b93aee9961b9c62f72d428ecdf6a.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/11/29/93c1d2ef78f83af432fed01e1fe7dc88da4a0334efd6a20c.png">
+<meta property="og:updated_time" content="2019-11-29T08:59:29.285Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webSocket单聊+JWt">
+<meta name="twitter:description" content="社区用户之间的私信功能网上找了很多关于webSocket单聊的博客，大部分说的都很简单。这几天磕磕绊绊的总算完成了用户私信的功能，我在这份md中记录了社区对私信功能的实现,，使用WebSocket与Jwt认证，将包括前端部分Vue、后端springBoot的代码。">
+<meta name="twitter:image" content="https://file.moetu.org/images/2019/11/29/2198910852790663e665302e5044d55d38be7738444216e6.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://Shirtiny.cn/2019/11/29/websocket单聊/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>webSocket单聊+JWt | ☘(๑•̀ㅂ•́)و✧</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+ 
+ 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+  <a href="https://github.com/Shirtiny" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+  <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+  <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+  </svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+  </style>
+
+
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">☘(๑•̀ㅂ•́)و✧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>link</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-放映厅">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/video/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>放映厅</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/11/29/websocket单聊/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shirtiny">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/shirtiny.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">webSocket单聊+JWt
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-29 10:45:04 / 修改时间：16:59:29" itemprop="dateCreated datePublished" datetime="2019-11-29T10:45:04+08:00">2019-11-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/记录/" itemprop="url" rel="index"><span itemprop="name">记录</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="社区用户之间的私信功能"><a href="#社区用户之间的私信功能" class="headerlink" title="社区用户之间的私信功能"></a>社区用户之间的私信功能</h1><p>网上找了很多关于webSocket单聊的博客，大部分说的都很简单。这几天磕磕绊绊的总算完成了用户私信的功能，我在这份md中记录了社区对私信功能的实现,，使用WebSocket与Jwt认证，将包括前端部分<code>Vue</code>、后端<code>springBoot</code>的代码。</p>
+<p><img src="https://file.moetu.org/images/2019/11/29/2198910852790663e665302e5044d55d38be7738444216e6.png" alt></p>
+<a id="more"></a>
+
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><h3 id="后端webSocket配置类"><a href="#后端webSocket配置类" class="headerlink" title="后端webSocket配置类"></a>后端webSocket配置类</h3><ul>
+<li>首先设置消息代理</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureMessageBroker</span><span class="params">(MessageBrokerRegistry registry)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//允许客户端订阅主题/room</span></span><br><span class="line">        registry.enableSimpleBroker(<span class="string">"/room"</span>,<span class="string">"/user"</span>,<span class="string">"/uid"</span>);</span><br><span class="line">        <span class="comment">//注册 app的前缀/app</span></span><br><span class="line">        registry.setApplicationDestinationPrefixes(<span class="string">"/app"</span>);</span><br><span class="line">        <span class="comment">//推送用户前缀 不过默认就是/user</span></span><br><span class="line">        registry.setUserDestinationPrefix(<span class="string">"/user"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重写<code>webSocket</code>握手拦截器，主要功能是解析<code>cookie</code>中的<code>jwt</code>，然后将用户信息存入<code>webSocketSession</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**<span class="doctag">@Bean</span></span></span><br><span class="line"><span class="comment">     * WebSocket 握手拦截器 从cookie中解析jwt</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> HandshakeInterceptor <span class="title">myHandshakeInterceptor</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> HandshakeInterceptor() &#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">beforeHandshake</span><span class="params">(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map&lt;String, Object&gt; map)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">               ServletServerHttpRequest servletServerHttpRequest = (ServletServerHttpRequest) serverHttpRequest;</span><br><span class="line">                Cookie[] cookies = servletServerHttpRequest.getServletRequest().getCookies();</span><br><span class="line">                <span class="keyword">if</span>(cookies==<span class="keyword">null</span> || cookies.length==<span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                UserDTO userDTO=<span class="keyword">null</span>;</span><br><span class="line">                <span class="comment">//从cookie中解析jwt</span></span><br><span class="line">                <span class="keyword">for</span> (Cookie cookie : cookies)&#123;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="string">"shJwt"</span>.equals(cookie.getName()))&#123;</span><br><span class="line">                        userDTO = jwtService.parseJwtToUser(cookie.getValue());</span><br><span class="line">                        <span class="keyword">if</span> (userDTO!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                            <span class="comment">//这里的map里的值会交给websocketSession Message对象里header里会有session的值</span></span><br><span class="line">                            map.put(<span class="string">"user"</span>,userDTO);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"><span class="comment">//                return userDTO!=null;</span></span><br><span class="line">                <span class="comment">//不管怎么样都握手完成 交给handler处理无效用户</span></span><br><span class="line">               <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterHandshake</span><span class="params">(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Exception e)</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"握手成功"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置服务端连接点，添加握手拦截器</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注册STOMP协议节点并映射url</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerStompEndpoints</span><span class="params">(StompEndpointRegistry registry)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//添加服务端接口 终端点 js连接: let socket=new SockJS('/websocket');</span></span><br><span class="line">        registry.addEndpoint(<span class="string">"/websocket"</span>)</span><br><span class="line">                .setAllowedOrigins(<span class="string">"*"</span>)</span><br><span class="line">                <span class="comment">//握手拦截器</span></span><br><span class="line">                .addInterceptors(myHandshakeInterceptor())</span><br><span class="line">                .withSockJS();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置WebSocket传输器，主要目的是注册<code>DecoratorFactory</code>装饰工厂，重写处理器<code>WebSocketHandler</code>中的方法。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureWebSocketTransport</span><span class="params">(WebSocketTransportRegistration registry)</span> </span>&#123;</span><br><span class="line">        registry.addDecoratorFactory(webSocketHandler -&gt; <span class="keyword">new</span> WebSocketHandlerDecorator(webSocketHandler)&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterConnectionEstablished</span><span class="params">(WebSocketSession session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.afterConnectionEstablished(session);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(WebSocketSession session, WebSocketMessage&lt;?&gt; message)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                Object user = session.getAttributes().get(<span class="string">"user"</span>);</span><br><span class="line">                System.out.println(user+<span class="string">"\n正在发送一条消息："</span>+message.getPayload());</span><br><span class="line">                <span class="comment">/*用户离线问题</span></span><br><span class="line"><span class="comment">                可以把经过的带有system标记信息存入数据库或缓存</span></span><br><span class="line"><span class="comment">                handler检查客户端传来的ack，根据ack来删除数据库或缓存中的消息</span></span><br><span class="line"><span class="comment">                当用户上线时，把对应的消息发给用户，同样携带系统标记，传来ack则删除对应信息</span></span><br><span class="line"><span class="comment">                */</span></span><br><span class="line">                <span class="keyword">if</span> (user==<span class="keyword">null</span>)&#123;</span><br><span class="line">                    <span class="comment">//不是有效的用户登录，就关闭session</span></span><br><span class="line">                    System.out.println(<span class="string">"用户无效 ，关闭session"</span>);</span><br><span class="line">                    session.close();</span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;</span><br><span class="line"><span class="comment">//                    session.sendMessage(new TextMessage("用户有效"));</span></span><br><span class="line">                    <span class="keyword">super</span>.handleMessage(session, message);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleTransportError</span><span class="params">(WebSocketSession session, Throwable exception)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                session.sendMessage(<span class="keyword">new</span>  TextMessage(<span class="string">"出错了"</span>));</span><br><span class="line">                session.sendMessage(<span class="keyword">new</span>  TextMessage(exception.getMessage()));</span><br><span class="line">                <span class="keyword">super</span>.handleTransportError(session,exception);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterConnectionClosed</span><span class="params">(WebSocketSession session, CloseStatus closeStatus)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.afterConnectionClosed(session,closeStatus);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置类总体概况</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ....</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebSocketMessageBroker</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSocketConfig</span> <span class="keyword">implements</span> <span class="title">WebSocketMessageBrokerConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IjwtService jwtService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerStompEndpoints</span><span class="params">(StompEndpointRegistry registry)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureMessageBroker</span><span class="params">(MessageBrokerRegistry registry)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureWebSocketTransport</span><span class="params">(WebSocketTransportRegistration registry)</span></span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> HandshakeInterceptor <span class="title">myHandshakeInterceptor</span><span class="params">()</span></span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据库表模型"><a href="#数据库表模型" class="headerlink" title="数据库表模型"></a>数据库表模型</h3><p><code>消息历史记录</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.annotation.*;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">//聊天记录、频道</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@TableName</span>(<span class="string">"chat_history"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChatHistory</span> </span>&#123;</span><br><span class="line">    <span class="comment">//主键</span></span><br><span class="line">    <span class="meta">@TableId</span>(value = <span class="string">"chat_history_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> String chatHistoryId;</span><br><span class="line">    <span class="comment">//聊天记录的名称，唯一</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"chat_history_name"</span>,insertStrategy = FieldStrategy.NOT_EMPTY)</span><br><span class="line">    <span class="keyword">private</span> String chatHistoryName;</span><br><span class="line">    <span class="comment">//聊天创建时间</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"gmt_created"</span>,insertStrategy = FieldStrategy.NOT_NULL)</span><br><span class="line">    <span class="keyword">private</span> Long gmtCreated;</span><br><span class="line">    <span class="comment">//更新时间</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"gmt_modified"</span>,insertStrategy = FieldStrategy.NOT_NULL)</span><br><span class="line">    <span class="keyword">private</span> Long gmtModified;</span><br><span class="line">    <span class="comment">//消息条数</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"message_num"</span>,insertStrategy = FieldStrategy.DEFAULT)</span><br><span class="line">    <span class="keyword">private</span> Long messageNum;</span><br><span class="line">    <span class="comment">//发送者id</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"sender_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Long senderId;</span><br><span class="line">    <span class="comment">//接收者id</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"recipient_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Long recipientId;</span><br><span class="line">    <span class="comment">//频道</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"channel"</span>)</span><br><span class="line">    <span class="keyword">private</span> String channel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>单个消息</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.Model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.shirtiny.community.SHcommunity.DTO.UserDTO;</span><br><span class="line"><span class="keyword">import</span> com.baomidou.mybatisplus.annotation.*;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.annotation.JsonSerialize;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.ser.std.ToStringSerializer;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">//聊天消息</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@TableName</span>(<span class="string">"chat_message"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChatMessage</span> </span>&#123;</span><br><span class="line">    <span class="comment">//主键</span></span><br><span class="line">    <span class="meta">@TableId</span>(value = <span class="string">"chat_message_id"</span>,type = IdType.AUTO)</span><br><span class="line">    <span class="meta">@JsonSerialize</span>(using = ToStringSerializer.class)</span><br><span class="line">    <span class="keyword">private</span> Long chatMessageId;</span><br><span class="line">    <span class="comment">//记录此消息的 聊天记录的id</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"chat_history_id"</span>,insertStrategy = FieldStrategy.NOT_NULL)</span><br><span class="line">    <span class="keyword">private</span> String chatHistoryId;</span><br><span class="line">    <span class="comment">//消息内容</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"chat_message_content"</span>,insertStrategy = FieldStrategy.NOT_EMPTY)</span><br><span class="line">    <span class="keyword">private</span> String chatMessageContent;</span><br><span class="line">    <span class="comment">//创建时间</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"gmt_created"</span>,insertStrategy = FieldStrategy.NOT_NULL)</span><br><span class="line">    <span class="keyword">private</span> Long gmtCreated;</span><br><span class="line">    <span class="comment">//发送者id，可以为空</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"sender_id"</span>)</span><br><span class="line">    <span class="meta">@JsonSerialize</span>(using = ToStringSerializer.class)</span><br><span class="line">    <span class="keyword">private</span> Long senderId;</span><br><span class="line">    <span class="comment">//接收者id，可以为空</span></span><br><span class="line">    <span class="meta">@TableField</span>(value = <span class="string">"recipient_id"</span>)</span><br><span class="line">    <span class="meta">@JsonSerialize</span>(using = ToStringSerializer.class)</span><br><span class="line">    <span class="keyword">private</span> Long recipientId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//发送者</span></span><br><span class="line">    <span class="meta">@TableField</span>(exist = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> UserDTO sender;</span><br><span class="line">    <span class="comment">//接收者</span></span><br><span class="line">    <span class="meta">@TableField</span>(exist = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> UserDTO recipient;</span><br><span class="line">    <span class="comment">//标识为系统通知</span></span><br><span class="line">    <span class="meta">@TableField</span>(exist = <span class="keyword">false</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> system;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="后端控制器和服务层"><a href="#后端控制器和服务层" class="headerlink" title="后端控制器和服务层"></a>后端控制器和服务层</h3><ul>
+<li><code>/sendToUser</code>处理用户之间的消息传输，并记录和存储</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一对一聊天 message需要携带消息内容、接收者的id</span></span><br><span class="line">    <span class="meta">@MessageMapping</span>(<span class="string">"/sendToUser"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendToUser</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//接收发送来的消息 然后转为消息对象</span></span><br><span class="line">        ChatMessage chatMessage = chatMessageService.parseMessageToChatMessage(message);</span><br><span class="line">        <span class="comment">//将消息存入数据库</span></span><br><span class="line">        <span class="keyword">boolean</span> isMessageAdded = chatMessageService.addChatMessage(chatMessage);</span><br><span class="line">        <span class="comment">//创建历史记录 已存在则不会创建</span></span><br><span class="line">        chatHistoryService.addOneChatHistoryBy2Id(chatMessage.getSender().getUserId(), chatMessage.getRecipientId());</span><br><span class="line">        <span class="comment">//消息数自增 发送消息 只有消息入库成功才会发送</span></span><br><span class="line">        <span class="keyword">if</span> (isMessageAdded)&#123;</span><br><span class="line">            chatHistoryService.incrMessageNum(chatMessage.getChatHistoryId());</span><br><span class="line">            <span class="comment">//发送消息 会在频道路径前加上/user/'historyId' 比如此频道会被拼接为/user/historyId/121chat</span></span><br><span class="line">            messagingTemplate.convertAndSendToUser(chatMessage.getChatHistoryId(), <span class="string">"/121chat"</span>, chatMessage);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>chatMessageService</code>的<code>parseMessageToChatMessage()</code>内容为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ChatMessage <span class="title">parseMessageToChatMessage</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line">        String payload = <span class="keyword">new</span> String((<span class="keyword">byte</span>[]) message.getPayload());</span><br><span class="line">        ChatMessage chatMessage = JSONObject.parseObject(payload, ChatMessage.class);</span><br><span class="line">        <span class="comment">//取出消息头中session里的当前用户</span></span><br><span class="line">        MessageHeaders headers = message.getHeaders();</span><br><span class="line">        Map sessionAttributes = (Map) headers.get(<span class="string">"simpSessionAttributes"</span>);</span><br><span class="line">        <span class="comment">//断言</span></span><br><span class="line">        <span class="keyword">assert</span> sessionAttributes != <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">//从websocketSession取出发送者</span></span><br><span class="line">        UserDTO sender = (UserDTO)sessionAttributes.get(<span class="string">"user"</span>);</span><br><span class="line">        chatMessage.setSender(sender);</span><br><span class="line">        chatMessage.setSenderId(sender.getUserId());</span><br><span class="line">        <span class="comment">//根据双方id得出历史记录id</span></span><br><span class="line">        String historyId = chatHistoryService.createHistoryId(sender.getUserId(), chatMessage.getRecipientId());</span><br><span class="line">        chatMessage.setChatHistoryId(historyId);</span><br><span class="line">        <span class="keyword">return</span> chatMessage;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>createHistoryId()</code>方法，生成该消息的消息记录Id，内容为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">createHistoryId</span><span class="params">(Long senderId, Long recipientId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (senderId == <span class="keyword">null</span> || recipientId == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> min = Math.min(senderId, recipientId);</span><br><span class="line">        <span class="keyword">long</span> max = Math.max(senderId, recipientId);</span><br><span class="line">        <span class="keyword">return</span> min + <span class="string">"_"</span> + max;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 这样由两个用户的id，可以唯一确定一条消息记录。</p>
+</blockquote>
+<ul>
+<li><code>/allHistoryMessage</code>查询某个用户的所有消息记录</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询某个用户的全部消息记录及其内容</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/shApi/allHistoryMessage"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShResultDTO&lt;String, Object&gt; <span class="title">retAllHistoryMessage</span><span class="params">(Long userId)</span></span>&#123;</span><br><span class="line">        List&lt;ChatHistoryDTO&gt; chatHistoryDTOS = chatHistoryService.selectAllHistoryMessageByUid(userId);</span><br><span class="line">        <span class="keyword">if</span> (userId==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ShResultDTO&lt;&gt;(<span class="number">400</span>,<span class="string">"参数不合法"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Map&lt;String,Object&gt; data =<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        data.put(<span class="string">"chatHistories"</span>,chatHistoryDTOS);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ShResultDTO&lt;&gt;(<span class="number">200</span>,<span class="string">"已返回该用户所有的历史记录及其内容"</span>,data,<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>返回结果如：</p>
+<p><img src="https://file.moetu.org/images/2019/11/29/7b4eff897383ac91ff52b93aee9961b9c62f72d428ecdf6a.png" alt></p>
+<p>其中<code>selectAllHistoryMessageByUid()</code>方法处理两个用户之前的相对关系：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询某个用户的全部消息记录及其内容 并设置targetUser的值</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;ChatHistoryDTO&gt; <span class="title">selectAllHistoryMessageByUid</span><span class="params">(Long userId)</span> </span>&#123;</span><br><span class="line">        List&lt;ChatHistoryDTO&gt; chatHistories = chatHistoryMapper.selectAllChatHistoryByUid(userId);</span><br><span class="line">        List&lt;ChatHistoryDTO&gt; tempList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (ChatHistoryDTO chatHistory : chatHistories)&#123;</span><br><span class="line">            <span class="keyword">long</span> senderId = chatHistory.getSenderId();</span><br><span class="line">            <span class="keyword">long</span> recipientId = chatHistory.getRecipientId();</span><br><span class="line">            UserDTO targetUser=<span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">if</span> (userId == senderId)&#123;</span><br><span class="line">                targetUser = userMapper.selectUserDtoByid(recipientId);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                targetUser = userMapper.selectUserDtoByid(senderId);</span><br><span class="line">            &#125;</span><br><span class="line">            chatHistory.setTargetUser(targetUser);</span><br><span class="line">            tempList.add(chatHistory);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> tempList;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>涉及到的<code>mapper</code>的<code>selectAllChatHistoryByUid()</code>方法为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询出单个用户的所有聊天记录 及其全部消息</span></span><br><span class="line"><span class="meta">@Select</span>(<span class="string">"select * from chat_history where sender_id = #&#123;userId&#125; or recipient_id = #&#123;userId&#125;"</span>)</span><br><span class="line"><span class="meta">@Results</span>(&#123;</span><br><span class="line">        <span class="meta">@Result</span>(column = <span class="string">"chat_history_id"</span>,property = <span class="string">"chatHistoryId"</span>,id = <span class="keyword">true</span>),</span><br><span class="line">        <span class="meta">@Result</span>(column = <span class="string">"chat_history_id"</span>, property = <span class="string">"chatMessages"</span>,javaType = List.class ,many = <span class="meta">@Many</span>(select = <span class="string">"cn.shirtiny.community.SHcommunity.Mapper.ChatMessageMapper.selectAllDTOByhistoryId"</span>))</span><br><span class="line">&#125;)</span><br><span class="line"><span class="function">List&lt;ChatHistoryDTO&gt; <span class="title">selectAllChatHistoryByUid</span><span class="params">(@Param(<span class="string">"userId"</span>)</span> Long userId)</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="前端Vue、Element"><a href="#前端Vue、Element" class="headerlink" title="前端Vue、Element"></a>前端Vue、Element</h3><ul>
+<li>数据对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">data: &#123;</span><br><span class="line">    		<span class="comment">//外层激活的tab的name</span></span><br><span class="line">            outTabsDefActive: <span class="string">'userMessage'</span>,</span><br><span class="line">            <span class="comment">//内层激活的tab的name</span></span><br><span class="line">            innerTabsDefActive: <span class="string">''</span>,</span><br><span class="line">            <span class="comment">//内层tabs 历史消息数组 每个tab的name是targetUser.userId</span></span><br><span class="line">            innerTabs: [],</span><br><span class="line">    		<span class="comment">//待发送的消息</span></span><br><span class="line">            unSendChatMessage: <span class="string">''</span>,</span><br><span class="line">    		<span class="comment">//本地简单用户 发送消息不依赖它</span></span><br><span class="line">    		user: &#123;&#125;,</span><br><span class="line">            <span class="comment">//客户端对象</span></span><br><span class="line">            subscribedObj: <span class="keyword">null</span>,</span><br><span class="line">            <span class="comment">//标识收到了新的消息</span></span><br><span class="line">            receiveNewMessage: <span class="number">0</span>,</span><br><span class="line">            <span class="comment">//标识已与服务器socket建立连接</span></span><br><span class="line">            isConnected: <span class="keyword">false</span></span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>两个计算属性</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">computed: &#123;</span><br><span class="line">            <span class="comment">//接收者Id 即为当前激活的tab的name</span></span><br><span class="line">            recipientId: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.innerTabsDefActive;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="comment">//当前客户端的id 需要指定，否则会新建客户端，重复订阅</span></span><br><span class="line">            subId: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span>  <span class="keyword">this</span>.user.userId;</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>主要方法</li>
+</ul>
+<p>从<code>url</code>中获取要建立通信的用户id：</p>
+<blockquote>
+<p>比如url : <a href="http://localhost:8881/messageCenter?uid=117603681930663529" target="_blank" rel="noopener">http://localhost:8881/messageCenter?uid=117603681930663529</a></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//从url获取用户id 然后返回url里的用户id</span></span><br><span class="line">            getUidFormUrl() &#123;</span><br><span class="line">                <span class="keyword">let</span> url = <span class="built_in">window</span>.location.href;</span><br><span class="line">                <span class="comment">//正则表达式匹配</span></span><br><span class="line">                <span class="keyword">let</span> array = url.match(<span class="string">`uid=([0-9]+)`</span>);</span><br><span class="line">                <span class="keyword">if</span> (array != <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="comment">//取得要查询的id</span></span><br><span class="line">                    <span class="keyword">return</span> array[<span class="number">1</span>];</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>连接socket</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//以jwt为认证标准,连接服务器</span></span><br><span class="line">            connectSocket() &#123;</span><br><span class="line">                <span class="keyword">let</span> socket = <span class="keyword">new</span> SockJS(<span class="string">'/websocket'</span>);</span><br><span class="line">                stompClient = Stomp.over(socket);</span><br><span class="line">                <span class="comment">//关闭控制台输出</span></span><br><span class="line">                <span class="comment">// stompClient.debug=null;</span></span><br><span class="line">                <span class="comment">//连接socket</span></span><br><span class="line">                stompClient.connect(&#123;<span class="string">'head'</span>: <span class="string">'这是head'</span>&#125;,</span><br><span class="line">                    (frame) =&gt; &#123;</span><br><span class="line">                        <span class="built_in">console</span>.log(<span class="string">"连接socket: /websocket"</span>);</span><br><span class="line">                        <span class="built_in">console</span>.log(frame);</span><br><span class="line">                        <span class="keyword">this</span>.isConnected = <span class="literal">true</span>;</span><br><span class="line">                        <span class="comment">//订阅新加入的频道</span></span><br><span class="line">                        <span class="keyword">this</span>.subscribe();</span><br><span class="line">                    &#125;, (err) =&gt; &#123;</span><br><span class="line">                        <span class="built_in">console</span>.log(<span class="string">"socket连接失败"</span>, err);</span><br><span class="line">                        <span class="built_in">console</span>.log(<span class="string">"可能是用户过期，请重新登录"</span>);</span><br><span class="line">                        <span class="keyword">this</span>.isConnected = <span class="literal">false</span>;</span><br><span class="line">                        <span class="keyword">this</span>.$message(<span class="string">'无效用户,请检查登录是否过期'</span>);</span><br><span class="line">                    &#125;);</span><br><span class="line">            &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>订阅频道</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//以当前js登录的用户，与当前激活的tabName为准，订阅频道</span></span><br><span class="line">            subscribe() &#123;</span><br><span class="line">                <span class="comment">//订阅单用户系统通知频道</span></span><br><span class="line">                <span class="keyword">let</span> subscribedObj = stompClient.subscribe(<span class="string">'/uid/'</span> + <span class="keyword">this</span>.user.userId, <span class="keyword">this</span>.onGetMessage, &#123;</span><br><span class="line">                    id: <span class="keyword">this</span>.subId,</span><br><span class="line">                    ack: <span class="keyword">this</span>.user.userId</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>订阅回调函数，处理message</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">/订阅消息的回调函数</span><br><span class="line">            onGetMessage(message) &#123;</span><br><span class="line">                <span class="keyword">let</span> chatMessage = <span class="built_in">JSON</span>.parse(message.body);</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">""</span>, chatMessage.system);</span><br><span class="line">                <span class="comment">//如果是系统通知</span></span><br><span class="line">                <span class="keyword">if</span> (chatMessage.system)&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"系统通知"</span>, chatMessage);</span><br><span class="line">                    <span class="comment">//存储订阅频道发过来的数据</span></span><br><span class="line">                    <span class="keyword">let</span> sender = chatMessage.sender;</span><br><span class="line">                    <span class="comment">//标识当前对象与历史是否有重复</span></span><br><span class="line">                    <span class="keyword">let</span> isExist = <span class="literal">false</span>;</span><br><span class="line">                    <span class="comment">//从已有的消息列表中寻找与当前uid重复的tab</span></span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.innerTabs.length; i++) &#123;</span><br><span class="line">                        <span class="comment">//如果在数组找到重复的id</span></span><br><span class="line">                        <span class="keyword">if</span> (<span class="keyword">this</span>.innerTabs[i].targetUser.userId === sender.userId) &#123;</span><br><span class="line">                            <span class="comment">//改变标识</span></span><br><span class="line">                            isExist = <span class="literal">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//如果不存在 并且发信人不是自己</span></span><br><span class="line">                    <span class="keyword">if</span> (!isExist &amp;&amp; sender.userId !== <span class="keyword">this</span>.user.userId) &#123;</span><br><span class="line">                        <span class="comment">//构建一个临时的消息历史记录 存放targetUser</span></span><br><span class="line">                        <span class="keyword">let</span> chatHistory = &#123;</span><br><span class="line">                            chatHistoryId: chatMessage.chatHistoryId,</span><br><span class="line">                            targetUser: sender,</span><br><span class="line">                            chatMessages: []</span><br><span class="line">                        &#125;;</span><br><span class="line">                        <span class="comment">//加入tab 不改变激活的tab</span></span><br><span class="line">                        <span class="keyword">this</span>.addTab(chatHistory,<span class="literal">false</span>);</span><br><span class="line">                        <span class="comment">//加入对应的消息列表</span></span><br><span class="line">                        <span class="keyword">this</span>.putNewMessage(chatMessage);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//最后通知服务器 我已经接收了消息</span></span><br><span class="line">                    message.ack();</span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">//直接加入对应的消息列表</span></span><br><span class="line">                   <span class="keyword">this</span>.putNewMessage(chatMessage);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>发送消息</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sendMessage: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">"发送消息："</span>);</span><br><span class="line">                stompClient.send(<span class="string">"/app/sendToUser"</span>, &#123;&#125;, <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">                        <span class="string">'chatMessageContent'</span>: <span class="keyword">this</span>.unSendChatMessage,</span><br><span class="line">                        <span class="string">'recipientId'</span>: <span class="keyword">this</span>.recipientId,</span><br><span class="line">                    &#125;)</span><br><span class="line">                );</span><br><span class="line">   				 <span class="comment">//清空输入框</span></span><br><span class="line">                <span class="keyword">this</span>.unsendChatMessage=<span class="string">''</span>;</span><br></pre></td></tr></table></figure>
+
+<p>从通信列表中移除用户</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//移除tab</span></span><br><span class="line">            removeTab(userId) &#123;</span><br><span class="line">                <span class="comment">//移除</span></span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">"移除"</span>, userId);</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.innerTabs.length; i++) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">this</span>.innerTabs[i].targetUser.userId === userId) &#123;</span><br><span class="line">                        <span class="comment">//删除</span></span><br><span class="line">                        <span class="keyword">this</span>.innerTabs.splice(i, <span class="number">1</span>);</span><br><span class="line">                        <span class="comment">//改变默认激活的tab</span></span><br><span class="line">                        <span class="keyword">if</span> (i + <span class="number">1</span> &lt; <span class="keyword">this</span>.innerTabs.length) &#123;</span><br><span class="line">                            setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                                <span class="keyword">this</span>.innerTabsDefActive = <span class="keyword">this</span>.innerTabs[i + <span class="number">1</span>].targetUser.userId;</span><br><span class="line">                            &#125;, <span class="number">20</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">if</span> (i - <span class="number">1</span> &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                            setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                                <span class="keyword">this</span>.innerTabsDefActive = <span class="keyword">this</span>.innerTabs[i - <span class="number">1</span>].targetUser.userId;</span><br><span class="line">                            &#125;, <span class="number">20</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="comment">//换背景图 依照数组的情况换背景 由watch来监控，这里不需要了</span></span><br><span class="line">                        <span class="comment">// this.changeBackImg();</span></span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>省略，Github上有源码…</p>
+<ul>
+<li>mounted()</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mounted() &#123;</span><br><span class="line">            <span class="comment">//绘制canvas</span></span><br><span class="line">            <span class="keyword">this</span>.canvasStart();</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>watch监控</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">watch: &#123;</span><br><span class="line">           receiveNewMessage: &#123;</span><br><span class="line">               handler(newName, oldName) &#123;</span><br><span class="line">                   <span class="comment">//dom更新之后执行</span></span><br><span class="line">                   <span class="keyword">this</span>.$nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                       <span class="built_in">console</span>.log(<span class="string">"dom更新了 , 移动滚条到底部"</span>);</span><br><span class="line">                       <span class="comment">//移动滚条到底部 把class为shMessageHistoryBox的dom节点都做一次滚动条移动 因为切换tab会切换dom节点</span></span><br><span class="line">                       <span class="keyword">let</span> historyBoxArray = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"shMessageHistoryBox"</span>);</span><br><span class="line">                       <span class="keyword">for</span> (<span class="keyword">let</span> historyBox <span class="keyword">of</span> historyBoxArray) &#123;</span><br><span class="line">                           <span class="keyword">let</span> scrollTop = historyBox.scrollTop;</span><br><span class="line">                           <span class="keyword">let</span> scrollHeight = historyBox.scrollHeight;</span><br><span class="line">                           <span class="keyword">let</span> clientHeight = historyBox.clientHeight;</span><br><span class="line">                           <span class="built_in">console</span>.log(<span class="string">"scrollHeight:"</span>, scrollHeight, <span class="string">";scrollTop:"</span>, scrollTop, <span class="string">";clientHeight:"</span>, clientHeight, <span class="string">";scrollHeight - scrollTop - clientHeight:"</span>, scrollHeight - scrollTop - clientHeight);</span><br><span class="line">                           <span class="comment">//开始移动</span></span><br><span class="line">                           historyBox.scrollTop = historyBox.scrollTop + (scrollHeight - scrollTop - clientHeight);</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;);</span><br><span class="line">                   <span class="built_in">console</span>.log(<span class="string">"receiveNewMessage改变了"</span>, oldName, newName);</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结构</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2019/11/29/93c1d2ef78f83af432fed01e1fe7dc88da4a0334efd6a20c.png" alt></p>
+<ul>
+<li>主要css</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">/*注意下面三个div的 overflow:hidden 的作用是清除浮动 让外层div自适应内层div高度*/</span><br><span class="line">    /*最小高度，=盒子里的内容高度+上下padding*/</span><br><span class="line">    .shMessageBox &#123;</span><br><span class="line">        min-height: 66px;</span><br><span class="line">        padding: 0 16px 16px;</span><br><span class="line">        margin: 0;</span><br><span class="line">        position: relative;</span><br><span class="line">        line-height: 12px;</span><br><span class="line">        font-size: 12px;</span><br><span class="line">        overflow: hidden</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .shMessage &#123;</span><br><span class="line">        margin: 0;</span><br><span class="line">        overflow: hidden;</span><br><span class="line">        padding: 0 10px;</span><br><span class="line">        max-width: 480px;</span><br><span class="line">        display: block;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .shMessageContent &#123;</span><br><span class="line">        margin: 0;</span><br><span class="line">        /*padding: 8px 16px 8px 20px;*/</span><br><span class="line">        line-height: 1.5;</span><br><span class="line">        font-size: 14px;</span><br><span class="line">        padding: 8px 16px;</span><br><span class="line">        word-wrap: break-word;</span><br><span class="line">        word-break: break-word;</span><br><span class="line">        box-sizing: border-box;</span><br><span class="line">        z-index: 1;</span><br><span class="line">        border-radius: 0 16px 16px 16px;</span><br><span class="line">        background: #fff;</span><br><span class="line">        overflow: hidden;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	/* 改变tab自定标签的高度 3个height要一致*/</span><br><span class="line">    .shELInnerTab .el-tabs__item &#123;</span><br><span class="line">        height: 60px !important;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .shELInnerTab .el-tabs__active-bar &#123;</span><br><span class="line">        height: 60px !important;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .shELInnerTab .shELInnerTabDiv &#123;</span><br><span class="line">        height: 60px !important;</span><br><span class="line">        width: 150px !important;</span><br><span class="line">        padding: 5px 5px 5px 5px;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	/* 消息记录的盒子 带有滚动条*/</span><br><span class="line">	.shMessageHistoryBox &#123;</span><br><span class="line">        overflow-x: hidden;</span><br><span class="line">        overflow-y: scroll;</span><br><span class="line">        height: 350px;</span><br><span class="line">        background-color: #f4f5f7;;</span><br><span class="line">        padding: 15px 10px;</span><br><span class="line">        margin: 5px 5px</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#^_^#java</a>
+          
+            <a href="/tags/webSocket/" rel="tag">#^_^#webSocket</a>
+          
+            <a href="/tags/springBoot/" rel="tag">#^_^#springBoot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/13/JWT/" rel="next" title="JWT+Shiro安全无状态服务">
+                <i class="fa fa-chevron-left"></i> JWT+Shiro安全无状态服务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/shirtiny.jpg" alt="Shirtiny">
+            
+              <p class="site-author-name" itemprop="name">Shirtiny</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">50</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">78</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://live.bilibili.com/875277" title="直播间 &rarr; http://live.bilibili.com/875277" rel="noopener" target="_blank"><i class="fa fa-fw fa-Bilibili"></i>直播间</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://Shirtiny.cn" title="☘Blog首页 &rarr; https://Shirtiny.cn"><i class="fa fa-fw fa-Shirtiny"></i>☘Blog首页</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#社区用户之间的私信功能"><span class="nav-text">社区用户之间的私信功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#具体实现"><span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后端webSocket配置类"><span class="nav-text">后端webSocket配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库表模型"><span class="nav-text">数据库表模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后端控制器和服务层"><span class="nav-text">后端控制器和服务层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前端Vue、Element"><span class="nav-text">前端Vue、Element</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer"> 
+    
+    
+    
+    
+    
+  <link rel="stylesheet" href="/live2d/css/live2d.css">
+  <div id="landlord">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+     
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var message_Path = '/live2d/'
+    var home_Path = 'https://shirtiny.cn/'
+</script>
+<script type="text/javascript" src="/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/live2d/js/message.js"></script>
+<script type="text/javascript">
+    loadlive2d("live2d", "/live2d/model/tia/model.json");
+</script>
+
+
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shirtiny</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">哔哩哔哩@<a href="https://space.bilibili.com/6376560" class="theme-link" rel="noopener" target="_blank">Shirtiny</a> Hexo v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">我的QQ – <a href="http://wpa.qq.com/msgrd?v=3&uin=1849468240&site=qq&menu=yes" class="theme-link" rel="noopener" target="_blank">点此发起聊天</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+  
+	
+
+
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+  
+	
+
+
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  
+  <!-- <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"> -->
+  <!-- <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script> -->
+
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">-->
+ <!--  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>-->
+
+  <link rel="stylesheet" href="https://shirtiny.cn/css/myGitment.css">
+   <script src="https://shirtiny.cn/js/myGitment.js"></script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitment({
+      id: '1574995504000',
+      owner: 'Shirtiny',
+      repo: 'Shirtiny.github.io',
+      
+      oauth: {
+      
+      
+        client_secret: '76c25434650c2b86dbe4ee767fe2c5caaf543053',
+      
+        client_id: '0c6e6fcafb8b0265a85a'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+
+<!--音乐播放器
+<link rel="stylesheet" href="/APlayer/APlayer.min.css">
+<div  id="aplayer"></div>
+<script type="text/javascript" src="/APlayer/APlayer.min.js"></script>
+<script type="text/javascript" src="/APlayer/music.js"></script>
+ -->
+ 
+</body>
+</html>

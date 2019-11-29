@@ -96,22 +96,22 @@
 
 
 
-  <meta name="description" content="Nginx：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？ 环境准备： 可用的服务器（CentOS 7系统）、Nginx、Nginx-Rtmp模块 、Ffmpeg、Jwplayer(可以从连接另存文件，不用登录) 工具：Xshell 6、Xftp 5">
+  <meta name="description" content="Nginx初窥：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？ 环境准备： 可用的服务器（CentOS 7系统）、Nginx、Nginx-Rtmp模块 、Ffmpeg、Jwplayer(可以从连接另存文件，不用登录) 工具：Xshell 6、Xftp 5">
 <meta name="keywords" content="视频播放,直播">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在线视频播放、直播">
 <meta property="og:url" content="http://Shirtiny.cn/2019/08/06/服务器视频播放、直播/index.html">
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
-<meta property="og:description" content="Nginx：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？ 环境准备： 可用的服务器（CentOS 7系统）、Nginx、Nginx-Rtmp模块 、Ffmpeg、Jwplayer(可以从连接另存文件，不用登录) 工具：Xshell 6、Xftp 5">
+<meta property="og:description" content="Nginx初窥：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？ 环境准备： 可用的服务器（CentOS 7系统）、Nginx、Nginx-Rtmp模块 、Ffmpeg、Jwplayer(可以从连接另存文件，不用登录) 工具：Xshell 6、Xftp 5">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/06/868a0e21139d2a46763092795d80f492418570ec72a99de2.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/06/0a87f7c15a2bace2078ca7aa438baa14b81f63881f6bcb2f.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/06/22bde64b43037c0e309e77b006668844ad9590eb4e8c5ae6.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/08/06/ac795843d7b785461228e5016d48be19fadac9450a258c71.png">
-<meta property="og:updated_time" content="2019-08-23T10:39:41.117Z">
+<meta property="og:updated_time" content="2019-11-22T04:05:23.729Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在线视频播放、直播">
-<meta name="twitter:description" content="Nginx：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？ 环境准备： 可用的服务器（CentOS 7系统）、Nginx、Nginx-Rtmp模块 、Ffmpeg、Jwplayer(可以从连接另存文件，不用登录) 工具：Xshell 6、Xftp 5">
+<meta name="twitter:description" content="Nginx初窥：视频、直播前篇文章说了Sftp下的文件上传，访问时比如图片、json文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？ 环境准备： 可用的服务器（CentOS 7系统）、Nginx、Nginx-Rtmp模块 、Ffmpeg、Jwplayer(可以从连接另存文件，不用登录) 工具：Xshell 6、Xftp 5">
 <meta name="twitter:image" content="https://file.moetu.org/images/2019/08/06/868a0e21139d2a46763092795d80f492418570ec72a99de2.png">
 
 
@@ -485,7 +485,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-23 18:39:41" itemprop="dateModified" datetime="2019-08-23T18:39:41+08:00">2019-08-23</time>
+                <time title="修改时间：2019-11-22 12:05:23" itemprop="dateModified" datetime="2019-11-22T12:05:23+08:00">2019-11-22</time>
               
             
           </span>
@@ -537,7 +537,7 @@
       
 
       
-        <h1 id="Nginx：视频、直播"><a href="#Nginx：视频、直播" class="headerlink" title="Nginx：视频、直播"></a>Nginx：视频、直播</h1><p>前篇文章说了Sftp下的文件上传，访问时比如<a href>图片</a>、<a href>json</a>文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？</p>
+        <h1 id="Nginx初窥：视频、直播"><a href="#Nginx初窥：视频、直播" class="headerlink" title="Nginx初窥：视频、直播"></a>Nginx初窥：视频、直播</h1><p>前篇文章说了Sftp下的文件上传，访问时比如<a href>图片</a>、<a href>json</a>文件等是可以直接显示的。可压缩包或视频文件等，访问时只能下载，如何让视频在线播放？</p>
 <p><strong>环境准备：</strong></p>
 <p>可用的服务器（CentOS 7系统）、<a href="https://shirtiny.cn/2019/08/03/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5Linux%E9%83%A8%E7%BD%B2%E9%A1%B9%E7%9B%AE/">Nginx</a>、<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="noopener">Nginx-Rtmp模块</a> 、<a href="https://ffmpeg.zeranoe.com/builds/" target="_blank" rel="noopener">Ffmpeg</a>、<a href="https://account.jwplayer.com/static/download/jwplayer-6.10.zip" target="_blank" rel="noopener">Jwplayer</a>(可以从连接另存文件，不用登录)</p>
 <p><strong>工具</strong>：Xshell 6、Xftp 5</p>
@@ -833,7 +833,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">54</span>
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -868,9 +868,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1043,13 +1041,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">81</span>
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1113,7 +1105,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx：视频、直播"><span class="nav-text">Nginx：视频、直播</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-在线视频播放"><span class="nav-text">1. 在线视频播放</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-安装Nginx"><span class="nav-text">1.1. 安装Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-安装Nginx-Rtmp模块"><span class="nav-text">1.2. 安装Nginx-Rtmp模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-视频播放配置"><span class="nav-text">1.3. 视频播放配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-测试视频播放"><span class="nav-text">1.4. 测试视频播放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-直播"><span class="nav-text">2. 直播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-服务器端配置"><span class="nav-text">2.1. 服务器端配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-推流端"><span class="nav-text">2.2. 推流端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-接收端（拉流端）"><span class="nav-text">2.3. 接收端（拉流端）</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx初窥：视频、直播"><span class="nav-text">Nginx初窥：视频、直播</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-在线视频播放"><span class="nav-text">1. 在线视频播放</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-安装Nginx"><span class="nav-text">1.1. 安装Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-安装Nginx-Rtmp模块"><span class="nav-text">1.2. 安装Nginx-Rtmp模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-视频播放配置"><span class="nav-text">1.3. 视频播放配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-测试视频播放"><span class="nav-text">1.4. 测试视频播放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-直播"><span class="nav-text">2. 直播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-服务器端配置"><span class="nav-text">2.1. 服务器端配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-推流端"><span class="nav-text">2.2. 推流端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-接收端（拉流端）"><span class="nav-text">2.3. 接收端（拉流端）</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

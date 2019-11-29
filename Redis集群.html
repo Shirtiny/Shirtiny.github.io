@@ -96,23 +96,24 @@
 
 
 
-  <meta name="description" content="ZooKeeper、Solr集群搭建系统环境： CentOS 7、JDK1.7、solr4、zookeeper3.4.6 zookeeper集群zookeeper半数投票，所以最少3个，与solr集群的关系如图：">
-<meta name="keywords" content="Solr">
-<meta property="og:type" content="article">
-<meta property="og:title" content="SolrCloud、ZooKeeper">
-<meta property="og:url" content="http://Shirtiny.cn/2019/09/05/SolrCloud/index.html">
+  <meta name="description" content="Redis集群搭建集群描述 Redis集群至少需要奇数个主节点，因为需要投票的方式来确认某一节点的运行状况。每个主节点需要有个备份节点，提高容错。所以，假设有3个主节点，1主2从，主只写数据，从只读数据，加上备份则需要6个节点来完成集群，所以集群最少为6个。">
+<meta name="keywords" content="Redis,Linux">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Redis集群">
+<meta property="og:url" content="http://Shirtiny.cn/Redis集群.html">
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
-<meta property="og:description" content="ZooKeeper、Solr集群搭建系统环境： CentOS 7、JDK1.7、solr4、zookeeper3.4.6 zookeeper集群zookeeper半数投票，所以最少3个，与solr集群的关系如图：">
+<meta property="og:description" content="Redis集群搭建集群描述 Redis集群至少需要奇数个主节点，因为需要投票的方式来确认某一节点的运行状况。每个主节点需要有个备份节点，提高容错。所以，假设有3个主节点，1主2从，主只写数据，从只读数据，加上备份则需要6个节点来完成集群，所以集群最少为6个。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://file.moetu.org/images/2019/09/05/02ERI9O013GIDRONH30fb7715adeaacaf.png">
-<meta property="og:image" content="https://file.moetu.org/images/2019/09/05/201909051445139b1e856649c44082.png">
-<meta property="og:image" content="https://file.moetu.org/images/2019/09/05/109JGGWKBH94DSYTVPDXe31ab555ba7c4b27.png">
-<meta property="og:image" content="https://file.moetu.org/images/2019/09/05/feee3bfdbc0f85d0d2f7e89294b53070c96f71787fc399e9.png">
-<meta property="og:updated_time" content="2019-09-05T12:33:20.249Z">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/18/6b8b53dbc9b2f4efad566fbbcb5cf37b39980dce21557c53.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/18/540b9ecf3d0eddff90c4d0e8d0b4572021e697456a6135e1.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/18/c27bd7a4a67a06b1b3d8b23360109629f3ca88d1787c602e.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/18/683bd26643f23fd77fe9ef0d985a635d26957e1d5a50787a.png">
+<meta property="og:image" content="https://file.moetu.org/images/2019/08/18/e1c3380e5314845905a89b66f4c7b1408e30b7f79d730218.png">
+<meta property="og:updated_time" content="2019-09-07T09:23:56.052Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SolrCloud、ZooKeeper">
-<meta name="twitter:description" content="ZooKeeper、Solr集群搭建系统环境： CentOS 7、JDK1.7、solr4、zookeeper3.4.6 zookeeper集群zookeeper半数投票，所以最少3个，与solr集群的关系如图：">
-<meta name="twitter:image" content="https://file.moetu.org/images/2019/09/05/02ERI9O013GIDRONH30fb7715adeaacaf.png">
+<meta name="twitter:title" content="Redis集群">
+<meta name="twitter:description" content="Redis集群搭建集群描述 Redis集群至少需要奇数个主节点，因为需要投票的方式来确认某一节点的运行状况。每个主节点需要有个备份节点，提高容错。所以，假设有3个主节点，1主2从，主只写数据，从只读数据，加上备份则需要6个节点来完成集群，所以集群最少为6个。">
+<meta name="twitter:image" content="https://file.moetu.org/images/2019/08/18/6b8b53dbc9b2f4efad566fbbcb5cf37b39980dce21557c53.png">
 
 
 
@@ -120,7 +121,7 @@
 
   
   
-  <link rel="canonical" href="http://Shirtiny.cn/2019/09/05/SolrCloud/">
+  <link rel="canonical" href="http://Shirtiny.cn/Redis集群">
 
 
 
@@ -130,7 +131,7 @@
   };
 </script>
 
-  <title>SolrCloud、ZooKeeper | ☘(๑•̀ㅂ•́)و✧</title>
+  <title>Redis集群 | ☘(๑•̀ㅂ•́)و✧</title>
   
 
 
@@ -405,294 +406,176 @@
           
             
 
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
           
           <div id="content" class="content">
             
 
   <div id="posts" class="posts-expand">
     
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://Shirtiny.cn/2019/09/05/SolrCloud/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shirtiny">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/shirtiny.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="☘(๑•̀ㅂ•́)و✧">
-    </span>
-
     
+    
+    <div class="post-block page">
       <header class="post-header">
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">SolrCloud、ZooKeeper
+<h1 class="post-title" itemprop="name headline">Redis集群
 
-              
-            
-          </h1>
-        
+</h1>
 
-        <div class="post-meta">
-          <span class="post-time">
+<div class="post-meta">
+  
+  
 
-            
-            
-            
 
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
 
-              
-                
-              
+</div>
 
-              <time title="创建时间：2019-09-05 14:31:42 / 修改时间：20:33:20" itemprop="dateCreated datePublished" datetime="2019-09-05T14:31:42+08:00">2019-09-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习经验/" itemprop="url" rel="index"><span itemprop="name">学习经验</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+</header>
 
       
       
-
       
-        <h1 id="ZooKeeper、Solr集群搭建"><a href="#ZooKeeper、Solr集群搭建" class="headerlink" title="ZooKeeper、Solr集群搭建"></a>ZooKeeper、Solr集群搭建</h1><p><strong>系统环境：</strong></p>
-<p>CentOS 7、JDK1.7、solr4、zookeeper3.4.6</p>
-<h2 id="zookeeper集群"><a href="#zookeeper集群" class="headerlink" title="zookeeper集群"></a>zookeeper集群</h2><p>zookeeper半数投票，所以最少3个，与solr集群的关系如图：</p>
+      <div class="post-body">
+        
+        
+          <h1 id="Redis集群搭建"><a href="#Redis集群搭建" class="headerlink" title="Redis集群搭建"></a>Redis集群搭建</h1><p><strong>集群描述</strong></p>
+<p>Redis集群至少需要奇数个主节点，因为需要投票的方式来确认某一节点的运行状况。每个主节点需要有个备份节点，提高容错。所以，假设有3个主节点，1主2从，主只写数据，从只读数据，加上备份则需要6个节点来完成集群，所以集群最少为6个。</p>
 <a id="more"></a>
 
-<p><img src="https://file.moetu.org/images/2019/09/05/02ERI9O013GIDRONH30fb7715adeaacaf.png" alt></p>
-<h3 id="集群搭建（伪）"><a href="#集群搭建（伪）" class="headerlink" title="集群搭建（伪）"></a>集群搭建（伪）</h3><p>在一台机器上模拟集群：</p>
+<p><strong>主从关系</strong></p>
+<p>一般1主2从，主服务器读写，从服务器只读，内部会进行数据同步。</p>
+<p>主机关机，从服务器依然是从，无法写数据。</p>
+<p>从服务器重启后，需要重新建立主从关系。</p>
+<p><strong>哨兵</strong></p>
+<p>准备多台哨兵，询问主从服务器是否宕机，持续问答，心跳检查。若大多数哨兵判定主服务器无响应，便在从服务器中选出一个做主服务器，投票决定结果，若主服务器再回来，会把它设为从服务器。从服务器宕机不做什么事，不过从服务器启动时，自动设置从服务器主从关系。</p>
+<p>主观下线：哨兵视角，看到目标服务器下线。</p>
+<p>客观下线：实际情况，由哨兵们投票确定。</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p><strong>ruby环境</strong></p>
+<p>redis集群管理工具redis-trib.rb依赖ruby环境，首先需要安装ruby环境。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">使用yum之前，记得更新一下yum</span></span><br><span class="line">yum -y update</span><br><span class="line"><span class="meta">#</span><span class="bash">安装ruby</span></span><br><span class="line">yum install ruby</span><br><span class="line">yum install rubygems</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装ruby和redis的接口程序</strong></p>
+<p>把<a href="http://server.shirtiny.cn/file/redis-3.0.0.gem" target="_blank" rel="noopener">redis-3.0.0.gem</a>传到服务器，然后拷贝redis-3.0.0.gem至/usr/local文件夹下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem install /usr/local/redis-3.0.0.gem</span><br></pre></td></tr></table></figure>
+
+<h2 id="集群创建"><a href="#集群创建" class="headerlink" title="集群创建"></a>集群创建</h2><p>因为本人没必要租6个服务器或创建6个虚拟机，这里使用6个Redis实例，同一台服务器用不同的端口表示不同的redis服务器来模拟集群。</p>
 <ul>
-<li><p>解压zookeeper，tar -zxvf zookeeper-3.4.6.tar.gz将zookeeper-3.4.6拷贝到/usr/local/solrcloud下，复制三份分别并将目录名改为zookeeper1、zookeeper2、zookeeper3</p>
-</li>
-<li><p>进入zookeeper1文件夹，创建data目录。并在data目录中创建一个myid文件内容为“1”（echo 1 &gt;&gt; data/myid）。</p>
-</li>
-<li><p>进入conf文件夹，把zoo_sample.cfg改名为zoo.cfg</p>
-</li>
-<li><p>修改zoo.cfg。</p>
-<ul>
-<li><p>修改：</p>
-<p>dataDir=/usr/local/solrcloud/zookeeper1/data</p>
-<p>clientPort=2181（zookeeper2中为2182、zookeeper3中为2183）</p>
-<p>添加：</p>
-<p>server.1=192.168.25.154:2881:3881</p>
-<p>server.2=192.168.25.154:2882:3882</p>
-<p>server.3=192.168.25.154:2883:3883</p>
+<li><p>模拟6个redis服务器，有6个redis服务器的话，只需在配置文件开启集群模式，然后运行脚本即可。</p>
+<p>将redis安装目录bin下的文件拷贝到每个700X目录内，同时将redis源码目录src下的<strong>redis-trib.rb</strong>拷贝到redis-cluster目录下。</p>
 </li>
 </ul>
-</li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">创建一个文件夹，用于存放6个redis实例</span></span><br><span class="line">mkdir /usr/local/redis-cluster</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#依次复制并创建6个文件夹，分别存放对应redis节点</span></span></span><br><span class="line">cp -r /usr/local/redis/bin /usr/local/redis-cluster/7001</span><br><span class="line">cp -r /usr/local/redis/bin /usr/local/redis-cluster/7002</span><br><span class="line">cp -r /usr/local/redis/bin /usr/local/redis-cluster/7003</span><br><span class="line">cp -r /usr/local/redis/bin /usr/local/redis-cluster/7004</span><br><span class="line">cp -r /usr/local/redis/bin /usr/local/redis-cluster/7005</span><br><span class="line">cp -r /usr/local/redis/bin /usr/local/redis-cluster/7006</span><br><span class="line"><span class="meta">#</span><span class="bash">同时将redis源码目录src下的redis-trib.rb拷贝到redis-cluster目录下。</span></span><br><span class="line">cp /usr/local/redis-5.0.5/src/redis-trib.rb /usr/local/redis-cluster</span><br></pre></td></tr></table></figure>
+
+<p>修改每个节点目录下的redis.conf配置文件</p>
+<p>把port 改为对应的端口号、bind 设为 0.0.0.0、cluster-enabled 设为yes（#去掉）。</p>
+<p>tips：<code>/</code>是搜索</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">修改每个节点目录下的redis.conf配置文件</span></span><br><span class="line">vi /usr/local/redis-cluster/7001/redis.conf</span><br><span class="line">vi /usr/local/redis-cluster/7002/redis.conf</span><br><span class="line">vi /usr/local/redis-cluster/7003/redis.conf</span><br><span class="line">vi /usr/local/redis-cluster/7004/redis.conf</span><br><span class="line">vi /usr/local/redis-cluster/7005/redis.conf</span><br><span class="line">vi /usr/local/redis-cluster/7006/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改完成后，依次开启每个节点，然后运行集群脚本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">依次开启每个节点</span></span><br><span class="line">/usr/local/redis-cluster/7001/src/redis-server /usr/local/redis-cluster/7001/redis.conf</span><br><span class="line"></span><br><span class="line">/usr/local/redis-cluster/7002/src/redis-server /usr/local/redis-cluster/7002/redis.conf</span><br><span class="line"></span><br><span class="line">/usr/local/redis-cluster/7003/src/redis-server /usr/local/redis-cluster/7003/redis.conf</span><br><span class="line"></span><br><span class="line">/usr/local/redis-cluster/7004/src/redis-server /usr/local/redis-cluster/7004/redis.conf</span><br><span class="line"></span><br><span class="line">/usr/local/redis-cluster/7005/src/redis-server /usr/local/redis-cluster/7005/redis.conf</span><br><span class="line"></span><br><span class="line">/usr/local/redis-cluster/7006/src/redis-server /usr/local/redis-cluster/7006/redis.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">查看运行状态</span></span><br><span class="line">ps -ef | grep redis</span><br><span class="line"><span class="meta">#</span><span class="bash">开放防火墙</span></span><br><span class="line">firewall-cmd --zone=public --add-port=7005/tcp --permanent</span><br><span class="line"><span class="meta">#</span><span class="bash">...</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行脚本集群</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> The number of milliseconds of each tick</span><br><span class="line">tickTime=2000</span><br><span class="line"><span class="meta">#</span> The number of ticks that the initial </span><br><span class="line"><span class="meta">#</span> synchronization phase can take</span><br><span class="line">initLimit=10</span><br><span class="line"><span class="meta">#</span> The number of ticks that can pass between </span><br><span class="line"><span class="meta">#</span> sending a request and getting an acknowledgement</span><br><span class="line">syncLimit=5</span><br><span class="line"><span class="meta">#</span> the directory where the snapshot is stored.</span><br><span class="line"><span class="meta">#</span> do not use /tmp for storage, /tmp here is just </span><br><span class="line"><span class="meta">#</span> example sakes.</span><br><span class="line">dataDir=/usr/local/solrcloud/zookeeper1/data</span><br><span class="line"><span class="meta">#</span> the port at which the clients will connect</span><br><span class="line">clientPort=2181</span><br><span class="line"><span class="meta">#</span> the maximum number of client connections.</span><br><span class="line"><span class="meta">#</span> increase this if you need to handle more clients</span><br><span class="line"><span class="meta">#</span>maxClientCnxns=60</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span> Be sure to read the maintenance section of the </span><br><span class="line"><span class="meta">#</span> administrator guide before turning on autopurge.</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span> http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span> The number of snapshots to retain in dataDir</span><br><span class="line"><span class="meta">#</span>autopurge.snapRetainCount=3</span><br><span class="line"><span class="meta">#</span> Purge task interval in hours</span><br><span class="line"><span class="meta">#</span> Set to "0" to disable auto purge feature</span><br><span class="line"><span class="meta">#</span>autopurge.purgeInterval=1</span><br><span class="line">server.1=192.168.25.154:2881:3881</span><br><span class="line">server.2=192.168.25.154:2882:3882</span><br><span class="line">server.3=192.168.25.154:2883:3883</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/usr/local/redis-cluster/redis-trib.rb create  --replicas 1 192.168.1.103:7001 192.168.1.103:7002 192.168.1.103:7003 192.168.1.103:7004 192.168.1.103:7005 192.168.1.103:7006</span><br><span class="line"></span><br><span class="line">redis-cli --cluster create 192.168.1.103:7001 192.168.1.103:7002 192.168.1.103:7003 192.168.1.103:7004 192.168.1.103:7005 192.168.1.103:7006 --cluster-replicas 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="集群操作"><a href="#集群操作" class="headerlink" title="集群操作"></a>集群操作</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">其中-c表示以集群方式连接redis，-h指定ip地址，-p指定端口号</span></span><br><span class="line">./redis-cli -c -h 192.168.1.103:7001 -p 7001 </span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询集群结点信息</span></span><br><span class="line">cluster nodes</span><br></pre></td></tr></table></figure>
+
+<p><strong>添加节点</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-trib.rb add-node  192.168.1.103:7007 192.168.1.103:7001</span><br></pre></td></tr></table></figure>
+
+<p><strong>hash槽分配</strong></p>
+<p>redis集群有16384个槽，集群中的每个结点分配自已槽，通过查看集群结点可以看到槽占用情况。</p>
+<ul>
+<li>连接上集群</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">连接集群中任意一个可用结点都行</span></span><br><span class="line">./redis-trib.rb reshard  192.168.1.103:7001</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>输入要分配的槽数量</p>
+<p><img src="https://file.moetu.org/images/2019/08/18/6b8b53dbc9b2f4efad566fbbcb5cf37b39980dce21557c53.png" alt></p>
+</li>
+<li><p>输入接收槽的结点id</p>
+<p>通过cluster nodes查看7007结点id为15b809eadae88955e36bcdbb8144f61bbbaf38fb</p>
+<p><img src="https://file.moetu.org/images/2019/08/18/540b9ecf3d0eddff90c4d0e8d0b4572021e697456a6135e1.png" alt></p>
+<p>输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">15b809eadae88955e36bcdbb8144f61bbbaf38fb</span><br></pre></td></tr></table></figure>
 
 
 
-<ul>
-<li><p>对zookeeper2、3中的设置做第二步至第四步修改。</p>
-<ul>
-<li><p>zookeeper2、3</p>
-<ul>
-<li>myid内容为2、3</li>
-<li>dataDir=/usr/local/solrcloud/zookeeper2、3/data</li>
-<li>clientPort=2182、2183</li>
-</ul>
-</li>
-</ul>
 </li>
 </ul>
 <ul>
-<li>启动三个zookeeper</li>
+<li>输入源结点id，这里输入all</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/solrcloud/zookeeper1/bin/zkServer.sh start</span><br><span class="line">/usr/local/solrcloud/zookeeper2/bin/zkServer.sh start</span><br><span class="line">/usr/local/solrcloud/zookeeper3/bin/zkServer.sh start</span><br></pre></td></tr></table></figure>
-
+<p><img src="https://file.moetu.org/images/2019/08/18/c27bd7a4a67a06b1b3d8b23360109629f3ca88d1787c602e.png" alt></p>
 <ul>
-<li>查看集群状态：</li>
+<li>输入yes开始移动槽到目标结点id</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/solrcloud/zookeeper1/bin/zkServer.sh status</span><br><span class="line">/usr/local/solrcloud/zookeeper2/bin/zkServer.sh status</span><br><span class="line">/usr/local/solrcloud/zookeeper3/bin/zkServer.sh status</span><br></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2019/08/18/683bd26643f23fd77fe9ef0d985a635d26957e1d5a50787a.png" alt></p>
+<p><strong>添加从节点</strong></p>
+<p>添加7008从结点，将7008作为7007的从结点。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">主节点id 添加节点的ip和端口 集群中已存在节点ip和端口</span></span><br><span class="line">./redis-trib.rb add-node --slave --master-id</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>开启zookeeper用到的端口，或者直接关闭防火墙。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service iptables stop</span><br></pre></td></tr></table></figure>
+<p>执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">cad9f7413ec6842c971dbcc2c48b4ca959eb5db4  是7007结点的id，可通过cluster nodes查看。</span></span><br><span class="line">./redis-trib.rb add-node --slave --master-id cad9f7413ec6842c971dbcc2c48b4ca959eb5db4  192.168.101.3:7008 192.168.101.3:7001</span><br></pre></td></tr></table></figure>
 
-<h2 id="Solr集群"><a href="#Solr集群" class="headerlink" title="Solr集群"></a>Solr集群</h2><h3 id="集群图示"><a href="#集群图示" class="headerlink" title="集群图示"></a>集群图示</h3><p>如，这个solr集群中有3台服务器，每个服务器的solr有两个core。</p>
-<p><img src="https://file.moetu.org/images/2019/09/05/201909051445139b1e856649c44082.png" alt></p>
-<p>数据索引集合分成2片，由3台服务器各出一个core来组成1个分片，即1个分片=3个core，这三个core数据一致。共6个core两个分片，一个索引集合。在1个数据分片中，有1个core被<code>zookeeper</code>选为主服务节点，其他两个core作为从服务节点。</p>
-<h3 id="集群搭建（伪）-1"><a href="#集群搭建（伪）-1" class="headerlink" title="集群搭建（伪）"></a>集群搭建（伪）</h3><p>在一台机器上模拟集群：</p>
-<ul>
-<li>先在一台机器上模拟出3个solr实例，和单机版solr搭建一致，以前说过，此处省略。</li>
-<li>solrCloud部署依赖zookeeper，需要先启动每一台zookeeper服务器。</li>
-</ul>
+<p><img src="https://file.moetu.org/images/2019/08/18/e1c3380e5314845905a89b66f4c7b1408e30b7f79d730218.png" alt></p>
+<p><strong>tips:</strong></p>
+<p>如果原来该结点在集群中的配置信息已经生成cluster-config-file指定的配置文件中（如果cluster-config-file没有指定则默认为nodes.conf），这时可能会报错：</p>
 <blockquote>
-<p> 由于zookeeper统一管理solr的配置文件（主要是schema.xml、solrconfig.xml）， solrCloud各各节点使用zookeeper管理的配置文件。</p>
+<p>[ERR] Node XXXXXX is not empty. Either the node already knows other nodes (check with CLUSTER NODES) or contains some key in database 0</p>
 </blockquote>
-<ul>
-<li><p>将上边部署的solr单机的conf拷贝到/home/solr下。</p>
-<p>执行下边的这条命令将/home/solr/conf下的配置文件上传到zookeeper。此命令在solr-4.10.3/example/scripts/cloud-scripts/目录下：</p>
-</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkcli.sh -zkhost 192.168.25.154:2181,192.168.25.154:2182,192.168.25.154:2183 -cmd upconfig -confdir /usr/local/solrcloud/solrhome1/collection1/conf -confname myconf</span><br></pre></td></tr></table></figure>
+<p>解决方法是删除生成的配置文件nodes.conf，删除后再执行<strong>./redis-trib.rb add-node</strong>指令。</p>
+<p><strong>删除节点</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-trib.rb del-node 127.0.0.1:7005 4b45eb75c8b428fbd77ab979b85080146a9bc017</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>登陆zookeeper服务器查询配置文件：</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/zookeeper/bin/</span><br><span class="line">./zkCli.sh</span><br></pre></td></tr></table></figure>
+<p>删除已经占有hash槽的结点会失败，报错如下：</p>
+<blockquote>
+<p>[ERR] Node 127.0.0.1:7005 is not empty! Reshard data away and try again.</p>
+</blockquote>
+<p>需要将该结点占用的hash槽分配出去。</p>
 
-<ul>
-<li>修改每个solrhome的solr.xml文件。将host改成虚拟机ip地址，port改成对应的tomcat的端口号。</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2019/09/05/109JGGWKBH94DSYTVPDXe31ab555ba7c4b27.png" alt></p>
-<ul>
-<li><p>修改每一台solr的tomcat 的 bin目录下catalina.sh文件中加入DzkHost指定zookeeper服务器地址： </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JAVA_OPTS="-DzkHost=192.168.25.154:2181,192.168.25.154:2182,192.168.25.154:2183"</span><br><span class="line"><span class="meta">#</span>（可以使用vim的查找功能查找到JAVA_OPTS的定义的位置，然后添加）</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>启动每一台solr的tomcat服务，访问任意一台solr，左侧菜单会出现<code>Cloud</code>选项：</p>
-</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2019/09/05/feee3bfdbc0f85d0d2f7e89294b53070c96f71787fc399e9.png" alt></p>
-<p>可在Cloud选项查看集群状态。</p>
-<p><strong>分片</strong></p>
-<p>如果集群中有四个solr节点创建新集群collection2，将集群分为两片，每片两个副本。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://yourIpAndProt/solr/admin/collections?action=CREATE&amp;name=collection2&amp;numShards=2&amp;replicationFactor=2</span><br></pre></td></tr></table></figure>
-
-<p><strong>删除</strong></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://yourIpAndPort/solr/admin/collections?action=DELETE&amp;name=collection1</span><br></pre></td></tr></table></figure>
-
-<p>执行后原来的collection1删除</p>
-<p>更多命令请百度。</p>
-
+        
+      </div>
+      
+      
       
     </div>
-
     
 
+
+
     
     
     
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Solr/" rel="tag">#^_^#Solr</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/09/05/数据结构_单链表/" rel="next" title="单链表、双向链表、单向环形链表">
-                <i class="fa fa-chevron-left"></i> 单链表、双向链表、单向环形链表
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/09/08/github授权登录/" rel="prev" title="Github授权登录">
-                Github授权登录 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
   </div>
 
 
@@ -755,7 +638,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">54</span>
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -790,9 +673,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -965,13 +846,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">81</span>
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1035,7 +910,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper、Solr集群搭建"><span class="nav-text">ZooKeeper、Solr集群搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#zookeeper集群"><span class="nav-text">zookeeper集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群搭建（伪）"><span class="nav-text">集群搭建（伪）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solr集群"><span class="nav-text">Solr集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群图示"><span class="nav-text">集群图示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群搭建（伪）-1"><span class="nav-text">集群搭建（伪）</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis集群搭建"><span class="nav-text">Redis集群搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群创建"><span class="nav-text">集群创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群操作"><span class="nav-text">集群操作</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1246,7 +1121,7 @@
 <script>
   function renderGitment() {
     var gitment = new Gitment({
-      id: '1567665102000',
+      id: '1566117000000',
       owner: 'Shirtiny',
       repo: 'Shirtiny.github.io',
       
