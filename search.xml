@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[LeetCode练习]]></title>
     <url>%2F2019%2F12%2F10%2FLeetCode1%2F</url>
-    <content type="text"><![CDATA[LeetCode题集记录①在LeetCode学习与解题的记事本。 环形链表141. 判断一个链表是否含有环形结构 141.Linked List Cycle Given a linked list, determine if it has a cycle in it. To represent a cycle in the given linked list, we use an integer pos which represents the position (0-indexed) in the linked list where tail connects to. If pos is -1, then there is no cycle in the linked list. 解题思路 使用hash表存储访问过的节点，如果发现节点已经在表中，则表示链表含有环形结构。使用快慢指针，当快指针与慢指针相遇时，表示链表中存在环形结构。 代码java 123456789101112131415161718192021222324252627//141 hashSet方式 public boolean hasCycle1(ListNode head) &#123; Set&lt;ListNode&gt; nodeSet = new HashSet&lt;&gt;(); while (head != null) &#123; if (nodeSet.contains(head)) &#123; return true; &#125; else &#123; nodeSet.add(head); &#125; head = head.next; &#125; return false; &#125; //141 快慢指针方式 public boolean hasCycle2(ListNode head) &#123; ListNode slow = head; ListNode fast = slow; while (fast != null &amp;&amp; fast.next != null) &#123; slow = slow.next; fast = fast.next.next; if (slow == fast) &#123; return true; &#125; &#125; return false; &#125; golang 12345678910111213141516171819202122232425262728//141 map方式 存储的K是节点地址 v可以是任意值func hasCycle1(head *ListNode) bool &#123; nodeMap := make(map[*ListNode]int) node := head for node != nil &#123; if _, ok := nodeMap[node]; ok &#123; return true &#125; else &#123; nodeMap[node] = 1 &#125; node = node.Next &#125; return false&#125;//141 快慢指针方式func hasCycle2(head *ListNode) bool &#123; slow := head fast := head for fast != nil &amp;&amp; fast.Next != nil &#123; slow = slow.Next fast = fast.Next.Next if slow == fast &#123; return true &#125; &#125; return false&#125; 142. 找出链表中环结构的起点 142.Linked List Cycle II Given a linked list, return the node where the cycle begins. If there is no cycle, return null. To represent a cycle in the given linked list, we use an integer pos which represents the position (0-indexed) in the linked list where tail connects to. If pos is -1, then there is no cycle in the linked list. Note: Do not modify the linked list. 解题思路 使用hash表存储访问过的节点，返回第一个与表中重复的节点。使用快慢指针，当快指针与慢指针相遇时，相遇点与环形结构起点的距离，刚好等于head链表头节点到环形结构起点的距离。利用这一点，在第一次相遇时，让快指针再次从head开始，以与慢指针同样的速度前进，同时慢指针继续从相遇点原速前进，则接下来的相遇点即为所求的环形结构起点。这样说可能有些抽象，下面画图说明。假设有两个运动员slow和fast，slow的速度为v，fast的速度是slow的2倍为2v，两人从head点开始通过一段长为x的直道，最后进入环形跑道做匀速运动，设两人相遇点为meet处，设环形跑道的周长C为y+z，可以得出x=kC+z,其中k 为自然数。如果没有直道，相遇点就会一直是起点，也可以说明上面的推论是正确的。 代码java 123456789101112131415161718192021222324252627282930//142 hashSet方式略 //142 快慢指针方式 public ListNode detectCycle(ListNode head) &#123; if (head == null) &#123; return null; &#125; ListNode slow = head; ListNode fast = slow; boolean hasCycle = false; while (true) &#123; if (fast == null || fast.next == null) &#123; return null; &#125; slow = slow.next; fast = fast.next.next; if (slow == fast) &#123; break; &#125; &#125; fast = head; while (fast != null) &#123; if (fast == slow) &#123; return slow; &#125; fast = fast.next; slow = slow.next; &#125; return null; &#125; golang 1234567891011121314151617181920212223242526272829//142 hash表方式略//142 快慢指针方式func detectCycle(head *ListNode) *ListNode &#123; if head == nil &#123; return nil &#125; slow := head fast := slow for &#123; if fast == nil || fast.Next == nil &#123; return nil &#125; slow = slow.Next fast = fast.Next.Next if slow == fast &#123; break &#125; &#125; fast = head for fast != nil &#123; if fast == slow &#123; return fast &#125; fast = fast.Next slow = slow.Next &#125; return nil&#125;]]></content>
+    <content type="text"><![CDATA[LeetCode题集记录①在LeetCode学习的记事本。 环形链表141. 判断一个链表是否含有环形结构 141.Linked List Cycle Given a linked list, determine if it has a cycle in it. To represent a cycle in the given linked list, we use an integer pos which represents the position (0-indexed) in the linked list where tail connects to. If pos is -1, then there is no cycle in the linked list. 解题思路 使用hash表存储访问过的节点，如果发现节点已经在表中，则表示链表含有环形结构。使用快慢指针，当快指针与慢指针相遇时，表示链表中存在环形结构。 代码java 123456789101112131415161718192021222324252627//141 hashSet方式 public boolean hasCycle1(ListNode head) &#123; Set&lt;ListNode&gt; nodeSet = new HashSet&lt;&gt;(); while (head != null) &#123; if (nodeSet.contains(head)) &#123; return true; &#125; else &#123; nodeSet.add(head); &#125; head = head.next; &#125; return false; &#125; //141 快慢指针方式 public boolean hasCycle2(ListNode head) &#123; ListNode slow = head; ListNode fast = slow; while (fast != null &amp;&amp; fast.next != null) &#123; slow = slow.next; fast = fast.next.next; if (slow == fast) &#123; return true; &#125; &#125; return false; &#125; golang 12345678910111213141516171819202122232425262728//141 map方式 存储的K是节点地址 v可以是任意值func hasCycle1(head *ListNode) bool &#123; nodeMap := make(map[*ListNode]int) node := head for node != nil &#123; if _, ok := nodeMap[node]; ok &#123; return true &#125; else &#123; nodeMap[node] = 1 &#125; node = node.Next &#125; return false&#125;//141 快慢指针方式func hasCycle2(head *ListNode) bool &#123; slow := head fast := head for fast != nil &amp;&amp; fast.Next != nil &#123; slow = slow.Next fast = fast.Next.Next if slow == fast &#123; return true &#125; &#125; return false&#125; 142. 找出链表中环结构的起点 142.Linked List Cycle II Given a linked list, return the node where the cycle begins. If there is no cycle, return null. To represent a cycle in the given linked list, we use an integer pos which represents the position (0-indexed) in the linked list where tail connects to. If pos is -1, then there is no cycle in the linked list. Note: Do not modify the linked list. 解题思路 使用hash表存储访问过的节点，返回第一个与表中重复的节点。使用快慢指针，当快指针与慢指针相遇时，相遇点与环形结构起点的距离，刚好等于head链表头节点到环形结构起点的距离。利用这一点，在第一次相遇时，让快指针再次从head开始，以与慢指针同样的速度前进，同时慢指针继续从相遇点原速前进，则接下来的相遇点即为所求的环形结构起点。这样说可能有些抽象，下面画图说明。假设有两个运动员slow和fast，slow的速度为v，fast的速度是slow的2倍为2v，两人从head点开始通过一段长为x的直道，最后进入环形跑道做匀速运动，设两人相遇点为meet处，设环形跑道的周长C为y+z，可以得出x=kC+z,其中k 为自然数。如果没有直道，相遇点就会一直是起点，也可以说明上面的推论是正确的。 代码java 123456789101112131415161718192021222324252627282930//142 hashSet方式略 //142 快慢指针方式 public ListNode detectCycle(ListNode head) &#123; if (head == null) &#123; return null; &#125; ListNode slow = head; ListNode fast = slow; boolean hasCycle = false; while (true) &#123; if (fast == null || fast.next == null) &#123; return null; &#125; slow = slow.next; fast = fast.next.next; if (slow == fast) &#123; break; &#125; &#125; fast = head; while (fast != null) &#123; if (fast == slow) &#123; return slow; &#125; fast = fast.next; slow = slow.next; &#125; return null; &#125; golang 1234567891011121314151617181920212223242526272829//142 hash表方式略//142 快慢指针方式func detectCycle(head *ListNode) *ListNode &#123; if head == nil &#123; return nil &#125; slow := head fast := slow for &#123; if fast == nil || fast.Next == nil &#123; return nil &#125; slow = slow.Next fast = fast.Next.Next if slow == fast &#123; break &#125; &#125; fast = head for fast != nil &#123; if fast == slow &#123; return fast &#125; fast = fast.Next slow = slow.Next &#125; return nil&#125;]]></content>
       <categories>
         <category>数据结构与算法</category>
       </categories>
@@ -35,8 +35,8 @@
       </categories>
       <tags>
         <tag>java</tag>
-        <tag>springBoot</tag>
         <tag>webSocket</tag>
+        <tag>springBoot</tag>
       </tags>
   </entry>
   <entry>
@@ -75,8 +75,8 @@
       <tags>
         <tag>java</tag>
         <tag>js</tag>
-        <tag>socket</tag>
         <tag>springBoot</tag>
+        <tag>socket</tag>
       </tags>
   </entry>
   <entry>
@@ -308,7 +308,7 @@
   <entry>
     <title><![CDATA[千 与 千寻的神隐]]></title>
     <url>%2F2019%2F08%2F22%2F%E5%8D%83%E4%B8%8E%E5%8D%83%E5%AF%BB%E7%9A%84%E7%A5%9E%E9%9A%90%2F</url>
-    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-AtWidtxH"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
+    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-PEFcXNwI"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
       <categories>
         <category>闲谈</category>
       </categories>
@@ -416,7 +416,7 @@
   <entry>
     <title><![CDATA[新增视频播放插件]]></title>
     <url>%2F2019%2F08%2F06%2F%E6%96%B0%E5%A2%9E%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%8F%92%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-MnMqFMaX"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
+    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-VdpAzJjq"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
       <categories>
         <category>系统维护</category>
       </categories>
@@ -495,9 +495,9 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
         <tag>IntelliJ IDEA</tag>
+        <tag>java</tag>
         <tag>Lombok插件</tag>
       </tags>
   </entry>
@@ -534,8 +534,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>Maven聚合工程</tag>
+        <tag>java</tag>
         <tag>SSM</tag>
         <tag>用户关系管理项目</tag>
         <tag>Spring-security</tag>
@@ -550,8 +550,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
+        <tag>java</tag>
         <tag>SSM</tag>
       </tags>
   </entry>
@@ -563,8 +563,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -575,8 +575,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
+        <tag>java</tag>
         <tag>mybatis分页插件</tag>
         <tag>数据分页</tag>
       </tags>
