@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
 <meta property="og:description" content="【长篇】登录认证、权限控制思路整理在我论坛网站中，登录是第一个做的功能，可做的很简单，只是在河水两岸扔了块软绵绵的木板，以供临时的通行。登录认证、权限控制，这两个服务是隐私的入口，需要格外的注意。现在，社区爬取到了很多的用户数据，我觉得是时候对SSO、JWT这方面的知识做个总结了。 我将在这份md中，边写登录认证服务的代码，边记录与总结自己的思考和体会，之后会整理思路，希望能对读者有所帮助。本文所">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-19T08:27:43.668Z">
+<meta property="og:updated_time" content="2020-01-01T12:34:40.269Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JWT+Shiro安全无状态服务">
 <meta name="twitter:description" content="【长篇】登录认证、权限控制思路整理在我论坛网站中，登录是第一个做的功能，可做的很简单，只是在河水两岸扔了块软绵绵的木板，以供临时的通行。登录认证、权限控制，这两个服务是隐私的入口，需要格外的注意。现在，社区爬取到了很多的用户数据，我觉得是时候对SSO、JWT这方面的知识做个总结了。 我将在这份md中，边写登录认证服务的代码，边记录与总结自己的思考和体会，之后会整理思路，希望能对读者有所帮助。本文所">
@@ -480,7 +480,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-12-19 16:27:43" itemprop="dateModified" datetime="2019-12-19T16:27:43+08:00">2019-12-19</time>
+                <time title="修改时间：2020-01-01 20:34:40" itemprop="dateModified" datetime="2020-01-01T20:34:40+08:00">2020-01-01</time>
               
             
           </span>
@@ -601,9 +601,9 @@
 
 <p>其实，这三种情形，都有一个更大的问题，A并不清楚对方是不是真正的B，B也同样如此。如何理解呢，这里是有个前提，通信是在网络上进行的，而网络上的身份和现实是不绑定的，就像百度搜索xx官网一样，没有一个充分的理由便不能确认它的真实性。此时需要一个中间的机构，比如百度认证的xx官网，我信任百度，便会相信这个xx官网是真正的。那这个组成信任链的中间机构是谁呢？</p>
 <h3 id="CA机构"><a href="#CA机构" class="headerlink" title="CA机构"></a>CA机构</h3><p>比如<code>Let&#39;s Encrypt</code>、<code>DigiCert</code>、<code>赛门铁克</code>等CA机构，就是中间人。CA机构会颁发数字证书给信任的网站，数字证书是公钥和私钥的密钥对，证书由CA机构的私钥签发。浏览器信任CA机构，便会信任CA机构信任的网站，然后当用户访问受信任的网站时，浏览器便会提醒该站是安全可信的。</p>
-<p>于是，便产生了情景四：</p>
+<p>于是，便可以简单理解为情景四：</p>
 <div class="note info">
-            <p><strong>情景四</strong></p><ul><li>依然是A要发送Message给B</li><li>A需要先询问B的CA签名公钥，B将CA签名过的公钥告诉对方</li><li>A进行比对，确认是CA签发的，A信任CA，也就信任了B</li><li>A把对称加密的密钥PSK放入Message，使用B的公钥加密后，发送给B</li><li>B使用自己的私钥解密Message，得到PSK</li><li>然后，双方便可以使用对称加密算法的PSK进行通信</li></ul><p>这就是Https核心的加密解密，<strong>RSA非对称加密结合数字签名算法以及CA体系</strong>，所以，Https不会被窃听、伪造、修改，能够确保用户所连接的服务器是受信的。</p>
+            <p><strong>情景四</strong></p><ul><li>依然是A要发送Message给B</li><li>A需要先询问B的CA签名公钥，B将CA签名过的公钥告诉对方</li><li>A进行比对，确认是CA签发的，A信任CA，也就信任了B</li><li>A把对称加密的密钥PSK放入Message，使用B的公钥加密后，发送给B</li><li>B使用自己的私钥解密Message，得到PSK</li><li>然后，双方便可以使用对称加密算法的PSK进行通信</li></ul>
           </div>
 
 <h3 id="RSA非对称加密实现"><a href="#RSA非对称加密实现" class="headerlink" title="RSA非对称加密实现"></a>RSA非对称加密实现</h3><p>使用java的security包即可。</p>
@@ -842,7 +842,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">53</span>
+                    <span class="site-state-item-count">54</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1066,7 +1066,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">86</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">88</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

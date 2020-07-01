@@ -106,7 +106,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://file.moetu.org/images/2019/10/17/cbecdc0b7728a86e96c930cd0419c339b172f14261716815.png">
 <meta property="og:image" content="https://file.moetu.org/images/2019/10/17/57e12c78761766e7fa618de69008fc33fcc83981026d8bd0.png">
-<meta property="og:updated_time" content="2019-10-17T07:23:10.035Z">
+<meta property="og:updated_time" content="2020-01-01T12:27:53.586Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js的数据精度问题">
 <meta name="twitter:description" content="前后端数值传递中的 js数值精度损失问题">
@@ -466,12 +466,24 @@
                 
               
 
-              <time title="创建时间：2019-10-17 14:42:18 / 修改时间：15:23:10" itemprop="dateCreated datePublished" datetime="2019-10-17T14:42:18+08:00">2019-10-17</time>
+              <time title="创建时间：2019-10-17 14:42:18" itemprop="dateCreated datePublished" datetime="2019-10-17T14:42:18+08:00">2019-10-17</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-01 20:27:53" itemprop="dateModified" datetime="2020-01-01T20:27:53+08:00">2020-01-01</time>
               
             
           </span>
@@ -546,10 +558,9 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.shirtiny.community.SHcommunity.DTO;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InvitationDTO</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String invitationId;<span class="comment">//主键id</span></span><br><span class="line">    <span class="keyword">private</span> String authorId; <span class="comment">//作者id</span></span><br><span class="line">    <span class="keyword">private</span> String gmtCreate;<span class="comment">//作者的注册时间</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>注：这里我使用的是Mybatis-Plus，在交互时，会自动进行<code>BigInt</code>和<code>String</code>的转换。如果需要字符串类型的uuid，可以使用以下方式，在mapper里写</p>
+<p>注：如果需要字符串类型的uuid，可以使用以下方式，在mapper里写</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">// 返回String类型的UUID</span></span><br><span class="line">&gt; <span class="meta">@Select</span>(<span class="string">"SELECT UUID_SHORT()"</span>)</span><br><span class="line">&gt; <span class="function">String <span class="title">getShortStrUUid</span><span class="params">()</span></span>;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
-<p>③全局类型转换器，这个就需要考虑很多东西了。</p>
 
       
     </div>
@@ -680,7 +691,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">53</span>
+                    <span class="site-state-item-count">54</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -904,7 +915,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">86</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">88</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
