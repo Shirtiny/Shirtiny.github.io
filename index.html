@@ -461,7 +461,7 @@
                 
               
 
-              <time title="创建时间：2020-07-01 16:25:19 / 修改时间：18:50:32" itemprop="dateCreated datePublished" datetime="2020-07-01T16:25:19+08:00">2020-07-01</time>
+              <time title="创建时间：2020-07-01 16:25:19 / 修改时间：18:54:26" itemprop="dateCreated datePublished" datetime="2020-07-01T16:25:19+08:00">2020-07-01</time>
             
 
             
@@ -519,8 +519,7 @@
 
       
         
-          
-            <h1 id="使用mpvue开发微信小程序"><a href="#使用mpvue开发微信小程序" class="headerlink" title="使用mpvue开发微信小程序"></a>使用mpvue开发微信小程序</h1><p><code>mpvue</code>，方便的使用<code>vue</code>语法开发微信小程序。</p>
+          <h1 id="使用mpvue开发微信小程序"><a href="#使用mpvue开发微信小程序" class="headerlink" title="使用mpvue开发微信小程序"></a>使用mpvue开发微信小程序</h1><p><code>mpvue</code>，方便的使用<code>vue</code>语法开发微信小程序。</p>
 <blockquote>
 <p>我回来了，半年没更新了。用React做了个字幕编辑器，但感觉实际意义不大。</p>
 </blockquote>
@@ -529,30 +528,15 @@
 
 <p><strong>vue-cli</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 安装vue脚手架</span><br><span class="line">npm i -g vue-cli -D</span><br><span class="line">vue -V</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-初始化项目"><a href="#1-初始化项目" class="headerlink" title="1. 初始化项目"></a>1. 初始化项目</h2><p><strong>创建</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 项目名为 shmp</span><br><span class="line"><span class="meta">#</span> cd D:\programming\JsProject</span><br><span class="line">vue init mpvue/mpvue-quickstart shmp</span><br></pre></td></tr></table></figure>
-
-<p>按提示回车确认即可，中间需要小程序的<code>appid</code></p>
-<p><img src="https://user-images.githubusercontent.com/49592759/86222851-5e150080-bbb9-11ea-866b-b7bb95e045ff.png" alt></p>
-<p><strong>运行</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd shmp</span><br><span class="line">npm i</span><br><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-导入到微信开发工具"><a href="#2-导入到微信开发工具" class="headerlink" title="2. 导入到微信开发工具"></a>2. 导入到微信开发工具</h2><p>首先需要安装<a href="https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html" target="_blank" rel="noopener">微信开发工具</a>，然后运行。</p>
-<p><strong>导入项目</strong></p>
-<p>点击导入项目，选择<code>mpvue</code>项目的目录即可</p>
-<p><img src="https://user-images.githubusercontent.com/49592759/86224302-49d20300-bbbb-11ea-9f0a-639629e90e64.png" alt></p>
-<p>在微信开发工具查看效果</p>
-<p><img src="https://user-images.githubusercontent.com/49592759/86225917-771fb080-bbbd-11ea-97e0-4c820cb663a9.png" alt></p>
-<p><code>mpvue</code>输出在<code>dist</code>目录下</p>
-<p><img src="https://user-images.githubusercontent.com/49592759/86226711-9ff47580-bbbe-11ea-8a86-f411f2613fbc.png" alt></p>
-<h2 id="3-其他"><a href="#3-其他" class="headerlink" title="3. 其他"></a>3. 其他</h2><p><strong>如使用scss</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm i sass-loader@7.3.1 node-sass -D</span><br><span class="line"><span class="meta">#</span> node-sass如果安装失败 可以尝试更换国内源</span><br><span class="line"><span class="meta">#</span> npm config set sass_binary_site=https://npm.taobao.org/mirrors/node-sass</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;style lang="scss" scoped&gt;</span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100vh</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100vw</span>;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">  <span class="selector-class">.innerBox</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">flex-direction</span>: column;</span><br><span class="line">    <span class="attribute">justify-content</span>: flex-start;</span><br><span class="line">    <span class="attribute">align-items</span>: center;</span><br><span class="line">    <span class="selector-class">.boxTitle</span> &#123;</span><br><span class="line">      <span class="attribute">font-weight</span>: bold;</span><br><span class="line">      <span class="attribute">font-size</span>: <span class="number">24px</span>;</span><br><span class="line">      <span class="attribute">margin-bottom</span>: <span class="number">30vh</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-class">.boxContent</span> &#123;</span><br><span class="line">      <span class="attribute">justify-content</span>: center;</span><br><span class="line">      <span class="attribute">align-items</span>: center;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2020/07/01/mpvue开发微信小程序/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
