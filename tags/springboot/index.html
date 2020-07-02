@@ -98,7 +98,7 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="☘(๑•̀ㅂ•́)و✧">
-<meta property="og:url" content="http://Shirtiny.cn/tags/springBoot/index.html">
+<meta property="og:url" content="http://Shirtiny.cn/tags/SpringBoot/index.html">
 <meta property="og:site_name" content="☘(๑•̀ㅂ•́)و✧">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
@@ -110,7 +110,7 @@
 
   
   
-  <link rel="canonical" href="http://Shirtiny.cn/tags/springBoot/">
+  <link rel="canonical" href="http://Shirtiny.cn/tags/SpringBoot/">
 
 
 
@@ -120,7 +120,7 @@
   };
 </script>
 
-  <title>标签: springBoot | ☘(๑•̀ㅂ•́)و✧</title>
+  <title>标签: SpringBoot | ☘(๑•̀ㅂ•́)و✧</title>
   
 
 
@@ -434,7 +434,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>springBoot<small>标签</small>
+        <h1>SpringBoot<small>标签</small>
         </h1>
       </div>
 
@@ -446,69 +446,17 @@
 
       <h2 class="post-title">
         
-          <a class="post-title-link" href="/2019/12/18/创建企业邮箱/" itemprop="url">
+          <a class="post-title-link" href="/2019/12/05/唯一id生成器封装/" itemprop="url">
             
-              <span itemprop="name">创建企业邮箱</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-12-18T16:31:16+08:00" content="2019-12-18">
-          12-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/11/29/websocket单聊/" itemprop="url">
-            
-              <span itemprop="name">webSocket单聊+携带Jwt认证</span>
+              <span itemprop="name">全局唯一id生成器封装</span>
             
           </a>
         
       </h2>
 
       <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-11-29T10:45:04+08:00" content="2019-11-29">
-          11-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/10/31/websocket聊天室/" itemprop="url">
-            
-              <span itemprop="name">简单websocket聊天室</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-10-31T18:43:01+08:00" content="2019-10-31">
-          10-31
+        <time class="post-time" itemprop="dateCreated" datetime="2019-12-05T21:42:33+08:00" content="2019-12-05">
+          12-05
         </time>
       </div>
 
@@ -567,7 +515,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">54</span>
+                    <span class="site-state-item-count">55</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -795,7 +743,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">88</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">90</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1319,6 +1271,83 @@
           }
 
           // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
+
+<!--音乐播放器
+<link rel="stylesheet" href="/APlayer/APlayer.min.css">
+<div  id="aplayer"></div>
+<script type="text/javascript" src="/APlayer/APlayer.min.js"></script>
+<script type="text/javascript" src="/APlayer/music.js"></script>
+ -->
+ 
+</body>
+</html>
+     // remove loading animation
           $(".local-search-pop-overlay").remove();
           $('body').css('overflow', '');
 

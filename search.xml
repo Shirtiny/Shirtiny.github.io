@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[React项目Travis CI持续集成]]></title>
+    <url>%2F2020%2F07%2F02%2FReact%E9%A1%B9%E7%9B%AETravis-CI%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%2F</url>
+    <content type="text"><![CDATA[使用Travis CI 持续集成部署开源项目Travis CI是Github的好基友，是一个CI/CD的免费工具。可以自动化的进行项目的测试、打包等。不同于本机运行的Jenkins，Travis提供了云服务器来帮助我们完成自动化流程。 前置工作 一个Github项目 注册Travis CI，使用Github账号授权即可 React项目1. Create-React-App项目，使用Github Pages服务 package.json添加homepage字段 123456"private": false,"homepage": "./","repository": &#123; "type": "git", "url": "https://github.com/Shirtiny/SubEditor"&#125;, 安装gh-pages 12#yarn add gh-pages -Dnpm install gh-pages -D 设置scripts 12345678"scripts": &#123; "start": "react-scripts start", "build": "react-scripts build", "test": "react-scripts test", "eject": "react-scripts eject", "predeploy": "npm run build", "deploy": "gh-pages -d build" &#125;, 自定域名，在gh-pages分支根目录，添加CNAME，例如自定域名subeditor.js.org 1subeditor.js.org 最后打开Github pages服务，选择使用gh-pages分支。 2. 创建GitHub Access Token 这里使用了Github pages服务，需要push内容到仓库，需要提供 Access Token 来授权。 前往：GitHub-&gt;Settings-&gt;Developer Settings-&gt;Personal access tokens 勾选repo、user，然后点击Generate Token即可。记住token，后面会用到 使用Travis CI 注册Travis CI完成后，点击左侧加号新建项目，搜索你的项目名 点击开关开启对项目的监控 点击Setting，在此处设置环境变量GithubToken，值为刚刚的token。输入完毕后点击Add Github用户名 Github邮箱 Github仓库名 在项目根目录添加文件.travis.yml，内容为： 1234567891011121314151617181920language: node_js# node版本 node -vnode_js: "12.14.0"#缓存依赖cache: directories: - node_modulesinstall: - npm ibefore_script: - git config user.name "$&#123;UserName&#125;" - git config user.email "$&#123;UserEmail&#125;" - git remote rm origin - git remote add origin https://$&#123;UserName&#125;:$&#123;GithubToken&#125;@github.com/$&#123;RepName&#125; - git remote -vscript: npm run deploy# 只有指定的分支提交时才会运行脚本branches: only: - master Travis CI的一次构建分两个步骤： install安装，安装任何所需的依赖 script脚本，运行构建脚本 Travis CI提供了一些构建生命周期的“钩子” 一个完整的 Travis CI 构建生命周期： OPTIONAL Install apt addons OPTIONAL Install cache components before_install install before_script script OPTIONAL before_cache(for cleaning up cache) after_success or after_failure OPTIONAL before_deploy OPTIONAL deploy OPTIONAL after_deploy after_script 在 before_install、before_script之前，或者after_script之后，都可以运行自定义命令，详细资料可参考官方文档：Job Lifecycle 非create-react-app项目参考： 123456789101112131415161718192021222324language: node_jsnode_js: "12.14.0"cache: directories: - node_modulesinstall: - npm iscript: - npm run buildafter_script: - git clone https://github.com/$&#123;RepName&#125; .temp - cd .temp - git checkout gh-pages - cd ../ - mv .temp/.git dist - cd dist - git config user.name "$&#123;UserName&#125;" - git config user.email "$&#123;UserEmail&#125;" - git add . - git commit -m "Build &amp; Deploy by Travis CI" - git push --force --quiet "https://$&#123;GithubToken&#125;@github.com/$&#123;RepName&#125;" gh-pages:$&#123;D_BRANCH&#125;branches: only: - master Git提交更改并push 123git add .git commit -m "create .travis.yml"git push 仓库更新后，Travis会自动构建，查看build日志]]></content>
+      <categories>
+        <category>记录</category>
+      </categories>
+      <tags>
+        <tag>React</tag>
+        <tag>Travis CI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[mpvue开发微信小程序]]></title>
     <url>%2F2020%2F07%2F01%2Fmpvue%E5%BC%80%E5%8F%91%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%2F</url>
     <content type="text"><![CDATA[使用mpvue开发微信小程序mpvue，方便的使用vue语法开发微信小程序。 我回来了，半年没更新了。用React做了个字幕编辑器，但感觉实际意义不大。 0. 环境首先确保本地已安装nodejs 123# 查看本地node、npm版本node -vnpm -v vue-cli 123# 安装vue脚手架npm i -g vue-cli -Dvue -V 1. 初始化项目创建 123# 项目名为 shmp# cd D:\programming\JsProjectvue init mpvue/mpvue-quickstart shmp 按提示回车确认即可，中间需要小程序的appid 运行 123cd shmpnpm inpm run dev 2. 导入到微信开发工具首先需要安装微信开发工具，然后运行。 导入项目 点击导入项目，选择mpvue项目的目录即可 在微信开发工具查看效果 mpvue输出在dist目录下 3. 其他如使用scss 123npm i sass-loader@7.3.1 node-sass -D# node-sass如果安装失败 可以尝试更换国内源# npm config set sass_binary_site=https://npm.taobao.org/mirrors/node-sass 123456789101112131415161718192021222324&lt;style lang="scss" scoped&gt;.container &#123; display: flex; height: 100vh; width: 100vw; justify-content: center; align-items: center; .innerBox &#123; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; .boxTitle &#123; font-weight: bold; font-size: 24px; margin-bottom: 30vh; &#125; .boxContent &#123; justify-content: center; align-items: center; &#125; &#125;&#125;&lt;/style&gt;]]></content>
@@ -20,9 +32,9 @@
         <category>记录</category>
       </categories>
       <tags>
-        <tag>springBoot</tag>
         <tag>email</tag>
         <tag>腾讯企业邮</tag>
+        <tag>springBoot</tag>
       </tags>
   </entry>
   <entry>
@@ -99,8 +111,8 @@
       </categories>
       <tags>
         <tag>java</tag>
-        <tag>socket</tag>
         <tag>springBoot</tag>
+        <tag>socket</tag>
         <tag>js</tag>
       </tags>
   </entry>
@@ -333,7 +345,7 @@
   <entry>
     <title><![CDATA[千 与 千寻的神隐]]></title>
     <url>%2F2019%2F08%2F22%2F%E5%8D%83%E4%B8%8E%E5%8D%83%E5%AF%BB%E7%9A%84%E7%A5%9E%E9%9A%90%2F</url>
-    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-RZFeQHwy"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
+    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-GERvUtsn"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
       <categories>
         <category>闲谈</category>
       </categories>
@@ -441,7 +453,7 @@
   <entry>
     <title><![CDATA[新增视频播放插件]]></title>
     <url>%2F2019%2F08%2F06%2F%E6%96%B0%E5%A2%9E%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%8F%92%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-BLCgGViI"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
+    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-FqysrIll"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
       <categories>
         <category>系统维护</category>
       </categories>
@@ -520,9 +532,9 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
         <tag>IntelliJ IDEA</tag>
+        <tag>java</tag>
         <tag>Lombok插件</tag>
       </tags>
   </entry>
@@ -559,8 +571,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>Maven聚合工程</tag>
+        <tag>java</tag>
         <tag>SSM</tag>
         <tag>用户关系管理项目</tag>
         <tag>Spring-security</tag>
@@ -575,8 +587,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
+        <tag>java</tag>
         <tag>SSM</tag>
       </tags>
   </entry>
@@ -588,8 +600,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -600,8 +612,8 @@
         <category>学习经验</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>开发知识</tag>
+        <tag>java</tag>
         <tag>mybatis分页插件</tag>
         <tag>数据分页</tag>
       </tags>
