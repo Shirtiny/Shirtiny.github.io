@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[金木犀]]></title>
     <url>%2F2020%2F08%2F18%2F%E9%87%91%E6%9C%A8%E7%8A%80%2F</url>
-    <content type="text"><![CDATA[[00:14.699] " If today wer the last day of my life, " [00:15.196] " would I want to do what I am about to do today ? " [00:16.415] " ? " [00:17.103] ( * Drop it ) [00:32.896] 事到如今再来核对答案 [00:35.094] 这样的话怎么都好 [00:37.111] 忧愁的涟漪重复着聚拢散开 [00:40.905] 落下的烟头 伏在地面上的记忆 [00:46.799] 拾起收集 [00:48.712] 味同嚼蜡的cookie coin laundry， 像是笨蛋一样的hamburger [00:52.715] 画满涂鸦的排气管 心中的苦痛 再见吧 [00:56.511] 你那握着吊环的手 [01:00.305] 我已忘记了它的温暖 [01:04.299] 不要留在 黄昏里 播放着唱片的 [01:06.212] 那一天 [01:08.315] 摇曳的天空 幸福的生活也好 [01:12.214] 金木犀的香味也好 我也好 [01:14.003] 就这样 [01:15.574] 再一次 [01:16.451] 永别吧 [01:25.804] (* Drop it) [01:33.618] 在狭小的窗边 空出的半块透明 [01:37.518] 远处的某人照亮了我 [01:41.522] 胸中无法填补的空洞要怎么办 什么的、 [01:43.521] 电车过道的栏杆 今天也好像在哭泣似的 [01:48.312] 那样的体会到了 [02:04.686] 不要留在 黄昏里 播放着唱片的 [02:06.921] 那一天 [02:08.720] 摇曳的天空 幸福的生活也好 [02:12.715] 金木犀的香味也好 我也好 [02:14.522] 就这样 [02:15.997] 再一次 [02:17.292] 永别吧 var ap = new APlayer({ element: document.getElementById("aplayer-xQxckvVa"), narrow: false, autoplay: false, showlrc: 2, music: { title: "金木犀", author: "Ado", url: "金木犀.mp3", pic: "/2020/08/18/金木犀/金木犀.png", } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap);]]></content>
+    <content type="text"><![CDATA[[00:00.000] 金木犀 feat.Ado [00:14.699] " If today wer the last day of my life, " [00:15.196] " would I want to do what I am about to do today ? " [00:16.415] " ? " [00:17.103] ( * Drop it ) [00:32.896] 事到如今才来回答 [00:35.094] 但那些事已经无所谓了 [00:37.111] 只会再陷入忧愁的涟漪重复着聚拢散开 [00:40.905] 落下的烟头 伏在地面上的回忆 [00:46.500] 拾起收集 [00:48.712] 味同嚼蜡的cookie coin laundry， 像是笨蛋一样的hamburger [00:52.500] 画满涂鸦的排气管 心中充满苦涩 再见吧 [00:56.511] 你那握着电车吊环的手 [01:00.305] 我已忘记了它的温暖 [01:03.400] 「别把我一个人留在 黄昏里 」、 在播放着唱片时说出这话的 [01:06.212] 那一天 [01:07.300] 飘飘然 幸福的生活也好 [01:12.000] 金木犀的香味也好 我也好 [01:14.003] 就这样 [01:15.500] 再一次 [01:16.400] 永别吧 [01:25.804] (* Drop it) [01:33.618] 在狭小的窗边 有着半透明的空白 [01:37.518] 远处的某人照亮了我 [01:41.522] 无法填补的缺口要怎么办 什么的、 [01:43.521] 平交道口 今天也好像在哭泣似的 [01:48.312] 我那样的感觉到了 [02:04.686] 「别把我一个人留在 黄昏里 」、 在播放着唱片时说出这话的 [02:06.921] 那一天 [02:08.000] 飘飘然 幸福的生活也好 [02:12.715] 金木犀的香味也好 我也好 [02:14.522] 就这样 [02:15.997] 再一次 [02:17.292] 永别吧 var ap = new APlayer({ element: document.getElementById("aplayer-VMnXaXHR"), narrow: false, autoplay: false, showlrc: 2, music: { title: "金木犀", author: "Ado", url: "https://sh-rep.oss-cn-hongkong.aliyuncs.com/%E9%87%91%E6%9C%A8%E7%8A%80.aac", pic: "/2020/08/18/金木犀/金木犀.png", } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap);]]></content>
       <categories>
         <category>闲谈</category>
       </categories>
@@ -14,7 +14,7 @@
   <entry>
     <title><![CDATA[時を刻む唄]]></title>
     <url>%2F2020%2F08%2F12%2F%E6%99%82%E3%82%92%E5%88%BB%E3%82%80%E5%94%84%2F</url>
-    <content type="text"><![CDATA[var ap = new APlayer({ element: document.getElementById("aplayer-jsSLLvQH"), narrow: false, autoplay: true, showlrc: false, music: { title: "時を刻む唄", author: "Oturans", url: "時を刻む唄.mp3", pic: "/2020/08/12/時を刻む唄/時を刻む唄.jpg", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap);]]></content>
+    <content type="text"><![CDATA[var ap = new APlayer({ element: document.getElementById("aplayer-CpzpwXkn"), narrow: false, autoplay: true, showlrc: false, music: { title: "時を刻む唄", author: "Oturans", url: "時を刻む唄.mp3", pic: "/2020/08/12/時を刻む唄/時を刻む唄.jpg", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap);]]></content>
       <categories>
         <category>闲谈</category>
       </categories>
@@ -66,9 +66,9 @@
         <category>记录</category>
       </categories>
       <tags>
-        <tag>springBoot</tag>
         <tag>email</tag>
         <tag>腾讯企业邮</tag>
+        <tag>springBoot</tag>
       </tags>
   </entry>
   <entry>
@@ -106,8 +106,8 @@
       </categories>
       <tags>
         <tag>java</tag>
-        <tag>webSocket</tag>
         <tag>springBoot</tag>
+        <tag>webSocket</tag>
       </tags>
   </entry>
   <entry>
@@ -379,7 +379,7 @@
   <entry>
     <title><![CDATA[千 与 千寻的神隐]]></title>
     <url>%2F2019%2F08%2F22%2F%E5%8D%83%E4%B8%8E%E5%8D%83%E5%AF%BB%E7%9A%84%E7%A5%9E%E9%9A%90%2F</url>
-    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-dtxXDnAR"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
+    <content type="text"><![CDATA[千 と 千尋の神隠し搬运： Bilibili@风格里哦 在B站浏览该页：传送门 var ap = new APlayer({ element: document.getElementById("aplayer-LuwKXZFy"), narrow: false, autoplay: true, showlrc: false, music: { title: "One Summer's Day", author: "久石譲", url: "http://server.shirtiny.cn/music/One Summer's Day.mp3", pic: "https://file.moetu.org/images/2019/08/20/78da987214933136431ddaca0eba896b0cccbc458f84e1ec.th.png", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); > 直接搬原网页[#狡猾.jpg]]]></content>
       <categories>
         <category>闲谈</category>
       </categories>
@@ -498,7 +498,7 @@
   <entry>
     <title><![CDATA[花に亡霊]]></title>
     <url>%2F2019%2F08%2F07%2F%E8%8A%B1%E3%81%AB%E4%BA%A1%E9%9C%8A%2F</url>
-    <content type="text"><![CDATA[[by:时雨改三] [00:00.73]或许你已经忘记了吧 [00:04.00]我们曾坐在夏日的树荫下 将冰淇淋送入口中 [00:11.47]或许你已经忘记了吧 这世上净是谎言 [00:17.02]我们曾笑着说要去寻找真正的价值 [00:26.43]别让记忆消逝了 也别让色彩褪去了 [00:31.63]别让仅留于形影上的成为全部 [00:39.10]告诉我更多的言语吧 告诉我夏日即将来临 [00:44.30]我描绘着的 是映入眼帘的那夏日的亡灵呀 [00:49.69]裙摆随着夏风摇曳 回忆什么的就让它消逝吧 [00:54.93]轻轻地呼吸着 拭去的汗水滴成了夏 [01:22.29]或许你已经忘记了吧 [01:24.74]我们不是曾坐在夏日的树荫下 看到从远处山丘上探出头的那朵白云嘛 [01:32.74]你想要将它握入手中 傻傻地在空中比划着手 [01:37.97]我在纸上将它画下 笑着拿给你看 [01:45.04]别让记忆消逝了 [01:47.37]也别让色彩褪去了 [01:50.07]因为载入史册中的并非全部啊 [01:57.62]此刻容颜消散 [02:00.10]话语尽忘 [02:02.59]你微笑着 [02:04.43]我们是等待着夏日的亡灵啊 [02:07.89]向我更多诉说你的内心吧 [02:10.55]告诉我夏日的气息吧 [02:13.44]轻轻地呼吸着 [02:46.16]不要让记忆消逝啊 [02:48.74]不要让色彩褪去啊 [02:51.39]因为响彻于心灵的并非全部啊 [03:01.36]告诉我更多的话语吧 [03:03.86]告诉我什么是告别吧 [03:06.76]我现在仍在看着哦 [03:08.50]那夏日盛开繁花上的亡灵啊 [03:11.77]并非言语 而是时间 [03:14.83]也非时间 而是心灵 [03:17.43]轻轻地呼吸着 拭去汗水 夏意渐浓 [03:27.81]散发出夏日的气息 [03:47.12]或许你已经忘了吧 [03:49.59]我们曾坐在夏日的树荫下 将冰淇淋送入口中 等待着一阵清风 var ap = new APlayer({ element: document.getElementById("aplayer-RbocZTcF"), narrow: false, autoplay: true, showlrc: 2, music: { title: "花に亡霊", author: "ヨルシカ", url: "花に亡霊 - ヨルシカ.mp3", pic: "/2019/08/07/花に亡霊/花に亡霊%20-%20ヨルシカ.jpg", lrc: "花に亡霊 - ヨルシカ.lrc" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap);]]></content>
+    <content type="text"><![CDATA[[by:时雨改三] [00:00.73]或许你已经忘记了吧 [00:04.00]我们曾坐在夏日的树荫下 将冰淇淋送入口中 [00:11.47]或许你已经忘记了吧 这世上净是谎言 [00:17.02]我们曾笑着说要去寻找真正的价值 [00:26.43]别让记忆消逝了 也别让色彩褪去了 [00:31.63]别让仅留于形影上的成为全部 [00:39.10]告诉我更多的言语吧 告诉我夏日即将来临 [00:44.30]我描绘着的 是映入眼帘的那夏日的亡灵呀 [00:49.69]裙摆随着夏风摇曳 回忆什么的就让它消逝吧 [00:54.93]轻轻地呼吸着 拭去的汗水滴成了夏 [01:22.29]或许你已经忘记了吧 [01:24.74]我们不是曾坐在夏日的树荫下 看到从远处山丘上探出头的那朵白云嘛 [01:32.74]你想要将它握入手中 傻傻地在空中比划着手 [01:37.97]我在纸上将它画下 笑着拿给你看 [01:45.04]别让记忆消逝了 [01:47.37]也别让色彩褪去了 [01:50.07]因为载入史册中的并非全部啊 [01:57.62]此刻容颜消散 [02:00.10]话语尽忘 [02:02.59]你微笑着 [02:04.43]我们是等待着夏日的亡灵啊 [02:07.89]向我更多诉说你的内心吧 [02:10.55]告诉我夏日的气息吧 [02:13.44]轻轻地呼吸着 [02:46.16]不要让记忆消逝啊 [02:48.74]不要让色彩褪去啊 [02:51.39]因为响彻于心灵的并非全部啊 [03:01.36]告诉我更多的话语吧 [03:03.86]告诉我什么是告别吧 [03:06.76]我现在仍在看着哦 [03:08.50]那夏日盛开繁花上的亡灵啊 [03:11.77]并非言语 而是时间 [03:14.83]也非时间 而是心灵 [03:17.43]轻轻地呼吸着 拭去汗水 夏意渐浓 [03:27.81]散发出夏日的气息 [03:47.12]或许你已经忘了吧 [03:49.59]我们曾坐在夏日的树荫下 将冰淇淋送入口中 等待着一阵清风 var ap = new APlayer({ element: document.getElementById("aplayer-LwNaPBHC"), narrow: false, autoplay: true, showlrc: 2, music: { title: "花に亡霊", author: "ヨルシカ", url: "花に亡霊 - ヨルシカ.mp3", pic: "/2019/08/07/花に亡霊/花に亡霊%20-%20ヨルシカ.jpg", lrc: "花に亡霊 - ヨルシカ.lrc" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap);]]></content>
       <categories>
         <category>闲谈</category>
       </categories>
@@ -509,7 +509,7 @@
   <entry>
     <title><![CDATA[新增视频播放插件]]></title>
     <url>%2F2019%2F08%2F06%2F%E6%96%B0%E5%A2%9E%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E6%8F%92%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-BsamXfgk"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
+    <content type="text"><![CDATA[更新视频、音频插件支持 有了服务器支持，现在可以用自己的媒体源了，媒体内容可以不再受公网限制。之前做html视频嵌入示例，发现部分html内容在https下无法正常使用，于是博客新增了对视频源的播放支持。 效果： (function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"autoplay":true,"theme":"#FADFA3","loop":true,"video":{"url":"http://server.shirtiny.cn/video/ys.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})() 这个插件是基于DPlayer的 ，若视频连接出错，多半是因为换了服务器ip或者暂时关闭了服务器，有的时间段会比较卡，也可能是协议的问题。 只需要安装对应插件，然后Github上有详细的文档说明，用起来也很方便。功能挺好的，只是有时候这播放器会出bug。 官方文档： 音乐播放插件：hexo-tag-aplayer 视频播放插件：hexo-tag-dplayer 安装插件： 1234#视频播放插件npm install hexo-tag-dplayer --save#音频播放插件，不过音乐是能正常播放的，暂时用不到这个npm install hexo-tag-aplayer --save 示例： 视频 12&lt;!-- 效果是上面的视频 ，沒声音是因为，这个视频源没加音频。有声音是因为文章下面有个背景音乐（显示中）--&gt;&#123;% dplayer "url=http://45.77.226.194/video/ys.mp4" "loop=yes" "theme=#FADFA3" "autoplay=true" %&#125; 其实相当于使用DPlayer： 123456789101112131415161718192021222324252627282930313233343536&#123;% raw %&#125;&lt;div id="player1" class="dplayer"&gt;&lt;/div&gt;&lt;script src="dist/DPlayer.min.js"&gt;&lt;/script&gt;&lt;!-- use your path --&gt;&lt;script&gt;var dp = new DPlayer(&#123;&#123; container: document.getElementById('dplayer'), autoplay: false, theme: '#FADFA3', loop: true, screenshot: true, hotkey: true, logo: 'logo.png', volume: 0.2, mutex: true, video: &#123; url: 'http://78.141.206.203/video/ys.mp4', pic: '', thumbnails: '', type: 'auto' &#125;, subtitle: &#123; &#125;, danmaku: &#123; &#125;, unlimited: true &#125;, contextmenu: [ &#123; &#125; ]&#125;);&lt;/script&gt;&#123;% endraw %&#125; 音频 1&#123;% aplayer "马宿" "Zelda" "http://78.141.206.203/music/masu.mp3" "autoplay" %&#125; var ap = new APlayer({ element: document.getElementById("aplayer-ytXHGjQL"), narrow: false, autoplay: true, showlrc: false, music: { title: "马宿", author: "Zelda", url: "http://server.shirtiny.cn/music/masu.mp3", pic: "", lrc: "" } }); window.aplayers || (window.aplayers = []); window.aplayers.push(ap); 参考文章]]></content>
       <categories>
         <category>系统维护</category>
       </categories>
@@ -629,10 +629,10 @@
       <tags>
         <tag>java</tag>
         <tag>Maven聚合工程</tag>
-        <tag>SSM</tag>
         <tag>用户关系管理项目</tag>
         <tag>Spring-security</tag>
         <tag>权限安全</tag>
+        <tag>SSM</tag>
       </tags>
   </entry>
   <entry>
