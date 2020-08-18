@@ -4,7 +4,7 @@ aplayer:
 
 {% meting "1442466883" "netease" "song" "theme: #00b7c3" %}
 
-{% aplayer "花に亡霊 " "ヨルシカ" "花に亡霊 - ヨルシカ.mp3"  "花に亡霊 - ヨルシカ.jpg" "lrc:花に亡霊 - ヨルシカ.lrc" %}
+{% aplayer "花に亡霊 " "ヨルシカ" "花に亡霊 - ヨルシカ.mp3"  "花に亡霊 - ヨルシカ.jpg" "lrc:花に亡霊 - ヨルシカ.lrc" "autoplay" %}
 
 或
 
