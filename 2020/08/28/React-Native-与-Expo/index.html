@@ -109,7 +109,8 @@
 <meta property="og:image" content="https://file.moetu.org/images/2020/08/28/079abb751ba75cb9311a03419583592fb1b8ecab41d60422.png">
 <meta property="og:image" content="https://file.moetu.org/images/2020/08/28/ed65b426de85ce7c657bfdbc0ffaed4ef71096e04181fe54.png">
 <meta property="og:image" content="https://file.moetu.org/images/2020/08/28/d982f76fc3dc4515b57cf876e2c84096fc695d0ae3633df7.png">
-<meta property="og:updated_time" content="2020-08-28T15:46:34.484Z">
+<meta property="og:image" content="https://file.moetu.org/images/2020/08/29/8859dcc6f1fb80f73057f2fe158a6082ef431f25c6b8251c.png">
+<meta property="og:updated_time" content="2020-08-29T05:04:22.179Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React Native 与 Expo">
 <meta name="twitter:description" content="使用JavaScript构建原生移动端应用React Native 与 Expo React Native由Facebook开源， 是目前流行的跨平台移动应用开发框架之一，与React一样为组件式，熟悉前端的开发人员可以快速上手。 Expo包含一组工具、库和服务， 在React Native的基础上做了很多的设置与简化，可以快速上手项目同时为开发提供了多种便利的服务，也可以让我们使用自己喜欢的编辑">
@@ -469,12 +470,24 @@
                 
               
 
-              <time title="创建时间：2020-08-28 20:26:41 / 修改时间：23:46:34" itemprop="dateCreated datePublished" datetime="2020-08-28T20:26:41+08:00">2020-08-28</time>
+              <time title="创建时间：2020-08-28 20:26:41" itemprop="dateCreated datePublished" datetime="2020-08-28T20:26:41+08:00">2020-08-28</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-08-29 13:04:22" itemprop="dateModified" datetime="2020-08-29T13:04:22+08:00">2020-08-29</time>
               
             
           </span>
@@ -569,6 +582,18 @@
           </div>
 
 <p><strong><img src="https://file.moetu.org/images/2020/08/28/d982f76fc3dc4515b57cf876e2c84096fc695d0ae3633df7.png" alt="d982f76fc3dc4515b57cf876e2c84096fc695d0ae3633df7.png"></strong></p>
+<h2 id="远程调试"><a href="#远程调试" class="headerlink" title="远程调试"></a>远程调试</h2><p>可以在<code>Chrome</code>或<code>Vscode</code>中对程序<code>debug</code></p>
+<ul>
+<li><code>chrome</code>：启用开发者菜单中的<code>Debug Remote JS</code>，会自动打开<code>chrome</code>，可在<code>chrome</code>中<code>debug</code>。</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/08/29/8859dcc6f1fb80f73057f2fe158a6082ef431f25c6b8251c.png" alt="8859dcc6f1fb80f73057f2fe158a6082ef431f25c6b8251c.png"></p>
+<ul>
+<li><p><code>vscode</code>：先下载<code>React native tools</code>扩展，等待安装完成。同样启用开发者菜单中的<code>Debug Remote JS</code>，关闭<code>chrome</code>，然后在<code>vscode</code>中进入调试页面，点击左侧的创建文件，然后在下拉菜单中选择<code>React Native</code>，调试配置项只选择<code>Attach to packager</code>。在打开的<code>launch.json</code>文件中，添加一个<code>configuration</code>，输入<code>react native</code>在提示中选择<code>Debug Android</code>。该文件会保存在项目根目录的<code>.vscode</code>文件夹内，最终的文件内容：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  // 使用 IntelliSense 了解相关属性。</span><br><span class="line">  // 悬停以查看现有属性的描述。</span><br><span class="line">  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span><br><span class="line">  "version": "0.2.0",</span><br><span class="line">  "configurations": [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"name"</span>: <span class="string">"Debug Android"</span>,</span><br><span class="line">      <span class="attr">"cwd"</span>: <span class="string">"$&#123;workspaceFolder&#125;"</span>,</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"reactnative"</span>,</span><br><span class="line">      <span class="attr">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">      <span class="attr">"platform"</span>: <span class="string">"android"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"name"</span>: <span class="string">"Attach to packager"</span>,</span><br><span class="line">      <span class="attr">"cwd"</span>: <span class="string">"$&#123;workspaceFolder&#125;"</span>,</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"reactnative"</span>,</span><br><span class="line">      <span class="attr">"request"</span>: <span class="string">"attach"</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开<code>vscode</code>的设置，搜索<code>react-native.packager.port</code>，将值改为<code>19001</code>，和上面<code>chrome</code>调试页同样的端口号。最后启动调试即可。</p>
+</li>
+</ul>
 
       
     </div>
@@ -991,7 +1016,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用JavaScript构建原生移动端应用"><span class="nav-text">使用JavaScript构建原生移动端应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化项目"><span class="nav-text">初始化项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接Android"><span class="nav-text">连接Android</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用JavaScript构建原生移动端应用"><span class="nav-text">使用JavaScript构建原生移动端应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化项目"><span class="nav-text">初始化项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接Android"><span class="nav-text">连接Android</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程调试"><span class="nav-text">远程调试</span></a></li></ol></li></ol></div>
             
 
           </div>
